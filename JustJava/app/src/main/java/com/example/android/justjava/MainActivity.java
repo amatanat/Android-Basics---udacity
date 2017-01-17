@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
 
     int quantity = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,7 +19,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void submitOrder(View view) {
-        displayPrice(quantity * 5);
+        String priceMessage = "Total: $" + (quantity * 5);
+        priceMessage = priceMessage + "\nThank you";
+        displayMessage(priceMessage);
     }
 
     private void display(int number) {
@@ -30,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayPrice(int number) {
         TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
+        if (priceTextView != null)
         priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
     }
 
@@ -41,5 +45,11 @@ public class MainActivity extends AppCompatActivity {
     public void decrement(View view){
         quantity--;
         display(quantity);
+    }
+
+    private void displayMessage(String message) {
+        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
+        if (priceTextView != null)
+        priceTextView.setText(message);
     }
 }
