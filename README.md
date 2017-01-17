@@ -1,5 +1,7 @@
 #Android Basics: User Interface
 ![screenshot](https://github.com/amatanat/Android-Basics-udacity/blob/master/udacityApp.png)
 
-#Android Basics: User Input (2A)
-![screenshot](https://github.com/amatanat/Android-Basics-udacity/blob/master/justJava.png)
+#Android Basics: User Input 
+![screenshot](https://github.com/amatanat/Android-Basics-udacity/blob/master/JustJava.png)
+
+
