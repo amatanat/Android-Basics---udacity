@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="android.udacity.durakgame.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_horizontal"
+                    android:padding="16dp"
+                    android:text="@string/teamA"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/team_a_score"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp"
+                    android:text="@string/total"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="40sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/black10"
+                        style="@style/blackLeft"
+                        android:src="@drawable/black10"/>
+
+                    <ImageView
+                        android:id="@+id/blackJ"
+                        style="@style/blackRight"
+                        android:scaleY="1.05"
+                        android:src="@drawable/blackj"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/blackQ"
+                        style="@style/blackLeft"
+                        android:scaleX="1.2"
+                        android:scaleY="1.2"
+                        android:src="@drawable/blackq"/>
+
+                    <ImageView
+                        android:id="@+id/blackK"
+                        style="@style/blackRight"
+                        android:scaleX="1.2"
+                        android:scaleY="1.18"
+                        android:src="@drawable/blackk"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        style="@style/blackMid"
+                        android:src="@drawable/blackt"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorAccent"/>
+
+            <!-- second team -->
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_horizontal"
+                    android:padding="16dp"
+                    android:text="@string/teamB"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/team_b_score"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp"
+                    android:text="@string/total"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="40sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        style="@style/blackLeft"
+                        android:src="@drawable/red10"/>
+
+                    <ImageView
+                        style="@style/blackRight"
+                        android:src="@drawable/redj2"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        style="@style/blackLeft"
+                        android:scaleX="1.2"
+                        android:scaleY="1.2"
+                        android:src="@drawable/redq"/>
+
+                    <ImageView
+                        style="@style/blackRight"
+                        android:scaleX="1.2"
+                        android:scaleY="1.18"
+                        android:src="@drawable/redk"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        style="@style/blackMid"
+                        android:scaleX="1.1"
+                        android:src="@drawable/redt1"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/reset"
+            android:textColor="@color/colorAccent"/>
+
+
+    </LinearLayout>
+
+
+</ScrollView>
+
