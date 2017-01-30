@@ -2,15 +2,38 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <!-- Style black& red  left -->
 
+    <!-- Teams' name theme  -->
+    <style name="styleTeams">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+
+    <!-- Teams' score theme -->
+    <style name="styleScores">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:text">@string/total</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">40sp</item>
+    </style>
+
+
+    <!-- Black's & Red's left image theme-->
     <style name="blackLeft">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
@@ -20,8 +43,8 @@
         <item name="android:layout_marginStart">8dp</item>
     </style>
 
-    <!-- Style black& red  right -->
 
+    <!-- Black's & Red's right image theme  -->
     <style name="blackRight">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -31,6 +54,8 @@
         <item name="android:layout_marginEnd">4dp</item>
     </style>
 
+
+    <!-- Black's & Red's middle image theme  -->
     <style name="blackMid">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>

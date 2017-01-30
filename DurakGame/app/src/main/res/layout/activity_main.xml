@@ -25,25 +25,12 @@
 
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center_horizontal"
-                    android:padding="16dp"
-                    android:text="@string/teamA"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="14sp"/>
+                    style="@style/styleTeams"
+                    android:text="@string/teamA"/>
 
                 <TextView
                     android:id="@+id/team_a_score"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp"
-                    android:text="@string/total"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="40sp"/>
+                    style="@style/styleScores"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -51,15 +38,18 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/black10"
                         style="@style/blackLeft"
-                        android:src="@drawable/black10"/>
+                        android:src="@drawable/black10"
+                        android:clickable="true"
+                        android:onClick="addPoint10ToA"/>
 
                     <ImageView
-                        android:id="@+id/blackJ"
                         style="@style/blackRight"
                         android:scaleY="1.05"
-                        android:src="@drawable/blackj"/>
+                        android:src="@drawable/blackj"
+                        android:clickable="true"
+                        android:onClick="addPoint11ToA"
+                        />
 
                 </LinearLayout>
 
@@ -69,18 +59,20 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/blackQ"
                         style="@style/blackLeft"
                         android:scaleX="1.2"
                         android:scaleY="1.2"
-                        android:src="@drawable/blackq"/>
+                        android:src="@drawable/blackq"
+                        android:clickable="true"
+                        android:onClick="addPoint12ToA"/>
 
                     <ImageView
-                        android:id="@+id/blackK"
                         style="@style/blackRight"
                         android:scaleX="1.2"
                         android:scaleY="1.18"
-                        android:src="@drawable/blackk"/>
+                        android:src="@drawable/blackk"
+                        android:clickable="true"
+                        android:onClick="addPoint13ToA"/>
 
                 </LinearLayout>
 
@@ -91,7 +83,9 @@
 
                     <ImageView
                         style="@style/blackMid"
-                        android:src="@drawable/blackt"/>
+                        android:src="@drawable/blackt"
+                        android:clickable="true"
+                        android:onClick="addPoint20ToA"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -111,25 +105,12 @@
 
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center_horizontal"
-                    android:padding="16dp"
-                    android:text="@string/teamB"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="14sp"/>
+                    style="@style/styleTeams"
+                    android:text="@string/teamB"/>
 
                 <TextView
                     android:id="@+id/team_b_score"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp"
-                    android:text="@string/total"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="40sp"/>
+                    style="@style/styleScores"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -138,11 +119,15 @@
 
                     <ImageView
                         style="@style/blackLeft"
-                        android:src="@drawable/red10"/>
+                        android:src="@drawable/red10"
+                        android:clickable="true"
+                        android:onClick="addPoint10ToB"/>
 
                     <ImageView
                         style="@style/blackRight"
-                        android:src="@drawable/redj2"/>
+                        android:src="@drawable/redj2"
+                        android:clickable="true"
+                        android:onClick="addPoint11ToB"/>
 
                 </LinearLayout>
 
@@ -155,13 +140,17 @@
                         style="@style/blackLeft"
                         android:scaleX="1.2"
                         android:scaleY="1.2"
-                        android:src="@drawable/redq"/>
+                        android:src="@drawable/redq"
+                        android:clickable="true"
+                        android:onClick="addPoint12ToB"/>
 
                     <ImageView
                         style="@style/blackRight"
                         android:scaleX="1.2"
                         android:scaleY="1.18"
-                        android:src="@drawable/redk"/>
+                        android:src="@drawable/redk"
+                        android:clickable="true"
+                        android:onClick="addPoint13ToB"/>
 
                 </LinearLayout>
 
@@ -173,7 +162,9 @@
                     <ImageView
                         style="@style/blackMid"
                         android:scaleX="1.1"
-                        android:src="@drawable/redt1"/>
+                        android:src="@drawable/redt1"
+                        android:clickable="true"
+                        android:onClick="addPoint20ToB"/>
 
                 </LinearLayout>
 
@@ -190,7 +181,8 @@
             android:layout_marginBottom="15dp"
             android:layout_marginTop="15dp"
             android:text="@string/reset"
-            android:textColor="@color/colorAccent"/>
+            android:textColor="@color/colorAccent"
+            android:onClick="reset"/>
 
 
     </LinearLayout>
