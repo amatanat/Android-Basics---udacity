@@ -1,4 +1,4 @@
-package android.udacity.durakgame;
+package android.ma.football;
 
 import org.junit.Test;
 

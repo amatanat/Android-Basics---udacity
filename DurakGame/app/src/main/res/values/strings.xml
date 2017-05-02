@@ -4,4 +4,6 @@
     <string name="teamB">Team B</string>
     <string name="total">0</string>
     <string name="reset">Reset</string>
+    <string name="goal">Goal</string>
+    <string name="card">Card</string>
 </resources>
