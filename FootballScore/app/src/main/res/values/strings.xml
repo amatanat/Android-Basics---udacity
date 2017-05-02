@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FootballScore</string>
+    <string name="app_name">Football Score</string>
     <string name="teamA"> Team A</string>
     <string name="teamB">Team B</string>
     <string name="total">0</string>
