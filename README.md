@@ -1,2 +1,1 @@
-# Udacity Android Basics Online Courses
-
+# Udacity Android Nanodegree
