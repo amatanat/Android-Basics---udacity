@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Aze Dictionary</string>
+    <string name="numbers">Numbers</string>
+    <string name="phrases">Phrases</string>
+    <string name="colors">Colors</string>
+    <string name="familymembers">Family Members</string>
+    <string name="greetings">Greetings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

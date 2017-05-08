@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="color_numbers">#660066</color>
+    <color name="color_phrases">#CC6600</color>
+    <color name="color_colors">#FF99CC</color>
+    <color name="color_familymembers">#009900</color>
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_greetings">#607d8b</color>
+    <color name="color_tan_background">#FFF7DA</color>
+</resources>
