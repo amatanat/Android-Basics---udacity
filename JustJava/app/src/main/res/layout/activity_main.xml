@@ -7,9 +7,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         tools:context="com.example.android.justjava.MainActivity">
 
 
@@ -17,7 +18,7 @@
             android:id="@+id/name_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
             android:hint="@string/nameEdittext"
             android:maxLines="1"
@@ -33,7 +34,8 @@
             android:id="@+id/whipped_cream_checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="24dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
             android:text="@string/creme"
             android:textSize="16sp"/>
 
@@ -41,7 +43,8 @@
             android:id="@+id/chocolate_checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="24dp"
+            android:paddingEnd="24dp"
+            android:paddingStart="24dp"
             android:text="@string/Chocolate"
             android:textSize="16sp"/>
 
@@ -61,7 +64,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginBottom="16dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 android:onClick="increment"
                 android:text="@string/plus"/>
 
@@ -77,7 +80,7 @@
             <Button
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:onClick="decrement"
                 android:text="@string/minus"/>
 
