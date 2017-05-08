@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.amatanat.arrowmusicapp.NewReleasesActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/textViewStyle"
+            android:text="@string/new_releases_text"
+            android:textColor="@color/colorLightBlue" />
+
+        <Button
+            android:id="@+id/genres_button_id"
+            style="@style/buttonStyle"
+            android:background="@color/colorLightBlue"
+            android:text="@string/genres"
+            android:textColor="@color/colorAccent" />
+
+    </LinearLayout>
+
+</ScrollView>

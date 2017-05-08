@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Arrow Music App</string>
+    <string name="genres">Genres</string>
+    <string name="mood">Mood</string>
+    <string name="popular_songs">Popular Songs</string>
+    <string name="artists">Artists</string>
+    <string name="new_releases">New Releases</string>
+
+    <string name="genres_text">This screen can show list of music genres and images.
+        We can create one custom adapter (contains image and textview) and use it across app where it is required.
+        On list item click app opens new screen corresponding to that genre which has list of songs with
+        the name of the singer and albom. User can click on song and open music playing screen.
+        User can click on button and open list of music moods.
+        In music playing screen app can have FAB for sharing song in social accounts.
+        As well as user can save playing song in \'liked songs\'. </string>
+    <string name="moods_text">This screen can show list of music moods and corresponding images.
+        We can have the same structure here as in genres activity.
+        User can navigate up from action bar.
+        User can click on button and go to new released songs screen.</string>
+    <string name="artists_text">This screen can show list of artist names.
+        We can use created custom adapter for image and textview for artist\'s name and image.
+        User can select one artist from list and open screen with the list of songs of this artist.
+        and on song click app opens music playing screen.
+        User can click on button and go to new released songs screen.</string>
+    <string name="popular_songs_text">This screen can show list of popular songs with albom\'s image.
+        On list item click app can open details screen and button for buying albom
+        (on button click app can use implicit intent in order to open albom buying screen for paypal).
+        User can click on button and go to artists screen.</string>
+    <string name="new_releases_text">This screen can show list of new released songs with the name of artist and
+        image of the albom. User can select song and go to song playing screen.
+        User can click on button and go to genres screen.</string>
+</resources>
