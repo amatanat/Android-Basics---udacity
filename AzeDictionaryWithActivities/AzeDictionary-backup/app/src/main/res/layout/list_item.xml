@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item_height"
+    android:background="@color/color_tan_background">
+
+    <ImageView
+        android:id="@+id/image_id"
+        android:layout_width="@dimen/list_item_height"
+        android:layout_height="@dimen/list_item_height"
+        tools:ignore="ContentDescription" />
+
+    <LinearLayout
+        android:id="@+id/text_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_item_height"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/image_id"
+        android:layout_toEndOf="@+id/image_id"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <TextView
+            android:id="@+id/english_word_id"
+            style="@style/ListViewStyle"
+            android:gravity="bottom"
+            android:textStyle="bold"
+            tools:text = "one"/>
+        <TextView
+            android:id="@+id/azeri_word_id"
+            style="@style/ListViewStyle"
+            android:gravity="top"
+            tools:text= "bir"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_play_arrow"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_centerVertical="true"
+        tools:ignore="ContentDescription" />
+
+
+</RelativeLayout>
