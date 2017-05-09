@@ -2,5 +2,5 @@
 ![screenshot](https://github.com/amatanat/Android-Development-udacity/blob/master/DeepLearning/deepLearning.png)
  
  
-# Source 
+# Source for course
 https://www.udacity.com/course/deep-learning-nanodegree-foundation--nd101
