@@ -1,14 +1,17 @@
 package com.example.android.quakereport;
 
 import android.app.Activity;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +45,22 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
         // find textview for magnitude in xml file and set its text
         TextView mMagnitude = (TextView) listItemView.findViewById(R.id.magnitude);
-        mMagnitude.setText(currentEarthquake.getMagnitute());
+
+        // get current magnitude in two (or one) decimal format (as it given)
+        Double givenMagnitude = currentEarthquake.getMagnitude();
+
+        // format magnitude using {@link DecimalFormat} and set textview's text
+        mMagnitude.setText(formatMagnitude(givenMagnitude));
+
+        // Set the proper background color on the magnitude circle.
+        // Fetch the background from the TextView, which is a GradientDrawable.
+        GradientDrawable magnitudeCircle = (GradientDrawable) mMagnitude.getBackground();
+
+        // Get the appropriate background color based on the current earthquake magnitude
+        int magnitudeColor = getMagnitudeColor(currentEarthquake.getMagnitude());
+
+        // Set the color on the magnitude circle
+        magnitudeCircle.setColor(magnitudeColor);
 
         //find textview for location in xml file
         TextView mLocation = (TextView) listItemView.findViewById(R.id.location);
@@ -109,5 +127,55 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
     private String formatTime(Date date){
         SimpleDateFormat timeFormatter = new SimpleDateFormat("h:mm a");
         return timeFormatter.format(date);
+    }
+
+    /*
+    Format magnitude to be in one decimal place.
+     */
+    private String formatMagnitude(double magnitude){
+        DecimalFormat decimalFormat = new DecimalFormat("0.0");
+        return decimalFormat.format(magnitude);
+    }
+
+    /*
+    Get magnitude color for the shape background
+     */
+    private int getMagnitudeColor(double magnitude){
+        int color;
+        int mag = (int) Math.floor(magnitude);
+        switch (mag){
+            case 0:
+            case 1:
+                color = R.color.magnitude1;
+                break;
+            case 2:
+                color = R.color.magnitude2;
+                break;
+            case 3:
+                color = R.color.magnitude3;
+                break;
+            case 4:
+                color = R.color.magnitude4;
+                break;
+            case 5:
+                color = R.color.magnitude5;
+                break;
+            case 6:
+                color = R.color.magnitude6;
+                break;
+            case 7:
+                color = R.color.magnitude7;
+                break;
+            case 8:
+                color = R.color.magnitude8;
+                break;
+            case 9:
+                color = R.color.magnitude9;
+                break;
+            default:
+                color = R.color.magnitude10plus;
+                break;
+        }
+        return ContextCompat.getColor(getContext(), color);
     }
 }

@@ -9,38 +9,38 @@ import java.sql.Time;
 
 public class Earthquake {
 
-    private String mMagnitute;
+    private double mMagnitude;
     private String mLocation;
     private Long mTimeInMilliSeconds;
+    private String mUrl;
 
-    public Earthquake(String magnitute, String location, Long timeInMilliSeconds){
-        this. mMagnitute = magnitute;
+    public Earthquake(double magnitude, String location, Long timeInMilliSeconds){
+        this. mMagnitude = magnitude;
         this.mLocation = location;
         this.mTimeInMilliSeconds = timeInMilliSeconds;
     }
 
-
-    public String getMagnitute() {
-        return mMagnitute;
+    public Earthquake(double magnitude, String location, Long timeInMilliSeconds, String url){
+        this. mMagnitude = magnitude;
+        this.mLocation = location;
+        this.mTimeInMilliSeconds = timeInMilliSeconds;
+        this.mUrl = url;
     }
 
-    public void setMagnitute(String magnitute) {
-        mMagnitute = magnitute;
+    public String getUrl() {
+        return mUrl;
+    }
+
+    public double getMagnitude() {
+        return mMagnitude;
     }
 
     public String getLocation() {
         return mLocation;
     }
 
-    public void setLocation(String location) {
-        mLocation = location;
-    }
-
     public Long getTimeInMilliSeconds() {
         return mTimeInMilliSeconds;
     }
 
-    public void setTimeInMilliSeconds(Long timeInMilliSeconds) {
-        mTimeInMilliSeconds = timeInMilliSeconds;
-    }
 }

@@ -68,7 +68,7 @@ public final class QueryUtils {
                 JSONObject properties = element.getJSONObject("properties");
 
                 //get magnitude of current earthquake
-                String magnitude = properties.getString("mag");
+                double magnitude = properties.getDouble("mag");
 
                 //get location of current earthquake
                 String location = properties.getString("place");
@@ -76,8 +76,11 @@ public final class QueryUtils {
                 // get time of current earthquake which is in milliseconds
                 long timeInMilliseconds = properties.getLong("time");
 
+                // get web page
+                String url = properties.getString("url");
+
                 // add current earthquake data to the list of earthquakes
-                earthquakes.add(new Earthquake(magnitude,location, timeInMilliseconds));
+                earthquakes.add(new Earthquake(magnitude,location, timeInMilliseconds, url));
 
             }
 
