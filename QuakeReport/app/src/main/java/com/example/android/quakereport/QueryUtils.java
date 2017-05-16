@@ -207,7 +207,7 @@ public final class QueryUtils {
 
         // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
         List<Earthquake> earthquakes = JSONParser(jsonResponse);
-
+        Log.i("QueryUtils ", "Task:" + "fetchEarthquakeData is called.....");
         // Return the list of {@link Earthquake}s
         return earthquakes;
     }

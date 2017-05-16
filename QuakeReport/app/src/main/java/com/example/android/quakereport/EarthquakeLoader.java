@@ -28,6 +28,8 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>> {
     */
     @Override
     protected void onStartLoading() {
+        Log.i("EarthquakeLoader", "Task:" + "onStartLoading is called.....");
+
         forceLoad();
     }
 
@@ -38,6 +40,9 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>> {
         if (mUrl == null) {
             return null;
         }
+
+        Log.i("EarthquakeLoader", "Task:" + "loadInBackground is called.....");
+
 
         // get list of earthquakes
         List<Earthquake> result = QueryUtils.fetchEarthquakeData(mUrl);
