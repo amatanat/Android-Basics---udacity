@@ -25,6 +25,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +42,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
      * This really only comes into play if you're using multiple loaders.
      */
     private static final int EARTHQUAKE_LOADER_ID = 1;
-
+    private TextView mTextView;
+    
 
     /** URL to query the USGS dataset for earthquake information */
     private static final String USGS_REQUEST_URL =
@@ -55,9 +59,12 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         //set content view of main activity
         setContentView(R.layout.earthquake_activity);
 
-
         // Find a reference to the {@link ListView} in the layout
         final ListView earthquakeListView = (ListView) findViewById(R.id.list);
+
+        // Find a reference to the {@link TextView} in the layout
+        mTextView = (TextView) findViewById(android.R.id.empty);
+        earthquakeListView.setEmptyView(mTextView);
 
         // Create a new adapter that takes an empty list of earthquakes as input
         mAdapter = new EarthquakeAdapter(this, new ArrayList<Earthquake>());
@@ -102,6 +109,10 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
+
+        // set empty state text
+        mTextView.setText("No earthquake data");
+
         // Clear the adapter of previous earthquake data
         mAdapter.clear();
 
