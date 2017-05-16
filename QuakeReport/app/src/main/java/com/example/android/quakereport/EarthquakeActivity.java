@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -43,7 +44,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
      */
     private static final int EARTHQUAKE_LOADER_ID = 1;
     private TextView mTextView;
-    
+
 
     /** URL to query the USGS dataset for earthquake information */
     private static final String USGS_REQUEST_URL =
@@ -109,6 +110,9 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
+
+        ProgressBar mProgressBar = (ProgressBar) findViewById(R.id.loading_spinner);
+        mProgressBar.setVisibility(View.GONE);
 
         // set empty state text
         mTextView.setText("No earthquake data");
