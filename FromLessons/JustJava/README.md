@@ -1,2 +1,2 @@
 # Android Basics: User Input
-![screenshot](https://github.com/amatanat/Android-Basics-udacity/blob/master/JustJava/JustJava.png)
+![screenshot](https://github.com/amatanat/Android-Development-udacity/blob/master/FromLessons/JustJava/JustJava.png)
