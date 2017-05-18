@@ -133,7 +133,13 @@ public class BooksActivity extends AppCompatActivity implements LoaderManager.Lo
         mAdapter = new CustomBookAdapter(new ArrayList<Book>());
     }
 
+    /*
+    * Check visibility of required views and change them accordingly
+    */
     private void checkVisibility(){
+
+        // check {@link CustomBookAdapter} size
+        // if list is empty
         if (mAdapter.getItemCount() == 0){
 
             // change visibility of recycleview to be 'GONE'

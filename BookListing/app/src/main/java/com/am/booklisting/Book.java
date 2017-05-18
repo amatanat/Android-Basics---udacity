@@ -17,26 +17,11 @@ public class Book {
     // book's published date
     private String mPublishedDate;
 
-    // book description
-    private String mDescription;
 
-    // info url of the book
-    private String mUrl;
-
-    /*
-    * Constructor for the class
-    */
-    public Book(String bookName, String publishedDate, String description, String url, ArrayList<String> authors){
+    public Book(String bookName, ArrayList<String> authors, String publishedDate){
         this.mBookName = bookName;
+        this.mAuthors = authors;
         this.mPublishedDate = publishedDate;
-        this.mDescription = description;
-        this.mUrl = url;
-        this.mAuthors = authors;
-    }
-
-    public Book(String bookName, ArrayList<String> authors){
-        this.mBookName = bookName;
-        this.mAuthors = authors;
     }
 
     // get book name
@@ -47,11 +32,6 @@ public class Book {
     // get published date
     public String getPublishedDate() {
         return mPublishedDate;
-    }
-
-    // get description
-    public String getDescription() {
-        return mDescription;
     }
 
     // get list of authors
@@ -66,10 +46,5 @@ public class Book {
             autors += "," + mAuthors.get(i);
         }
         return autors;
-    }
-
-    // get url
-    public String getUrl() {
-        return mUrl;
     }
 }

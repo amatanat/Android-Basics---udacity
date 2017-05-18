@@ -27,15 +27,18 @@ public class CustomBookAdapter extends RecyclerView.Adapter<CustomBookAdapter.Cu
 
     // view holder
     public class CustomViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, authors;
+        private TextView bookName, authors, publishedDate;
 
-        public CustomViewHolder(View view) {
+        private CustomViewHolder(View view) {
             super(view);
             // find textview ID for book title
-            title = (TextView) view.findViewById(R.id.book_name);
+            bookName = (TextView) view.findViewById(R.id.book_name);
 
             // find textview ID for author name
             authors = (TextView) view.findViewById(R.id.author_name);
+
+            // find textview id for published date
+            publishedDate = (TextView) view.findViewById(R.id.date);
         }
     }
 
@@ -56,10 +59,13 @@ public class CustomBookAdapter extends RecyclerView.Adapter<CustomBookAdapter.Cu
         Book book = mBookList.get(position);
 
         // set book title
-        customViewHolder.title.setText(book.getBookName());
+        customViewHolder.bookName.setText(book.getBookName());
 
         // set book author
         customViewHolder.authors.setText(book.getAuthors());
+
+        // set published date
+        customViewHolder.publishedDate.setText(book.getPublishedDate());
     }
 
     @Override

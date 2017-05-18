@@ -165,7 +165,9 @@ public class SearchData {
                     authors.add(authorsList.getString(j));
                 }
 
-                books.add(new Book(bookName, authors));
+                String publishedDate = volumeInfo.getString("publishedDate");
+
+                books.add(new Book(bookName, authors, publishedDate));
             }
 
 
