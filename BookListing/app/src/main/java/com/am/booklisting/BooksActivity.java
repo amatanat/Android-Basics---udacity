@@ -7,16 +7,17 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Book>>{
+public class BooksActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Book>> {
 
     // string url
     private final String REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=";
@@ -24,19 +25,20 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
     // unique id for the loader
     private final int UNIQUE_ID = 1;
 
-    private BookAdapter mBookAdapter;
-    private ListView mBookListView;
+    private List<Book> movieList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private CustomBookAdapter mAdapter;
     private ProgressBar mProgressBar;
     private TextView mEmptyStateTextView;
 
     private String keyword;
 
     @Override
-    protected void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        // set layout of the activity
-        setContentView(R.layout.activity_book);
+        // set layout for this activity
+        setContentView(R.layout.custom_book_adapter);
 
         // get user entered data
         Bundle extras = getIntent().getExtras();
@@ -48,20 +50,33 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
         // find progressbar
         mProgressBar = (ProgressBar) findViewById(R.id.loading_spinner);
 
-        // find listview
-        mBookListView = (ListView) findViewById(R.id.list);
-
         // find textview
         mEmptyStateTextView = (TextView) findViewById(android.R.id.empty);
 
-        // set textview as empty state view for the listview
-        mBookListView.setEmptyView(mEmptyStateTextView);
+        // find recycleview
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        // create instance of {@link BookAdapter}
-        mBookAdapter = new BookAdapter(this, new ArrayList<Book>());
+        // get instance of {@link CustomBookAdapter}
+        mAdapter = new CustomBookAdapter(movieList);
 
-        // set adapter of listview
-        mBookListView.setAdapter(mBookAdapter);
+        // get recycleview layoutmanager
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+
+        // set recycleview layoutmanager
+        recyclerView.setLayoutManager(mLayoutManager);
+
+        // set item animator in recycleview
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        // set adapter of recycleview
+        recyclerView.setAdapter(mAdapter);
+
+        // if keyword is empty modify view visibilities
+        if (keyword.isEmpty()){
+            mProgressBar.setVisibility(View.GONE);
+            mEmptyStateTextView.setVisibility(View.VISIBLE);
+            mEmptyStateTextView.setText(R.string.no_books);
+        }
 
         //check network connectivity
         ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -84,36 +99,58 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
             // change visibility of progress bar
             mProgressBar.setVisibility(View.GONE);
 
-            // set text of empty state
+            // change visibility of textview to be 'VISIBLE'
+            mEmptyStateTextView.setVisibility(View.VISIBLE);
+
+            // set text of textview
             mEmptyStateTextView.setText(R.string.no_internet);
+
         }
     }
 
     @Override
     public Loader<List<Book>> onCreateLoader(int id, Bundle args) {
-        Log.i("onCreateLoader",  "Get results for this URL .... " + REQUEST_URL + keyword);
-        return new BookLoader(BookActivity.this, REQUEST_URL+keyword);
+        return new BookLoader(this, REQUEST_URL + keyword);
     }
 
     @Override
     public void onLoadFinished(Loader<List<Book>> loader, List<Book> books) {
-
         // change visibility of progress bar
         mProgressBar.setVisibility(View.GONE);
 
-        // set text of empty state
-        mEmptyStateTextView.setText(R.string.no_books);
-
         // clear book adapter
-        mBookAdapter.clear();
+        mAdapter = new CustomBookAdapter(new ArrayList<Book>());
 
         if (books != null && !books.isEmpty()){
-            mBookAdapter.addAll(books);
+           mAdapter = new CustomBookAdapter(books);
+            recyclerView.setAdapter(mAdapter);
+            checkVisibility();
         }
     }
 
     @Override
     public void onLoaderReset(Loader<List<Book>> loader) {
-        mBookAdapter.clear();
+        mAdapter = new CustomBookAdapter(new ArrayList<Book>());
     }
+
+    private void checkVisibility(){
+        if (mAdapter.getItemCount() == 0){
+
+            // change visibility of recycleview to be 'GONE'
+            recyclerView.setVisibility(View.GONE);
+
+            // change visibility of textview to be 'VISIBLE'
+            mEmptyStateTextView.setVisibility(View.VISIBLE);
+
+            // set text of textview
+            mEmptyStateTextView.setText(R.string.no_books);
+        } else {
+            // change visibility of recycleview to be 'VISIBLE'
+            recyclerView.setVisibility(View.VISIBLE);
+
+            // change visibility of textview to be 'GONE'
+            mEmptyStateTextView.setVisibility(View.GONE);
+        }
+    }
+
 }

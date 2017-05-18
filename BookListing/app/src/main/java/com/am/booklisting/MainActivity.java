@@ -22,13 +22,13 @@ public class MainActivity extends AppCompatActivity {
         // find {@link Button}
         Button searchButton = (Button) findViewById(R.id.search_button);
 
-        // start {@link BookActivity} on 'searchbutton' click
+        // start {@link BooksActivity} on 'searchbutton' click
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 // create {@link Intent} and pass user entered data from 'searchview' to it
-                Intent intent = new Intent(MainActivity.this, BookActivity.class);
+                Intent intent = new Intent(MainActivity.this, BooksActivity.class);
                 intent.putExtra("Keyword", searchView.getQuery().toString());
 
                 // start {@link Activity}

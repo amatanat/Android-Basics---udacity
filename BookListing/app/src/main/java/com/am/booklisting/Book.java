@@ -55,8 +55,17 @@ public class Book {
     }
 
     // get list of authors
-    public ArrayList<String> getAuthors() {
-        return mAuthors;
+    public String getAuthors() {
+        String authors = getAuthorsString();
+        return authors;
+    }
+
+    private String getAuthorsString(){
+        String autors = mAuthors.get(0);
+        for(int i = 1; i < mAuthors.size(); i++){
+            autors += "," + mAuthors.get(i);
+        }
+        return autors;
     }
 
     // get url
