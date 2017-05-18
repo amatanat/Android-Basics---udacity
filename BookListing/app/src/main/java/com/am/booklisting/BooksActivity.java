@@ -11,6 +11,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ public class BooksActivity extends AppCompatActivity implements LoaderManager.Lo
     private CustomBookAdapter mAdapter;
     private ProgressBar mProgressBar;
     private TextView mEmptyStateTextView;
+    private ImageView mNoSearchResultImageView;
 
     private String keyword;
 
@@ -46,6 +48,9 @@ public class BooksActivity extends AppCompatActivity implements LoaderManager.Lo
             //The key argument here must match that used in the other activity
             keyword = extras.getString("Keyword");
         }
+
+        // find imageview
+        mNoSearchResultImageView = (ImageView) findViewById(R.id.no_result_image);
 
         // find progressbar
         mProgressBar = (ProgressBar) findViewById(R.id.loading_spinner);
@@ -74,8 +79,8 @@ public class BooksActivity extends AppCompatActivity implements LoaderManager.Lo
         // if keyword is empty modify view visibilities
         if (keyword.isEmpty()){
             mProgressBar.setVisibility(View.GONE);
-            mEmptyStateTextView.setVisibility(View.VISIBLE);
-            mEmptyStateTextView.setText(R.string.no_books);
+            mNoSearchResultImageView.setVisibility(View.VISIBLE);
+            mEmptyStateTextView.setVisibility(View.GONE);
         }
 
         //check network connectivity
@@ -99,6 +104,9 @@ public class BooksActivity extends AppCompatActivity implements LoaderManager.Lo
             // change visibility of progress bar
             mProgressBar.setVisibility(View.GONE);
 
+            //change visibility of imageview
+            mNoSearchResultImageView.setVisibility(View.GONE);
+
             // change visibility of textview to be 'VISIBLE'
             mEmptyStateTextView.setVisibility(View.VISIBLE);
 
@@ -121,10 +129,24 @@ public class BooksActivity extends AppCompatActivity implements LoaderManager.Lo
         // clear book adapter
         mAdapter = new CustomBookAdapter(new ArrayList<Book>());
 
-        if (books != null && !books.isEmpty()){
-           mAdapter = new CustomBookAdapter(books);
+        if (books != null && !books.isEmpty()) {
+            mAdapter = new CustomBookAdapter(books);
             recyclerView.setAdapter(mAdapter);
+
+            // chech textview's visibility
             checkVisibility();
+
+        } else {
+            //if there is no books according to user's search
+
+            // change visibility of recycleview to be 'GONE'
+            recyclerView.setVisibility(View.GONE);
+
+            // change visibility of textview to be 'VISIBLE'
+            mEmptyStateTextView.setVisibility(View.GONE);
+
+            // change visibility of imageview to be 'VISIBLE'
+            mNoSearchResultImageView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -142,6 +164,9 @@ public class BooksActivity extends AppCompatActivity implements LoaderManager.Lo
         // if list is empty
         if (mAdapter.getItemCount() == 0){
 
+            //change visibility of imageview  to be 'GONE'
+            mNoSearchResultImageView.setVisibility(View.GONE);
+
             // change visibility of recycleview to be 'GONE'
             recyclerView.setVisibility(View.GONE);
 
@@ -150,12 +175,16 @@ public class BooksActivity extends AppCompatActivity implements LoaderManager.Lo
 
             // set text of textview
             mEmptyStateTextView.setText(R.string.no_books);
+
         } else {
             // change visibility of recycleview to be 'VISIBLE'
             recyclerView.setVisibility(View.VISIBLE);
 
             // change visibility of textview to be 'GONE'
             mEmptyStateTextView.setVisibility(View.GONE);
+
+            //change visibility of imageview  to be 'GONE'
+            mNoSearchResultImageView.setVisibility(View.GONE);
         }
     }
 

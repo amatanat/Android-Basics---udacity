@@ -156,16 +156,28 @@ public class SearchData {
                 // get book name
                 String bookName = volumeInfo.getString("title");
 
-                // get JSONArray of authors
-                JSONArray authorsList = volumeInfo.getJSONArray("authors");
+                // get published date
+                String publishedDate = volumeInfo.getString("publishedDate");
+
+                // list of authors
                 ArrayList<String> authors = new ArrayList<>();
 
-                // iterate through the authors JSONArray and add them to arraylist of String
-                for(int j = 0; j < authorsList.length(); j++){
-                    authors.add(authorsList.getString(j));
-                }
+                //check if 'volumeInfo' contains 'authors'
+                if (volumeInfo.has("authors")){
 
-                String publishedDate = volumeInfo.getString("publishedDate");
+                    // get JSONArray of authors
+                    JSONArray authorsList = volumeInfo.getJSONArray("authors");
+
+                    // iterate through the authors JSONArray and add them to the ArrayList of String
+                    for(int j = 0; j < authorsList.length(); j++){
+                        authors.add(authorsList.getString(j));
+                    }
+
+                } else {
+
+                    // if there is no 'authors' add empty space to 'authors'
+                   authors.add(" ");
+                }
 
                 books.add(new Book(bookName, authors, publishedDate));
             }

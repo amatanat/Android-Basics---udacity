@@ -25,7 +25,7 @@ public class BookLoader extends AsyncTaskLoader<List<Book>> {
     @Override
     public List<Book> loadInBackground() {
 
-        // check if string url is mull or not
+        // check if string url is null or not
         if (mUrl == null){
             return null;
         }
