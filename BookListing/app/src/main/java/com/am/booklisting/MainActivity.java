@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // create {@link Intent} and pass user entered data from 'searchview' to it
                 Intent intent = new Intent(MainActivity.this, BookActivity.class);
-                intent.putExtra("Keyword", searchView.getQuery());
+                intent.putExtra("Keyword", searchView.getQuery().toString());
 
                 // start {@link Activity}
                 startActivity(intent);

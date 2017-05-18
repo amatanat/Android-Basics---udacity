@@ -2,4 +2,6 @@
     <string name="app_name">Book Listing</string>
     <string name="search_books">Enter the keyword</string>
     <string name="search">Search</string>
+    <string name="no_books">No Books</string>
+    <string name="no_internet">No Internet Connection</string>
 </resources>

@@ -13,17 +13,13 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.view.View.GONE;
 
 public class BookActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Book>>{
 
     // string url
-    private final String REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=android";
+    private final String REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=";
 
     // unique id for the loader
     private final int UNIQUE_ID = 1;
@@ -67,7 +63,6 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
         // set adapter of listview
         mBookListView.setAdapter(mBookAdapter);
 
-
         //check network connectivity
         ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -79,26 +74,25 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
 
             // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getLoaderManager();
-         //   Log.i(LOG_TAG, "Task:" + "loaderManager is called.....");
 
             // Initialize the loader. Pass in the int ID constant  and pass in null for
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
             // because this activity implements the LoaderCallbacks interface).
             loaderManager.initLoader(UNIQUE_ID, null, this);
-        //    Log.i(LOG_TAG, "Task:" + "initLoader is called.....");
 
         } else {
             // change visibility of progress bar
             mProgressBar.setVisibility(View.GONE);
 
             // set text of empty state
-            mEmptyStateTextView.setText("No internet connection");
+            mEmptyStateTextView.setText(R.string.no_internet);
         }
     }
 
     @Override
     public Loader<List<Book>> onCreateLoader(int id, Bundle args) {
-        return new BookLoader(BookActivity.this, REQUEST_URL);
+        Log.i("onCreateLoader",  "Get results for this URL .... " + REQUEST_URL + keyword);
+        return new BookLoader(BookActivity.this, REQUEST_URL+keyword);
     }
 
     @Override
@@ -108,19 +102,14 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
         mProgressBar.setVisibility(View.GONE);
 
         // set text of empty state
-        mEmptyStateTextView.setText("No Books");
+        mEmptyStateTextView.setText(R.string.no_books);
 
         // clear book adapter
         mBookAdapter.clear();
 
         if (books != null && !books.isEmpty()){
-
-            // check book titles
-
-            //mBookAdapter.addAll(books);
+            mBookAdapter.addAll(books);
         }
-
-
     }
 
     @Override
