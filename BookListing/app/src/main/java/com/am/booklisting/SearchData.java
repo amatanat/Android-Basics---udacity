@@ -147,8 +147,11 @@ public class SearchData {
             // iterate through item array
             for (int i = 0 ; i < items.length(); i++){
 
-                // get JSONObject of info
-                JSONObject volumeInfo = items.getJSONObject(i);
+                // get JSONObject of elements
+                JSONObject element = items.getJSONObject(i);
+
+                // get JSONObject of 'volumeinfo'
+                JSONObject volumeInfo = element.getJSONObject("volumeInfo");
 
                 // get book name
                 String bookName = volumeInfo.getString("title");
@@ -175,6 +178,36 @@ public class SearchData {
 
         // Return the list of books
         return books;
+    }
+
+    /**
+     * Query the url and return a list of {@link Book} objects.
+     */
+    public static List<Book> fetchBookData(String requestUrl) {
+
+        try{
+            Thread.sleep(2000);
+        }catch (InterruptedException ie){
+            Log.e("SearchData", "Exception " + ie);
+        }
+
+        // Create URL object
+        URL url = createUrl(requestUrl);
+
+        // Perform HTTP request to the URL and receive a JSON response back
+        String jsonResponse = null;
+        try {
+            jsonResponse = makeHttpRequest(url);
+        } catch (IOException e) {
+            Log.e("SearchData", "Problem making the HTTP request.", e);
+        }
+
+        // Extract relevant fields from the JSON response and create a list of {@link Book}
+        List<Book> bookList = JSONParser(jsonResponse);
+        Log.i("SearchData ", "Task:" + "fetchBookData is called.....");
+
+        // Return the list of {@link Book}
+        return bookList;
     }
 
 
