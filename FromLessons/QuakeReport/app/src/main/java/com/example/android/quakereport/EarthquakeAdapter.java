@@ -40,7 +40,7 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.earthquake_list, parent, false);
         }
 
-        // Get the {@link Word} object located at this position in the list
+        // Get the {@link Earthquake} object located at this position in the list
         Earthquake currentEarthquake = getItem(position);
 
         // find textview for magnitude in xml file and set its text
