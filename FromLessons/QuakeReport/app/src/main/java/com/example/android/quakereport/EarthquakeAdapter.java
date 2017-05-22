@@ -43,7 +43,7 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         // Get the {@link Earthquake} object located at this position in the list
         Earthquake currentEarthquake = getItem(position);
 
-        // find textview for magnitude in xml file and set its text
+        // find textview for magnitude in settings_main file and set its text
         TextView mMagnitude = (TextView) listItemView.findViewById(R.id.magnitude);
 
         // get current magnitude in two (or one) decimal format (as it given)
@@ -62,10 +62,10 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         // Set the color on the magnitude circle
         magnitudeCircle.setColor(magnitudeColor);
 
-        //find textview for location in xml file
+        //find textview for location in settings_main file
         TextView mLocation = (TextView) listItemView.findViewById(R.id.location);
 
-        //find textview for distance in xml file
+        //find textview for distance in settings_main file
         TextView mDistance = (TextView) listItemView.findViewById(R.id.distance);
 
         // get location of current earthquake
@@ -97,13 +97,13 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         // get time in milliseconds for current earthquake
         Date dateAndTimeObject = new Date(currentEarthquake.getTimeInMilliSeconds());
 
-        //find textview for date in xml file
+        //find textview for date in settings_main file
         TextView mDate = (TextView) listItemView.findViewById(R.id.date);
 
         // format {@link Date} object in date format and set it as text of textview
         mDate.setText(formatDate(dateAndTimeObject));
 
-        //find textview id for time in xml file
+        //find textview id for time in settings_main file
         TextView mTime = (TextView) listItemView.findViewById(R.id.time);
 
         // format {@link Date} object in time format and set it as text of textview
