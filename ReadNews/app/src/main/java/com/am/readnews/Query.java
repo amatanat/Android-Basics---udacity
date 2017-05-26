@@ -144,8 +144,10 @@ public class Query {
             // get JSONObject from given string
             JSONObject data = new JSONObject(input);
 
+            JSONObject response = data.getJSONObject("response");
+
             // get results array from JSONObject
-            JSONArray results = data.getJSONArray("results");
+            JSONArray results = response.getJSONArray("results");
 
             //iterate through all elements of the array
             // and get title, url and publication date for each news

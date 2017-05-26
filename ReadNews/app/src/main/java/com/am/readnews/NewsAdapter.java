@@ -1,5 +1,8 @@
 package com.am.readnews;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +25,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.CustomViewHold
     // list of news
     private List<News> mNewsList;
 
+    private Context mContext;
+
+
     /*
     * constructor for custom adapter
     */
@@ -36,6 +42,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.CustomViewHold
 
         private CustomViewHolder(View view) {
             super(view);
+            mContext = view.getContext();
 
             // find textview ID for news title
             title = (TextView) view.findViewById(R.id.title);
@@ -45,7 +52,28 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.CustomViewHold
 
             // find textview id for published date
             publishedDate = (TextView) view.findViewById(R.id.date);
+
         }
+
+     /*   @Override
+        public void onClick(View v) {
+
+            // Find the current position of clicked item
+            int position = getAdapterPosition();
+
+            News news = mNewsList.get(position);
+
+            // Convert the String URL into a URI object (to pass into the Intent constructor)
+            Uri newsURI = Uri.parse(news.getUrl());
+
+            // Create a new intent to view the earthquake URI
+            Intent websiteIntent = new Intent(Intent.ACTION_VIEW, newsURI);
+
+            // Send the intent to launch a new activity
+            mContext.startActivity(websiteIntent);
+        }*/
+
+
     }
 
     @Override
@@ -72,6 +100,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.CustomViewHold
 
         // set published date
         customViewHolder.publishedDate.setText(formatDate(news.getPublicationDate()));
+      //  customViewHolder.publishedDate.setText(news.getPublicationDate());
     }
 
     @Override
@@ -81,21 +110,28 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.CustomViewHold
     }
 
     /*
-    Format {@link Date} object in month, day and year format and return
+    Format {@link Date} object in year, month and date format and return
      */
-    private String formatDate(String stringDate){
-        Date parsed;
-        SimpleDateFormat dateFormatter;
-
+    private String formatDate(String input){
+        String date;
         try {
-            dateFormatter = new SimpleDateFormat("MMM DD, yyyy");
-            parsed = dateFormatter.parse(stringDate);
+            // date format : yyyy-MM-dd
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+            //get date part from input string
+            String stringDate = input.substring(0,10);
+
+            //convert string date to date format
+            Date convertedCurrentDate = simpleDateFormat.parse(stringDate);
+
+            // format date into string format
+            date = simpleDateFormat.format(convertedCurrentDate );
         }
-        catch(ParseException pe) {
+        catch(ParseException e) {
             throw new IllegalArgumentException();
         }
 
-        return dateFormatter.format(parsed);
+        return date;
     }
+
 }
