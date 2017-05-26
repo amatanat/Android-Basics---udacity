@@ -2,7 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="8dp"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp"
+   android:background="@android:color/white"
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
@@ -11,6 +16,8 @@
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
         android:textAppearance="?android:textAppearanceSmall"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
         tools:text="Technology"/>
 
     <TextView
@@ -20,7 +27,6 @@
         android:layout_below="@+id/section"
         android:textAppearance="?android:textAppearanceMedium"
         android:textColor="@android:color/background_dark"
-        android:textStyle="bold"
         tools:text="Title"/>
 
     <TextView
@@ -29,7 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:textColor="@color/colorGrey"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
         tools:text="Date"/>
 
 </RelativeLayout>
