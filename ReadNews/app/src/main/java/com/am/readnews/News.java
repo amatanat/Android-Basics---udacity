@@ -9,34 +9,44 @@ public class News {
     private String mTitle;
     private String mPublicationDate;
     private String mUrl;
+    private String mSectionName;
 
-    public News(String title, String publicationDate, String url){
+    public News(String title, String publicationDate, String url, String sectionName){
         this.mTitle = title;
         this.mPublicationDate = publicationDate;
         this.mUrl = url;
+        this.mSectionName = sectionName;
     }
 
-    public String getmTitle() {
+    public String getTitle() {
         return mTitle;
     }
 
-    public void setmTitle(String mTitle) {
-        this.mTitle = mTitle;
+    public void setTitle(String title) {
+        mTitle = title;
     }
 
-    public String getmPublicationDate() {
+    public String getPublicationDate() {
         return mPublicationDate;
     }
 
-    public void setmPublicationDate(String mPublicationDate) {
-        this.mPublicationDate = mPublicationDate;
+    public void setPublicationDate(String publicationDate) {
+        mPublicationDate = publicationDate;
     }
 
-    public String getmUrl() {
+    public String getUrl() {
         return mUrl;
     }
 
-    public void setmUrl(String mUrl) {
-        this.mUrl = mUrl;
+    public void setUrl(String url) {
+        mUrl = url;
+    }
+
+    public String getSectionName() {
+        return mSectionName;
+    }
+
+    public void setSectionName(String sectionName) {
+        mSectionName = sectionName;
     }
 }

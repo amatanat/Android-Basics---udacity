@@ -163,8 +163,11 @@ public class Query {
                 //get publication data of current news
                 String publicationDate = element.getString("webPublicationDate");
 
+                // get section name
+                String sectionName = element.getString("sectionName");
+
                 // add current news data to the news list
-                newsList.add(new News(title, publicationDate, url));
+                newsList.add(new News(title, publicationDate, url, sectionName));
             }
 
         } catch (JSONException e) {
