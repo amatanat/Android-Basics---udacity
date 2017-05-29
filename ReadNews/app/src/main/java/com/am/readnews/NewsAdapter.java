@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-/**
+/*
  * Created by amatanat on 26.05.17.
  */
 
@@ -45,7 +45,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.CustomViewHold
             title = (TextView) view.findViewById(R.id.title);
 
             // find textview ID for section name
-            //section = (TextView) view.findViewById(R.id.section);
+            section = (TextView) view.findViewById(R.id.section);
 
             // find textview id for published date
             publishedDate = (TextView) view.findViewById(R.id.date);
@@ -63,7 +63,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.CustomViewHold
                     // get news for clicked position
                     News news = mNewsList.get(itemPosition);
 
-                    // get instance of {@link Intent} and {@link News} url
+                    // get instance of {@link Intent} and get {@link News} url
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(news.getUrl()));
 
                     // open url in browser
@@ -93,7 +93,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.CustomViewHold
         customViewHolder.title.setText(news.getTitle());
 
         // set section
-       // customViewHolder.section.setText(news.getSectionName());
+        customViewHolder.section.setText(news.getSectionName());
 
         // set published date
         customViewHolder.publishedDate.setText(formatDate(news.getPublicationDate()));
@@ -133,5 +133,4 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.CustomViewHold
 
         return date;
     }
-
 }

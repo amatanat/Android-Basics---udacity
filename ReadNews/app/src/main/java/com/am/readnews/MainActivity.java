@@ -22,13 +22,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     // String url to get data from internet
     private final String STRING_URL = "http://content.guardianapis.com/search?section=technology&api-key=84e62d46-a76e-49d0-a15f-cc05c61fba1a";
 
-    // my api_key
-    private final String API_KEY = "84e62d46-a76e-49d0-a15f-cc05c61fba1a";
-
     // unique id for the loader
     private final int UNIQUE_ID = 1;
 
-    private List<News> mNewsList = new ArrayList<>();
+    private final List<News> mNewsList = new ArrayList<>();
     private NewsAdapter mNewsAdapter;
     private ProgressBar mProgressBar;
     private RecyclerView mRecycleView;
@@ -81,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             loaderManager.initLoader(UNIQUE_ID, null, this);
 
         } else {
+
             // change visibility of progress bar
             mProgressBar.setVisibility(View.GONE);
 

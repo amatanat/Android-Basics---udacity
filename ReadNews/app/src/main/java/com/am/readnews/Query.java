@@ -1,6 +1,6 @@
 package com.am.readnews;
 
-/**
+/*
  * Created by amatanat on 26.05.17.
  */
 
@@ -42,7 +42,7 @@ public class Query {
     }
 
     /*
-    * Make hhtp request to the server and get response data
+    * Make http request to the server and get response data
     */
     private static String makeHttpRequest(URL url) throws IOException {
         String response = "";
@@ -205,11 +205,9 @@ public class Query {
             Log.e("Query", "Problem making the HTTP request.", e);
         }
 
-        // Extract relevant fields from the JSON response and create a list of news
-        List<News> newsList = JSONParser(jsonResponse);
-
+        // parse JSON response and return {@link News} list
         // Return the list of news
-        return newsList;
+        return JSONParser(jsonResponse);
     }
 
 }

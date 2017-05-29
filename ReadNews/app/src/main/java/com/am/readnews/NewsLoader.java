@@ -5,7 +5,7 @@ import android.content.Context;
 
 import java.util.List;
 
-/**
+/*
  * Created by amatanat on 26.05.17.
  */
 
@@ -31,8 +31,7 @@ public class NewsLoader extends AsyncTaskLoader<List<News>> {
         }
 
         // get list of {@link News} from given url
-        List<News> newsList = Query.fetchData(mUrl);
 
-        return newsList;
+        return Query.fetchData(mUrl);
     }
 }
