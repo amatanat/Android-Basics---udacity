@@ -169,7 +169,7 @@ public class Query {
                 String sectionName = element.getString("sectionName");
 
                 // add current news data to the news list
-                newsList.add(new News(title, publicationDate, url, sectionName));
+                newsList.add(new News(title, publicationDate, url, sectionName, Integer.toString(i + 1)));
             }
 
         } catch (JSONException e) {

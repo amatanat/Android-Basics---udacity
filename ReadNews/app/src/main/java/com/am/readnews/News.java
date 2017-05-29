@@ -10,12 +10,14 @@ public class News {
     private String mPublicationDate;
     private String mUrl;
     private String mSectionName;
+    private String mPosition;
 
-    public News(String title, String publicationDate, String url, String sectionName){
+    public News(String title, String publicationDate, String url, String sectionName, String position){
         this.mTitle = title;
         this.mPublicationDate = publicationDate;
         this.mUrl = url;
         this.mSectionName = sectionName;
+        this.mPosition = position;
     }
 
     public String getTitle() {
@@ -48,5 +50,13 @@ public class News {
 
     public void setSectionName(String sectionName) {
         mSectionName = sectionName;
+    }
+
+    public String getPosition() {
+        return mPosition;
+    }
+
+    public void setPosition(String position) {
+        mPosition = position;
     }
 }
