@@ -1,11 +1,14 @@
 package com.am.habittracker;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.am.habittracker.data.HabitTrackerContract.HabitTrackerEntry;
@@ -24,6 +27,16 @@ public class MainActivity extends AppCompatActivity {
 
         // find tetxview
         mTextView = (TextView) findViewById(R.id.textview_id);
+
+        // Setup FAB to open EditorActivity
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddHabitActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // get instance of dbhelper
         mHabitTrackerDbHelper = new HabitTrackerDbHelper(this);
