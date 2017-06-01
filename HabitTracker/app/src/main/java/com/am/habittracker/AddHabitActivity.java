@@ -25,7 +25,7 @@ public class AddHabitActivity extends AppCompatActivity {
     private EditText mHabitNote;
     private Spinner  mRepeatSpinner;
 
-    private int mRepeat = 0;
+    private int mRepeatNumber = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,23 +82,23 @@ public class AddHabitActivity extends AppCompatActivity {
     private void setupSpinner(){
 
         Integer[] items = new Integer[]{1,2,3,4,5,6,7,8,9,10};
-        ArrayAdapter<Integer> adapterRepeat = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<Integer> repeatAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, items);
 
-        adapterRepeat.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        repeatAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 
-        mRepeatSpinner.setAdapter(adapterRepeat);
+        mRepeatSpinner.setAdapter(repeatAdapter);
 
         mRepeatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mRepeat = position + 1;
+                mRepeatNumber = position + 1;
             }
 
             // Because AdapterView is an abstract class, onNothingSelected must be defined
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                mRepeat = 0;
+                mRepeatNumber = 1;
             }
         });
     }
@@ -108,7 +108,7 @@ public class AddHabitActivity extends AppCompatActivity {
     */
     private void insertDataIntoDB(){
 
-        // get writeable db for intersting data
+        // get writable db for intersting data
         SQLiteDatabase db = mHabitTrackerDbHelper.getWritableDatabase();
 
         //get instance of content values
@@ -117,7 +117,7 @@ public class AddHabitActivity extends AppCompatActivity {
         // put values for columns
         contentValues.put(HabitTrackerEntry.COLUMN_HABIT, mHabitName.getText().toString().trim());
         contentValues.put(HabitTrackerEntry.COLUMN_NOTE, mHabitNote.getText().toString().trim());
-        contentValues.put(HabitTrackerEntry.COLUMN_REPEAT, mRepeat);
+        contentValues.put(HabitTrackerEntry.COLUMN_REPEAT, mRepeatNumber);
 
 
         // insert values into table

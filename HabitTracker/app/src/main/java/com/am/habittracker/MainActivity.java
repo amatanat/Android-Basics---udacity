@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     private HabitTrackerDbHelper mHabitTrackerDbHelper ;
 
-    TextView mTextView;
+    private TextView mTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +40,11 @@ public class MainActivity extends AppCompatActivity {
         mHabitTrackerDbHelper = new HabitTrackerDbHelper(this);
     }
 
+    @Override
     public void onStart(){
         super.onStart();
         readDataFromDB();
     }
-
 
     /*
     Read data form db
@@ -66,12 +66,13 @@ public class MainActivity extends AppCompatActivity {
         // get cursor which contains rows and columns
         Cursor cursor = db.query(HabitTrackerEntry.TABLE_NAME, projection, null,null,null,null,null);
 
+        mTextView.setText("");
+
         //get index of each column
         int idColumnIndex = cursor.getColumnIndex(HabitTrackerEntry._ID);
         int habitColumnIndex = cursor.getColumnIndex(HabitTrackerEntry.COLUMN_HABIT);
-        int noteColumnINdex = cursor.getColumnIndex(HabitTrackerEntry.COLUMN_NOTE);
+        int noteColumnIndex = cursor.getColumnIndex(HabitTrackerEntry.COLUMN_NOTE);
         int repeatColumnIndex = cursor.getColumnIndex(HabitTrackerEntry.COLUMN_REPEAT);
-
 
         try {
 
@@ -79,13 +80,12 @@ public class MainActivity extends AppCompatActivity {
             while (cursor.moveToNext()){
 
                 // get values
-                String idString = cursor.getString(idColumnIndex);
-                int id = Integer.parseInt(idString);
+                int id = cursor.getInt(idColumnIndex);
                 String habitName = cursor.getString(habitColumnIndex);
-                String note = cursor.getString(noteColumnINdex);
+                String note = cursor.getString(noteColumnIndex);
                 int repeatTime = cursor.getInt(repeatColumnIndex);
 
-                // append text to textview
+                // append row data to the textview
                 mTextView.append(id + " - * " + habitName + " - * " + note + " - * " + repeatTime + "\n");
             }
 
