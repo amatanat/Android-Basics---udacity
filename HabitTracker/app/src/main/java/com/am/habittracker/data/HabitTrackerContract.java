@@ -18,8 +18,8 @@ public class HabitTrackerContract {
 
         public static final String _ID = BaseColumns._ID;
         public static final String COLUMN_HABIT= "Habit";
+        public static final String  COLUMN_NOTE = "Note";
         public static final String COLUMN_REPEAT = "Repeat";
-        public static final String  COLUMN_PROGRESS = "Progress";
 
     }
 }

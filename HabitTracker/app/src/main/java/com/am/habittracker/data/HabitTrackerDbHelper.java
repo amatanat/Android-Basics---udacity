@@ -23,8 +23,8 @@ public class HabitTrackerDbHelper extends SQLiteOpenHelper{
             "CREATE TABLE " + HabitTrackerEntry.TABLE_NAME + " (" +
                     HabitTrackerEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     HabitTrackerEntry.COLUMN_HABIT + " TEXT NOT NULL, " +
-                    HabitTrackerEntry.COLUMN_REPEAT + " TEXT NOT NULL, " +
-                    HabitTrackerEntry.COLUMN_PROGRESS + " INTEGER NOT NULL DEFAULT 0)";
+                    HabitTrackerEntry.COLUMN_NOTE + " TEXT, " +
+                    HabitTrackerEntry.COLUMN_REPEAT + " INTEGER)";
 
     public HabitTrackerDbHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

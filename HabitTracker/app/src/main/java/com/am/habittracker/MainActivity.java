@@ -1,13 +1,11 @@
 package com.am.habittracker;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -40,37 +38,13 @@ public class MainActivity extends AppCompatActivity {
 
         // get instance of dbhelper
         mHabitTrackerDbHelper = new HabitTrackerDbHelper(this);
+    }
 
-        insertDataIntoDB();
+    public void onStart(){
+        super.onStart();
         readDataFromDB();
-
     }
 
-    /*
-    Insert data into db
-     */
-    private void insertDataIntoDB(){
-
-        // get writeable db for intersting data
-        SQLiteDatabase db = mHabitTrackerDbHelper.getWritableDatabase();
-
-        //get instance of content values
-        ContentValues contentValues = new ContentValues();
-
-        // put values for columns
-        contentValues.put(HabitTrackerEntry.COLUMN_HABIT, "Drink water");
-        contentValues.put(HabitTrackerEntry.COLUMN_REPEAT, "2L per day");
-        contentValues.put(HabitTrackerEntry.COLUMN_PROGRESS, 2);
-
-        // insert values into table
-        long rowID = db.insert(HabitTrackerEntry.TABLE_NAME, null, contentValues);
-
-        if (rowID == -1) {
-            Log.e("MainActivity", "Error in inserting data....");
-        } else {
-            Log.e("MainActivity","row id...." + rowID);
-        }
-    }
 
     /*
     Read data form db
@@ -80,9 +54,10 @@ public class MainActivity extends AppCompatActivity {
         // string array of columns
         String[] projection = {
                 HabitTrackerEntry._ID ,
-                HabitTrackerEntry.COLUMN_HABIT ,
-                HabitTrackerEntry.COLUMN_REPEAT ,
-                HabitTrackerEntry.COLUMN_PROGRESS
+                HabitTrackerEntry.COLUMN_HABIT,
+                HabitTrackerEntry.COLUMN_NOTE,
+                HabitTrackerEntry.COLUMN_REPEAT
+
         };
 
         // get db for reading data
@@ -91,14 +66,12 @@ public class MainActivity extends AppCompatActivity {
         // get cursor which contains rows and columns
         Cursor cursor = db.query(HabitTrackerEntry.TABLE_NAME, projection, null,null,null,null,null);
 
-        // set text of textview
-        mTextView.setText("Number of rows...."  + cursor.getCount() + "\n");
-
         //get index of each column
         int idColumnIndex = cursor.getColumnIndex(HabitTrackerEntry._ID);
         int habitColumnIndex = cursor.getColumnIndex(HabitTrackerEntry.COLUMN_HABIT);
+        int noteColumnINdex = cursor.getColumnIndex(HabitTrackerEntry.COLUMN_NOTE);
         int repeatColumnIndex = cursor.getColumnIndex(HabitTrackerEntry.COLUMN_REPEAT);
-        int progressColumnIndex = cursor.getColumnIndex(HabitTrackerEntry.COLUMN_PROGRESS);
+
 
         try {
 
@@ -107,20 +80,18 @@ public class MainActivity extends AppCompatActivity {
 
                 // get values
                 String idString = cursor.getString(idColumnIndex);
-                int id =Integer.parseInt(idString);
+                int id = Integer.parseInt(idString);
                 String habitName = cursor.getString(habitColumnIndex);
-                String repeatTime = cursor.getString(repeatColumnIndex);
-                String progressAmount = cursor.getString(progressColumnIndex);
-                int progress = Integer.parseInt(progressAmount);
+                String note = cursor.getString(noteColumnINdex);
+                int repeatTime = cursor.getInt(repeatColumnIndex);
 
                 // append text to textview
-                mTextView.append(id + " - " + habitName + " - " + repeatTime + " - " + progress + "\n");
+                mTextView.append(id + " - * " + habitName + " - * " + note + " - * " + repeatTime + "\n");
             }
 
         } finally {
             // always close cursor when done working with it
             cursor.close();
         }
-
     }
 }
