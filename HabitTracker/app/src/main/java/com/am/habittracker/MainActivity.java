@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
-    Read data form db
+    Read data from db
      */
-    private void readDataFromDB(){
+    private Cursor readDataFromDB(){
 
         // string array of columns
         String[] projection = {
@@ -93,5 +93,7 @@ public class MainActivity extends AppCompatActivity {
             // always close cursor when done working with it
             cursor.close();
         }
+
+        return cursor;
     }
 }
