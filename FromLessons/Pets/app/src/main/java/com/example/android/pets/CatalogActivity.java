@@ -17,9 +17,9 @@ package com.example.android.pets;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.PeriodicSync;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -72,9 +72,6 @@ public class CatalogActivity extends AppCompatActivity {
           */
    private void displayDatabaseInfo() {
 
-       // Create and/or open a database to read from it
-       SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
         String[] projection = {
                 PetContract.PetEntry._ID,
                 PetContract.PetEntry.COLUMN_PET_NAME,
@@ -83,8 +80,10 @@ public class CatalogActivity extends AppCompatActivity {
                 PetContract.PetEntry.COLUMN_PET_WEIGHT
         };
 
+
        // Perform query to get a Cursor that contains all rows from the pets table.
-       Cursor cursor = db.query(PetContract.PetEntry.TABLE_NAME, projection, null,null,null,null,null);
+       // use ContentResolver's query method which in calls ContentProvider's query method
+       Cursor cursor = getContentResolver().query(PetContract.PetEntry.CONTENT_URI, projection, null,null,null,null);
 
        // Display the number of rows in the Cursor (which reflects the number of rows in the
        // pets table in the database).
@@ -152,15 +151,13 @@ public class CatalogActivity extends AppCompatActivity {
 
     private void insertPet(){
 
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
         ContentValues values = new ContentValues();
         values.put(PetContract.PetEntry.COLUMN_PET_NAME, "Toto");
         values.put(PetContract.PetEntry.COLUMN_PET_BREED, "Terrier");
         values.put(PetContract.PetEntry.COLUMN_PET_GENDER, PetContract.PetEntry.GENDER_MALE);
         values.put(PetContract.PetEntry.COLUMN_PET_WEIGHT, 7);
 
-        long result = db.insert(PetContract.PetEntry.TABLE_NAME, null, values);
+        Uri result = getContentResolver().insert(PetContract.PetEntry.CONTENT_URI, values);
 
         Log.i("CatalogActivity", "Insert dummy data result....... " + result);
 

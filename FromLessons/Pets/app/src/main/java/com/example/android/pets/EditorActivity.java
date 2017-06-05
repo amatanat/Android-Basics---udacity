@@ -17,6 +17,7 @@ package com.example.android.pets;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -156,23 +157,24 @@ public class EditorActivity extends AppCompatActivity {
            weight = Integer.parseInt(weightValue);
         }
 
-
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
         ContentValues values = new ContentValues();
         values.put(PetContract.PetEntry.COLUMN_PET_NAME, nameValue);
         values.put(PetContract.PetEntry.COLUMN_PET_BREED, breedValue);
         values.put(PetContract.PetEntry.COLUMN_PET_GENDER, mGender);
         values.put(PetContract.PetEntry.COLUMN_PET_WEIGHT, weight);
 
-        long newRowId = db.insert(PetContract.PetEntry.TABLE_NAME, null, values);
+        // pass Uri and ContentValues to ContentResolver which calls ContentProvider's insert method
+        Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
 
-        Log.i("CatalogActivity", "User inserted data....... " + newRowId);
-
-        if (newRowId == -1){
-            Toast.makeText(this, "Error in inserting", Toast.LENGTH_LONG).show();
+       // Show a toast message depending on whether or not the insertion was successful
+        if (newUri == null) {
+            // If the new content URI is null, then there was an error with insertion.
+            Toast.makeText(this, getString(R.string.editor_insert_pet_failed),
+                    Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Inserted row id is...... " + newRowId, Toast.LENGTH_LONG).show();
+            // Otherwise, the insertion was successful and we can display a toast.
+            Toast.makeText(this, getString(R.string.editor_insert_pet_successful),
+                    Toast.LENGTH_SHORT).show();
         }
 
     }
