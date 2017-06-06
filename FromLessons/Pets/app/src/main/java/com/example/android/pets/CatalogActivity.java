@@ -21,6 +21,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -36,9 +38,12 @@ import java.util.List;
 /**
  * Displays list of pets that were entered and stored in the app.
  */
-public class CatalogActivity extends AppCompatActivity {
+public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private final int LOADER_INIT = 0;
 
     private PetDbHelper mDbHelper;
+    private PetCursorAdapter petCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,8 @@ public class CatalogActivity extends AppCompatActivity {
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.
         mDbHelper = new PetDbHelper(this);
+
+        getLoaderManager().initLoader(LOADER_INIT, null, this);
 
     }
 
@@ -89,8 +96,12 @@ public class CatalogActivity extends AppCompatActivity {
        // find listview for the pets list
        ListView listView = (ListView) findViewById(R.id.listview);
 
+       // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+       View emptyView = findViewById(R.id.empty_view);
+       listView.setEmptyView(emptyView);
+
        // get instance of {@link PetCursorAdapter}
-       PetCursorAdapter petCursorAdapter = new PetCursorAdapter(this, cursor);
+       petCursorAdapter = new PetCursorAdapter(this, cursor);
 
        // set adapter for the listview
        listView.setAdapter(petCursorAdapter);
@@ -135,5 +146,20 @@ public class CatalogActivity extends AppCompatActivity {
 
         Log.i("CatalogActivity", "Insert dummy data result....... " + result);
 
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        petCursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        petCursorAdapter.swapCursor(null);
     }
 }
