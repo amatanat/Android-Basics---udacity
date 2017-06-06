@@ -36,13 +36,13 @@ public class PetCursorAdapter extends CursorAdapter {
         TextView name = (TextView) view.findViewById(R.id.name);
         TextView summary = (TextView) view.findViewById(R.id.summary);
 
-        // get value of 'name' and 'breed' columns
-        String nameText = cursor.getString(cursor.getColumnIndexOrThrow(PetContract.PetEntry.COLUMN_PET_NAME));
-        String breed =  cursor.getString(cursor.getColumnIndexOrThrow(PetContract.PetEntry.COLUMN_PET_BREED));
+        // get value of 'name' and 'breed' columns from the cursor
+        String petName = cursor.getString(cursor.getColumnIndexOrThrow(PetContract.PetEntry.COLUMN_PET_NAME));
+        String petBreed =  cursor.getString(cursor.getColumnIndexOrThrow(PetContract.PetEntry.COLUMN_PET_BREED));
 
         // set text of tetxviews
-        name.setText(nameText);
-        summary.setText(breed);
+        name.setText(petName);
+        summary.setText(petBreed);
 
     }
 }
