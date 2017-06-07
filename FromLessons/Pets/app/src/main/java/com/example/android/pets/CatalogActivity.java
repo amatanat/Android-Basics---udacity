@@ -82,11 +82,12 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
-
                 Uri contentUri = ContentUris.withAppendedId(PetContract.PetEntry.CONTENT_URI, id);
+
                 // pass id of clicked item with the Content URI
                 intent.setData(contentUri);
-                Log.e("EditorActivity", "content uri........" + contentUri);
+
+                // start activity
                 startActivity(intent);
             }
         });
