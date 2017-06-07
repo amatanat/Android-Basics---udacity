@@ -16,6 +16,7 @@
 package com.example.android.pets;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
@@ -65,6 +66,23 @@ public class EditorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
+
+        // get intent
+        Intent intent = getIntent();
+
+        // get passed Uri
+        Uri contentUri = intent.getData();
+
+        // check if uri is null or not
+        if (contentUri == null){
+            // if uri is null then 'FAB' button is clicked from previous activity
+            // set title of Activity
+            getSupportActionBar().setTitle(R.string.editor_activity_title_new_pet);
+        } else {
+            // if uri is not null 'edit pet' button is clicked form previous activity
+            // set title of Activity
+            getSupportActionBar().setTitle(R.string.editor_activity_title_edit_pet);
+        }
 
         // Find all relevant views that we will need to read user input from
         mNameEditText = (EditText) findViewById(R.id.edit_pet_name);
