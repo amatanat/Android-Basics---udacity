@@ -32,6 +32,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.android.pets.data.PetContract;
 import com.example.android.pets.data.PetDbHelper;
@@ -111,11 +112,10 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
                 insertPet();
-        //        displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
-                // Do nothing for now
+                deletePet();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -133,6 +133,16 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
         Log.i("CatalogActivity", "Insert dummy data result....... " + result);
 
+    }
+
+    /**
+     * Perform the deletion of the pets in the database.
+     */
+    private void deletePet() {
+
+        int rowsDeleted = getContentResolver().delete(PetContract.PetEntry.CONTENT_URI, null, null);
+
+        Log.v("CatalogActivity", rowsDeleted + " rows deleted from pet database");
     }
 
     @Override
