@@ -158,7 +158,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
-                insertPet();
+                savePet();
                 // exit this activity
                 finish();
                 return true;
@@ -175,7 +175,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         return super.onOptionsItemSelected(item);
     }
 
-    private void insertPet(){
+    private void savePet(){
         int weight = 0;
 
         // get text of edittext, convert it to string and remove empty space around it
@@ -186,26 +186,45 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
            weight = Integer.parseInt(weightValue);
         }
 
-        ContentValues values = new ContentValues();
-        values.put(PetContract.PetEntry.COLUMN_PET_NAME, nameValue);
-        values.put(PetContract.PetEntry.COLUMN_PET_BREED, breedValue);
-        values.put(PetContract.PetEntry.COLUMN_PET_GENDER, mGender);
-        values.put(PetContract.PetEntry.COLUMN_PET_WEIGHT, weight);
-
-        // pass Uri and ContentValues to ContentResolver which calls ContentProvider's insert method
-        Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
-
-       // Show a toast message depending on whether or not the insertion was successful
-        if (newUri == null) {
-            // If the new content URI is null, then there was an error with insertion.
-            Toast.makeText(this, getString(R.string.editor_insert_pet_failed),
-                    Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(nameValue) || TextUtils.isEmpty(breedValue) || mGender == PetEntry.GENDER_UNKNOWN){
+            finish();
         } else {
-            // Otherwise, the insertion was successful and we can display a toast.
-            Toast.makeText(this, getString(R.string.editor_insert_pet_successful),
-                    Toast.LENGTH_SHORT).show();
-        }
 
+            ContentValues values = new ContentValues();
+            values.put(PetContract.PetEntry.COLUMN_PET_NAME, nameValue);
+            values.put(PetContract.PetEntry.COLUMN_PET_BREED, breedValue);
+            values.put(PetContract.PetEntry.COLUMN_PET_GENDER, mGender);
+            values.put(PetContract.PetEntry.COLUMN_PET_WEIGHT, weight);
+
+
+            // if new Pet is saved
+            if (mContentUri == null) {
+                // pass Uri and ContentValues to ContentResolver which calls ContentProvider's insert method
+                Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
+
+                // Show a toast message depending on whether or not the insertion was successful
+                if (newUri == null) {
+                    // If the new content URI is null, then there was an error with insertion.
+                    Toast.makeText(this, getString(R.string.editor_insert_pet_failed),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    // Otherwise, the insertion was successful and we can display a toast.
+                    Toast.makeText(this, getString(R.string.editor_insert_pet_successful),
+                            Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                //update pet data in db
+
+                int updatedRowInDb = getContentResolver().update(mContentUri, values, null, null);
+
+                if (updatedRowInDb == 0) {
+                    Log.e("EditorActivity", "error in updating db.....");
+                } else {
+                    Log.i("EditorActivity", " data updated in the db");
+                }
+
+            }
+        }
     }
 
     @Override
@@ -264,5 +283,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mNameEditText.setText("");
         mBreedEditText.setText("");
         mWeightEditText.setText("");
+        mGenderSpinner.setSelection(0);
     }
 }
