@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 
 import com.am.inventory.data.ProductContract.ProductEntry;
@@ -78,8 +79,50 @@ public class ProductProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+    public Uri insert(Uri uri,  ContentValues values) {
+        int match = mUriMatcher.match(uri);
+        switch (match){
+            case PRODUCTS:
+                return insertProduct(uri,values);
+            default:
+                throw new IllegalArgumentException("Cannot query unknown URI " + uri);
+        }
+    }
+
+    private Uri insertProduct(Uri uri, ContentValues values){
+
+        // check product name if null or not
+        String productName = values.getAsString(ProductEntry.COLUMN_PRODUCT_NAME);
+        if (productName == null){
+            throw new IllegalArgumentException("Product requires a name");
+        }
+
+        //check product price if null or not
+        Integer productPrice = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_PRICE);
+        if (productPrice == null){
+            throw new IllegalArgumentException("Product requires a price");
+        }
+
+        Integer productQuantity = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITY);
+        if (productQuantity == null){
+            throw new IllegalArgumentException("Product quantity should be added");
+        }
+
+        SQLiteDatabase db = mProductDbHelper.getWritableDatabase();
+        long id = db.insert(ProductEntry.TABLE_NAME, null, values);
+
+        if (id == -1){
+            Log.e(LOG_TAG, "Error in inserting a new row");
+        } else {
+            Log.i(LOG_TAG, "Row is inserted");
+        }
+
+        return ContentUris.withAppendedId(uri,id);
+    }
+
+    @Override
+    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        return 0;
     }
 
     @Override
@@ -87,8 +130,5 @@ public class ProductProvider extends ContentProvider {
         return 0;
     }
 
-    @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
-    }
+
 }

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -97,13 +98,16 @@ public class MainActivity extends AppCompatActivity {
         TextView productPrice = (TextView) findViewById(R.id.product_price);
         TextView productQuantity = (TextView) findViewById(R.id.product_quantity);
 
+        int name = cursor.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME);
+
         try{
 
             while(cursor.moveToNext()){
 
-                productName.append(cursor.getString(cursor.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME)));
-                productPrice.append(cursor.getString(cursor.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE)));
-                productQuantity.append(cursor.getString(cursor.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY)));
+                productName.setText(cursor.getString(name));
+              //  productPrice.setText(cursor.getString(cursor.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE)));
+              //  productQuantity.setText(cursor.getString(cursor.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY)));
+                Log.e("MainActivity", "Data is added,,,,,,,,,,,,,");
             }
 
         }finally {
