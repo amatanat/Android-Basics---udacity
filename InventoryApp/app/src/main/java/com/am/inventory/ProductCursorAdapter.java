@@ -24,7 +24,7 @@ public class ProductCursorAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.list_item, parent);
+        return LayoutInflater.from(context).inflate(R.layout.list_item, parent,false);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ProductCursorAdapter extends CursorAdapter {
 
         // get values of corresponding columns from cursor
         String name = cursor.getString(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_NAME));
-        int price = cursor.getInt(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PICTURE));
+        int price = cursor.getInt(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PRICE));
         int quantity = cursor.getInt(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_QUANTITY));
 
         // get background circle of price

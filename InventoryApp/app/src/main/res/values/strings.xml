@@ -2,4 +2,6 @@
     <string name="app_name">Inventory</string>
     <string name="dummy_data">Dummy Data</string>
     <string name="delete">Delete</string>
+    <string name="noProduct">No Product to show</string>
+    <string name="addProduct">Start by adding a new Product</string>
 </resources>

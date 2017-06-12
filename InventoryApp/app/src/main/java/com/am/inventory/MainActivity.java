@@ -2,22 +2,28 @@ package com.am.inventory;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.am.inventory.data.ProductContract;
 import com.am.inventory.data.ProductDbHelper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private ProductDbHelper mProductDbHelper;
+
+    private final int LOADER_INIT = 1;
+
+    ProductCursorAdapter mProductCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,22 +33,23 @@ public class MainActivity extends AppCompatActivity {
         mProductDbHelper = new ProductDbHelper(this);
 
         // get instance of {@link ProductCursorAdapter} and set it as adapter to listvie
-       // ProductCursorAdapter adapter = new ProductCursorAdapter(this, null);
-       // ListView listView = (ListView) findViewById(R.id.listview);
-       // listView.setAdapter(adapter);
+        mProductCursorAdapter = new ProductCursorAdapter(this, null);
+        ListView listView = (ListView) findViewById(R.id.listview);
+        listView.setAdapter(mProductCursorAdapter);
+
+        // get emptyview id and set it as emptyview in listview
+        View emptyView = findViewById(R.id.empty_view);
+        listView.setEmptyView(emptyView);
+
+        //initialize loader
+        getSupportLoaderManager().initLoader(LOADER_INIT, null, this);
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
-    }
-
-    @Override
-    protected void onStart(){
-        super.onStart();
-        displayDbInfo();
-
     }
 
     @Override
@@ -53,17 +60,15 @@ public class MainActivity extends AppCompatActivity {
                 insertDataIntoDatabase();
                 return true;
             case R.id.delete:
-                // delete product data
+                // delete all data from table
+                deleteDataFromDatabase();
                 return true;
             default:
                  return super.onOptionsItemSelected(menuItem);
         }
-
     }
 
     private void insertDataIntoDatabase(){
-
-        SQLiteDatabase db = mProductDbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
@@ -71,50 +76,36 @@ public class MainActivity extends AppCompatActivity {
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE, 0.19);
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, 6);
 
-        long newRowId = db.insert(ProductContract.ProductEntry.TABLE_NAME, null, values);
+        Uri resultUri= getContentResolver().insert(ProductContract.ProductEntry.CONTENT_URI, values);
 
-        if (newRowId == -1){
-            Toast.makeText(this, "Error in inserting dummy data", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Dummy data is added", Toast.LENGTH_SHORT).show();
-        }
-
+        Log.i("MainActivity", "Result uri in insert method......" + resultUri);
     }
 
-    private void displayDbInfo(){
+    private void deleteDataFromDatabase(){
+        getContentResolver().delete(ProductContract.ProductEntry.CONTENT_URI, null,null);
+    }
 
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = {
+                ProductContract.ProductEntry._ID,
                 ProductContract.ProductEntry.COLUMN_PRODUCT_NAME,
-                ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY,
-                ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE
+                ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE,
+                ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY
         };
 
-        mProductDbHelper = new ProductDbHelper(this);
-
-        Cursor cursor = getContentResolver().query(ProductContract.ProductEntry.CONTENT_URI, projection, null,
-                null,null);
-
-        TextView productName = (TextView) findViewById(R.id.product_name);
-        TextView productPrice = (TextView) findViewById(R.id.product_price);
-        TextView productQuantity = (TextView) findViewById(R.id.product_quantity);
-
-        int name = cursor.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME);
-
-        try{
-
-            while(cursor.moveToNext()){
-
-                productName.setText(cursor.getString(name));
-              //  productPrice.setText(cursor.getString(cursor.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE)));
-              //  productQuantity.setText(cursor.getString(cursor.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY)));
-                Log.e("MainActivity", "Data is added,,,,,,,,,,,,,");
-            }
-
-        }finally {
-            cursor.close();
-        }
-
+        // This loader will execute ContentProvider's query method in a background thread
+        return new CursorLoader(this, ProductContract.ProductEntry.CONTENT_URI, projection, null,null,null);
     }
 
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        mProductCursorAdapter.swapCursor(cursor);
+    }
 
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mProductCursorAdapter.swapCursor(null);
+    }
 }

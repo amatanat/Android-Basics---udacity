@@ -7,10 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
-
 
 import com.am.inventory.data.ProductContract.ProductEntry;
 
@@ -43,7 +40,6 @@ public class ProductProvider extends ContentProvider {
         return true;
     }
 
-    @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
@@ -68,16 +64,26 @@ public class ProductProvider extends ContentProvider {
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
         }
 
+        // register cursor for this URI
+        // so if in any changes will occure in this URI cursorloader should be refreshed
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
-    @Nullable
+    // return MIME type of the Content URI
     @Override
     public String getType(Uri uri) {
-        return null;
+        int match = mUriMatcher.match(uri);
+        switch (match){
+            case PRODUCTS:
+                return ProductEntry.CONTENT_LIST_TYPE;
+            case PRODUCTS_ID:
+                return ProductEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalArgumentException("Illegal URI" + uri);
+        }
     }
 
-    @Nullable
     @Override
     public Uri insert(Uri uri,  ContentValues values) {
         int match = mUriMatcher.match(uri);
@@ -102,6 +108,7 @@ public class ProductProvider extends ContentProvider {
             Log.i(LOG_TAG, "Row is inserted");
         }
 
+        getContext().getContentResolver().notifyChange(uri,null);
         return ContentUris.withAppendedId(uri,id);
     }
 
@@ -163,6 +170,10 @@ public class ProductProvider extends ContentProvider {
         // update db and return id of the updated row
         int updatedRow = db.update(ProductEntry.TABLE_NAME, values,selection,selectionArgs);
 
+        if (updatedRow != 0){
+            getContext().getContentResolver().notifyChange(uri,null);
+        }
+
         return updatedRow;
 
     }
@@ -197,12 +208,18 @@ public class ProductProvider extends ContentProvider {
             case PRODUCTS:
                 // delete all rows from the table
                 deletedRows = db.delete(ProductEntry.TABLE_NAME, selection,selectionArgs);
+                if (deletedRows != 0 ){
+                    getContext().getContentResolver().notifyChange(uri,null);
+                }
                 return  deletedRows;
             case PRODUCTS_ID:
                 // delete specific rows from tha table according to specified conditions
                 selection = ProductEntry._ID + "=?";
                 selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri))};
                 deletedRows = db.delete(ProductEntry.TABLE_NAME, selection, selectionArgs);
+                if (deletedRows != 0 ){
+                    getContext().getContentResolver().notifyChange(uri,null);
+                }
                 return  deletedRows;
             default:
                 throw new IllegalArgumentException("Illegal uri");

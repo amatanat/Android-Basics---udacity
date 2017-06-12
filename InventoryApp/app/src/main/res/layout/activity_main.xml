@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,10 +17,52 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_fab"/>
+        android:src="@drawable/ic_add_product"/>
+
+    <RelativeLayout
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/emptyview_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/emptyview"
+            android:layout_centerHorizontal="true"
+            tools:ignore="ContentDescription"/>
+
+        <TextView
+            android:id="@+id/emptyview_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/emptyview_image"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif-medium"
+            android:paddingTop="16dp"
+            android:text="@string/noProduct"
+            android:textAppearance="?android:textAppearanceMedium"
+            tools:ignore="UnusedAttribute"/>
+
+        <TextView
+            android:id="@+id/emptyview_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/emptyview_title"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif"
+            android:paddingTop="8dp"
+            android:text="@string/addProduct"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="#A2AAB0"
+            tools:ignore="UnusedAttribute"/>
+
+
+    </RelativeLayout>
 
 
 </RelativeLayout>
