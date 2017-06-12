@@ -42,7 +42,7 @@ import com.example.android.pets.data.PetDbHelper;
  * Displays list of pets that were entered and stored in the app.
  */
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-
+    
     private final int LOADER_INIT = 0;
 
     private PetDbHelper mDbHelper;
