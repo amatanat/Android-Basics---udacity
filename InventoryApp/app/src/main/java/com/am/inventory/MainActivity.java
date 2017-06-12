@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.am.inventory.data.ProductContract;
@@ -25,15 +26,22 @@ public class MainActivity extends AppCompatActivity {
         mProductDbHelper = new ProductDbHelper(this);
 
         // get instance of {@link ProductCursorAdapter} and set it as adapter to listvie
-        ProductCursorAdapter adapter = new ProductCursorAdapter(this, null);
-        ListView listView = (ListView) findViewById(R.id.listview);
-        listView.setAdapter(adapter);
+       // ProductCursorAdapter adapter = new ProductCursorAdapter(this, null);
+       // ListView listView = (ListView) findViewById(R.id.listview);
+       // listView.setAdapter(adapter);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        displayDbInfo();
+
     }
 
     @Override
@@ -81,7 +89,26 @@ public class MainActivity extends AppCompatActivity {
         };
 
         mProductDbHelper = new ProductDbHelper(this);
-        SQLiteDatabase db =  mProductDbHelper.getReadableDatabase();
+
+        Cursor cursor = getContentResolver().query(ProductContract.ProductEntry.CONTENT_URI, projection, null,
+                null,null);
+
+        TextView productName = (TextView) findViewById(R.id.product_name);
+        TextView productPrice = (TextView) findViewById(R.id.product_price);
+        TextView productQuantity = (TextView) findViewById(R.id.product_quantity);
+
+        try{
+
+            while(cursor.moveToNext()){
+
+                productName.append(cursor.getString(cursor.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME)));
+                productPrice.append(cursor.getString(cursor.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE)));
+                productQuantity.append(cursor.getString(cursor.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY)));
+            }
+
+        }finally {
+            cursor.close();
+        }
 
     }
 
