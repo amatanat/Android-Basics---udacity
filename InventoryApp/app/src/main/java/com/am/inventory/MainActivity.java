@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.am.inventory.data.ProductContract;
@@ -75,17 +74,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayDbInfo(){
 
+        String[] projection = {
+                ProductContract.ProductEntry.COLUMN_PRODUCT_NAME,
+                ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY,
+                ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE
+        };
+
         mProductDbHelper = new ProductDbHelper(this);
         SQLiteDatabase db =  mProductDbHelper.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery("SELECT * FROM " + ProductContract.ProductEntry.TABLE_NAME,null);
-
-        try{
-
-
-        }finally {
-            cursor.close();
-        }
 
     }
 

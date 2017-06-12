@@ -1,5 +1,6 @@
 package com.am.inventory.data;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
@@ -8,9 +9,24 @@ import android.provider.BaseColumns;
 
 public class ProductContract {
 
+    // Authority name for the {@link ProductProvider}
+    public static final String CONTENT_AUTHORITY = "com.am.inventory";
+
+    /*
+     Content Uri without data type
+     * Parse string into URI
+      */
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+
+    // table name for the {@link ProductProvider} Content URI
+    public static final String PATH_PRODUCTS = "products";
+
     private ProductContract(){}
 
     public static final class ProductEntry implements BaseColumns{
+
+        // Content URI with the table name. Appends string table name to the base URI
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PRODUCTS);
 
         public static final String TABLE_NAME = "products";
 
