@@ -41,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         View emptyView = findViewById(R.id.empty_view);
         listView.setEmptyView(emptyView);
 
+        //Todo: implement listview item click method
+        //Todo: set price background color here
+
         //initialize loader
         getSupportLoaderManager().initLoader(LOADER_INIT, null, this);
 

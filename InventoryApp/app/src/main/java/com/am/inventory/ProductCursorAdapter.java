@@ -40,6 +40,7 @@ public class ProductCursorAdapter extends CursorAdapter {
         int price = cursor.getInt(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PRICE));
         int quantity = cursor.getInt(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_QUANTITY));
 
+        //Todo: remove background color setting part from here
         // get background circle of price
         GradientDrawable priceBackgroundCircle = (GradientDrawable) productPrice.getBackground();
 
