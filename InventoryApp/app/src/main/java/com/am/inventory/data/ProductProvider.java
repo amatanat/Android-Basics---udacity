@@ -73,7 +73,7 @@ public class ProductProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public String getType(@NonNull Uri uri) {
+    public String getType(Uri uri) {
         return null;
     }
 
@@ -187,8 +187,26 @@ public class ProductProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        int deletedRows;
+        // get writeable databse
+        SQLiteDatabase db = mProductDbHelper.getWritableDatabase();
+
+        int match = mUriMatcher.match(uri);
+        switch (match){
+            case PRODUCTS:
+                // delete all rows from the table
+                deletedRows = db.delete(ProductEntry.TABLE_NAME, selection,selectionArgs);
+                return  deletedRows;
+            case PRODUCTS_ID:
+                // delete specific rows from tha table according to specified conditions
+                selection = ProductEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri))};
+                deletedRows = db.delete(ProductEntry.TABLE_NAME, selection, selectionArgs);
+                return  deletedRows;
+            default:
+                throw new IllegalArgumentException("Illegal uri");
+        }
     }
 
 
