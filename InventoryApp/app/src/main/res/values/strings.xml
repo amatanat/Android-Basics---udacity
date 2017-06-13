@@ -11,4 +11,8 @@
     <string name="order">Order Product</string>
     <string name="addNewProduct">Add Product</string>
     <string name="editProduct">Edit Product</string>
+    <string name="error_in_inserting">Error in inserting new Product data</string>
+    <string name="product_added">Product saved into Database</string>
+    <string name="delete_product_failed">Failed to delete product</string>
+    <string name="delete_product_success">Product deleted</string>
 </resources>

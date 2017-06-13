@@ -1,14 +1,19 @@
 package com.am.inventory;
 
+import android.content.ContentValues;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.am.inventory.data.ProductContract.ProductEntry;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -81,12 +86,12 @@ public class DetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem menuItem){
         switch (menuItem.getItemId()){
             case R.id.order:
-                // osends an intent to either a phone app or an email app to
+                // sends an intent to either a phone app or an email app to
                 // contact the supplier using the information stored in the database.
                 //Todo pop up a toast
                 return true;
             case R.id.delete:
-                //Todo delete that product from the database
+                deleteProduct();
                 return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
@@ -94,6 +99,73 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void saveProduct(){
+        int productPrice = 0;
+        int productQuantity = 0;
 
+        String productName = mProductNameEditText.getText().toString().trim();
+        String productSupplier = mProductSupplierEditText.getText().toString().trim();
+
+        String price = mProductPriceEditText.getText().toString().trim();
+        if (!TextUtils.isEmpty(price)){
+            productPrice = Integer.parseInt(price);
+        }
+
+        String quantity = mProductQuantityEditText.getText().toString().trim();
+        if (!TextUtils.isEmpty(quantity)){
+            productQuantity = Integer.parseInt(quantity);
+        }
+
+        // if product name or supplier's value is empty then finish {@link DetailsActivity}
+        if (TextUtils.isEmpty(productName) || TextUtils.isEmpty(productSupplier)){
+            finish();
+        } else {
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(ProductEntry.COLUMN_PRODUCT_NAME, productName);
+            contentValues.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER, productSupplier);
+            contentValues.put(ProductEntry.COLUMN_PRODUCT_PRICE, productPrice);
+            contentValues.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, productQuantity);
+
+
+            if (mContentUri == null){
+                // if fab button is clicked then insert new product
+                Uri insertedProductUri = getContentResolver().insert(ProductEntry.CONTENT_URI,contentValues);
+
+                if (insertedProductUri == null){
+                    //Todo show toast message
+                    Toast.makeText(this, R.string.error_in_inserting, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, R.string.product_added, Toast.LENGTH_SHORT).show();
+                }
+
+            } else {
+                // if ListView item is clicked then update product data
+                int updatedProductsRowNumber = getContentResolver().update(mContentUri,contentValues, null,null);
+
+                if (updatedProductsRowNumber == 0){
+                    // Todo show toast message
+                } else{
+
+                }
+            }
+
+        }
+        finish();
+    }
+
+    private void deleteProduct(){
+        if (mContentUri != null){
+            int deletedRowNumber = getContentResolver().delete(mContentUri,null,null);
+
+            if (deletedRowNumber == 0){
+                Toast.makeText(this, getString(R.string.delete_product_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else{
+                Toast.makeText(this, getString(R.string.delete_product_success),
+                        Toast.LENGTH_SHORT).show();
+            }
+
+        }
+        finish();
     }
 }
