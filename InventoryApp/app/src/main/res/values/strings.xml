@@ -8,4 +8,7 @@
     <string name="productSupplier">Supplier</string>
     <string name="productPrice">Price:</string>
     <string name="quantity">Quantity</string>
+    <string name="order">Order Product</string>
+    <string name="addNewProduct">Add Product</string>
+    <string name="editProduct">Edit Product</string>
 </resources>

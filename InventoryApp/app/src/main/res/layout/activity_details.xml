@@ -36,7 +36,7 @@
                 android:textStyle="bold"/>
 
             <EditText
-                android:id="@+id/price"
+                android:id="@+id/productPrice"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -120,6 +120,7 @@
 
 
         <Button
+            android:id = "@+id/save"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:text="SAVE"

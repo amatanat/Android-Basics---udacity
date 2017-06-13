@@ -39,10 +39,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-
-                // send Content Uri
-                intent.setData(ProductContract.ProductEntry.CONTENT_URI);
-
                 startActivity(intent);
             }
         });
@@ -75,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         getSupportLoaderManager().initLoader(LOADER_INIT, null, this);
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
