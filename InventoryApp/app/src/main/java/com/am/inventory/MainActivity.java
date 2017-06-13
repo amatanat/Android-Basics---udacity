@@ -1,8 +1,11 @@
 package com.am.inventory;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -12,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.am.inventory.data.ProductContract;
@@ -30,12 +34,36 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+
+                // send Content Uri
+                intent.setData(ProductContract.ProductEntry.CONTENT_URI);
+
+                startActivity(intent);
+            }
+        });
+
         mProductDbHelper = new ProductDbHelper(this);
 
-        // get instance of {@link ProductCursorAdapter} and set it as adapter to listvie
+        // get instance of {@link ProductCursorAdapter} and set it as adapter to listview
         mProductCursorAdapter = new ProductCursorAdapter(this, null);
         ListView listView = (ListView) findViewById(R.id.listview);
         listView.setAdapter(mProductCursorAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+
+                // send Content Uri with the id of the clicked item
+                intent.setData(ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, id));
+
+                startActivity(intent);
+            }
+        });
 
         // get emptyview id and set it as emptyview in listview
         View emptyView = findViewById(R.id.empty_view);
@@ -44,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //Todo: implement listview item click method
         //Todo: set price background color here
 
-        //initialize loader
         getSupportLoaderManager().initLoader(LOADER_INIT, null, this);
 
     }
@@ -59,11 +86,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public boolean onOptionsItemSelected(MenuItem menuItem){
         switch (menuItem.getItemId()){
             case R.id.dummy_data:
-                //insert dummy data
                 insertDataIntoDatabase();
                 return true;
             case R.id.delete:
-                // delete all data from table
                 deleteDataFromDatabase();
                 return true;
             default:

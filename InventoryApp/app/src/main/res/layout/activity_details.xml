@@ -1,10 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.am.inventory.DetailsActivity">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:background="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context="com.am.inventory.DetailsActivity">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp">
+
+            <ImageView
+                android:id="@+id/productImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/emptyview"
+                tools:ignore="ContentDescription"/>
+
+            <TextView
+                android:id="@+id/priceText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/productPrice"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/price"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@+id/priceText"
+                android:layout_toRightOf="@+id/priceText"
+                android:background="@drawable/background_border"
+                android:ellipsize="end"
+                android:inputType="number"
+                android:maxLines="1"
+                tools:text="10"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/productName"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/productName"
+            style="@style/styleEditText"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/productSupplier"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/productSupplier"
+            style="@style/styleEditText"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/quantity"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textStyle="bold"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/productQuantity"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_border"
+                android:ellipsize="end"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@android:color/black"/>
+
+            <Button
+                android:id="@+id/incrementQuantity"
+                style="@style/styleButton"
+                android:layout_toEndOf="@+id/productQuantity"
+                android:layout_toRightOf="@+id/productQuantity"
+                android:text="+"
+                tools:ignore="HardcodedText"/>
+
+            <Button
+                android:id="@+id/decrementQuantity"
+                style="@style/styleButton"
+                android:layout_toEndOf="@+id/incrementQuantity"
+                android:layout_toRightOf="@+id/incrementQuantity"
+                android:text="-"
+                tools:ignore="HardcodedText"/>
+
+        </RelativeLayout>
+
+
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="SAVE"
+            android:layout_marginTop="32dp"
+            android:textStyle="bold"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:background="@color/colorAccent"
+            android:layout_gravity="center"
+            tools:ignore="HardcodedText"/>
+
+    </LinearLayout>
+
+</ScrollView>

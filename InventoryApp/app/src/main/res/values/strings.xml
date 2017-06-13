@@ -4,4 +4,8 @@
     <string name="delete">Delete</string>
     <string name="noProduct">No Product to show</string>
     <string name="addProduct">Start by adding a new Product</string>
+    <string name="productName">Name</string>
+    <string name="productSupplier">Supplier</string>
+    <string name="productPrice">Price:</string>
+    <string name="quantity">Quantity</string>
 </resources>
