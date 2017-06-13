@@ -56,9 +56,7 @@ public class DetailsActivity extends AppCompatActivity {
                 saveProduct();
             }
         });
-
     }
-
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -71,7 +69,6 @@ public class DetailsActivity extends AppCompatActivity {
             MenuItem orderItem = menu.findItem(R.id.order);
             orderItem.setVisible(false);
         }
-
         return true;
     }
 
@@ -118,6 +115,7 @@ public class DetailsActivity extends AppCompatActivity {
         // if product name or supplier's value is empty then finish {@link DetailsActivity}
         if (TextUtils.isEmpty(productName) || TextUtils.isEmpty(productSupplier)){
             finish();
+
         } else {
 
             ContentValues contentValues = new ContentValues();
@@ -132,7 +130,6 @@ public class DetailsActivity extends AppCompatActivity {
                 Uri insertedProductUri = getContentResolver().insert(ProductEntry.CONTENT_URI,contentValues);
 
                 if (insertedProductUri == null){
-                    //Todo show toast message
                     Toast.makeText(this, R.string.error_in_inserting, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, R.string.product_added, Toast.LENGTH_SHORT).show();
@@ -141,14 +138,8 @@ public class DetailsActivity extends AppCompatActivity {
             } else {
                 // if ListView item is clicked then update product data
                 int updatedProductsRowNumber = getContentResolver().update(mContentUri,contentValues, null,null);
-
-                if (updatedProductsRowNumber == 0){
-                    // Todo show toast message
-                } else{
-
-                }
+                showToastMessage(updatedProductsRowNumber, "update");
             }
-
         }
         finish();
     }
@@ -156,16 +147,18 @@ public class DetailsActivity extends AppCompatActivity {
     private void deleteProduct(){
         if (mContentUri != null){
             int deletedRowNumber = getContentResolver().delete(mContentUri,null,null);
-
-            if (deletedRowNumber == 0){
-                Toast.makeText(this, getString(R.string.delete_product_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else{
-                Toast.makeText(this, getString(R.string.delete_product_success),
-                        Toast.LENGTH_SHORT).show();
-            }
-
+            showToastMessage(deletedRowNumber,"delete");
         }
         finish();
+    }
+
+    private void showToastMessage(int receivedRowNumber, String methodName){
+        if (receivedRowNumber == 0){
+            Toast.makeText(this, getString(R.string.product_failed) + " " + methodName + " product",
+                    Toast.LENGTH_SHORT).show();
+        } else{
+            Toast.makeText(this, getString(R.string.product_success) + " " + methodName + " success",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 }

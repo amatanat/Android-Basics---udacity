@@ -13,6 +13,8 @@
     <string name="editProduct">Edit Product</string>
     <string name="error_in_inserting">Error in inserting new Product data</string>
     <string name="product_added">Product saved into Database</string>
-    <string name="delete_product_failed">Failed to delete product</string>
-    <string name="delete_product_success">Product deleted</string>
+    <string name="product_failed">Failed to </string>
+    <string name="product_success">Product </string>
+    <string name="update_product_failed">Failed to update product data</string>
+    <string name="update_product_success">Product\'s data is updated</string>
 </resources>
