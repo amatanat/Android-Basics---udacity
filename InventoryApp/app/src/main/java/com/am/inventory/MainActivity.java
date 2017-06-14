@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ContentValues values = new ContentValues();
 
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME,"water");
-        values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE, 0.19);
+        values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE, 7);
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, 6);
 
         Uri resultUri= getContentResolver().insert(ProductContract.ProductEntry.CONTENT_URI, values);
@@ -117,7 +117,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 ProductContract.ProductEntry._ID,
                 ProductContract.ProductEntry.COLUMN_PRODUCT_NAME,
                 ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE,
-                ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY
+                ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY,
+                ProductContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER
         };
 
         // This loader will execute ContentProvider's query method in a background thread

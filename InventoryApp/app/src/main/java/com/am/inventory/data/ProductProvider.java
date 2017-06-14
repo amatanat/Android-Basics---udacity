@@ -120,7 +120,7 @@ public class ProductProvider extends ContentProvider {
                 return updateProducts(uri,values,selection,selectionArgs);
             case PRODUCTS_ID:
                 selection = ProductEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri))};
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
                 return updateProducts(uri,values,selection,selectionArgs);
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
@@ -145,7 +145,7 @@ public class ProductProvider extends ContentProvider {
         if (values.containsKey(ProductEntry.COLUMN_PRODUCT_PRICE)){
             // check if price is null or not
             Integer productPrice = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_PRICE);
-            if (productPrice == null){
+            if (productPrice != null && productPrice < 0){
                 throw new IllegalArgumentException("Product requires a price");
             }
         }
@@ -154,7 +154,7 @@ public class ProductProvider extends ContentProvider {
         if (values.containsKey(ProductEntry.COLUMN_PRODUCT_QUANTITY)){
             //// check if quantity is null or not
             Integer productQuantity = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITY);
-            if (productQuantity == null){
+            if (productQuantity != null && productQuantity < 0){
                 throw new IllegalArgumentException("Product quantity should be added");
             }
         }

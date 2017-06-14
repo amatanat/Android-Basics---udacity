@@ -1,10 +1,15 @@
 package com.am.inventory;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +20,7 @@ import android.widget.Toast;
 
 import com.am.inventory.data.ProductContract.ProductEntry;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private Uri mContentUri;
 
@@ -25,6 +30,8 @@ public class DetailsActivity extends AppCompatActivity {
     private EditText mProductQuantityEditText;
     private EditText mProductSupplierEditText;
     private ImageView mProductImage;
+
+    private final int LOADER_INIT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,7 @@ public class DetailsActivity extends AppCompatActivity {
         } else {
             // ListView item is clicked
             getSupportActionBar().setTitle(R.string.editProduct);
+            getSupportLoaderManager().initLoader(LOADER_INIT, null, this);
         }
 
         mSaveProductButton = (Button) findViewById(R.id.save);
@@ -113,8 +121,10 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
         // if product name or supplier's value is empty then finish {@link DetailsActivity}
-        if (TextUtils.isEmpty(productName) || TextUtils.isEmpty(productSupplier)){
-            finish();
+        if (TextUtils.isEmpty(productName) || TextUtils.isEmpty(productSupplier) || productPrice == 0 ||
+                productQuantity == 0){
+            Toast.makeText(this, "Please feel empty places", Toast.LENGTH_SHORT).show();
+            //finish();
 
         } else {
 
@@ -140,8 +150,9 @@ public class DetailsActivity extends AppCompatActivity {
                 int updatedProductsRowNumber = getContentResolver().update(mContentUri,contentValues, null,null);
                 showToastMessage(updatedProductsRowNumber, "update");
             }
+            finish();
         }
-        finish();
+        //finish();
     }
 
     private void deleteProduct(){
@@ -160,5 +171,51 @@ public class DetailsActivity extends AppCompatActivity {
             Toast.makeText(this, getString(R.string.product_success) + " " + methodName + " success",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String[] projection = {
+                ProductEntry._ID,
+                ProductEntry.COLUMN_PRODUCT_NAME,
+                ProductEntry.COLUMN_PRODUCT_QUANTITY,
+                ProductEntry.COLUMN_PRODUCT_PRICE,
+                ProductEntry.COLUMN_PRODUCT_SUPPLIER
+        };
+        return new CursorLoader(this, mContentUri, projection, null, null,null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        // get user clicked listItem index from db
+        // get text of that index from db
+        // set text of edittext accordingly
+
+        if (cursor.moveToNext()){
+            int nameIndex = cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_NAME);
+            int priceIndex = cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PRICE);
+            int quantityIndex = cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_QUANTITY);
+            int supplierIndex = cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_SUPPLIER);
+
+            String nameText = cursor.getString(nameIndex);
+            int priceValue = cursor.getInt(priceIndex);
+            int quantityValue = cursor.getInt(quantityIndex);
+            String supplierText = cursor.getString(supplierIndex);
+
+            mProductNameEditText.setText(nameText);
+            mProductPriceEditText.setText(Integer.toString(priceValue));
+            mProductQuantityEditText.setText(Integer.toString(quantityValue));
+            mProductSupplierEditText.setText(supplierText);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // reset editTexts' value
+        mProductNameEditText.setText("");
+        mProductPriceEditText.setText("");
+        mProductSupplierEditText.setText("");
+        mProductQuantityEditText.setText("");
     }
 }
