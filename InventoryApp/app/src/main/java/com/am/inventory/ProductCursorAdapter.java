@@ -35,6 +35,7 @@ public class ProductCursorAdapter extends CursorAdapter {
         TextView productPrice = (TextView) view.findViewById(R.id.product_price);
         TextView productQuantity = (TextView) view.findViewById(R.id.product_quantity);
 
+
         // get values of corresponding columns from cursor
         String name = cursor.getString(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_NAME));
         int price = cursor.getInt(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PRICE));

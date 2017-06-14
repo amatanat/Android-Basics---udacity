@@ -54,36 +54,34 @@
         </RelativeLayout>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="@string/productName"
-            android:textAppearance="?android:textAppearanceSmall"
-            android:textStyle="bold"/>
+            style="@style/styleDetailsTextView"
+            android:text="@string/productName"/>
 
         <EditText
             android:id="@+id/productName"
             style="@style/styleEditText"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="@string/productSupplier"
-            android:textAppearance="?android:textAppearanceSmall"
-            android:textStyle="bold"/>
+            style="@style/styleDetailsTextView"
+            android:text="@string/productSupplier"/>
 
         <EditText
             android:id="@+id/productSupplier"
             style="@style/styleEditText"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="@string/quantity"
-            android:textAppearance="?android:textAppearanceSmall"
-            android:textStyle="bold"/>
+            style="@style/styleDetailsTextView"
+            android:text="@string/supplierEmail"/>
+
+        <EditText
+            android:id="@+id/supplierEmail"
+            android:inputType="textEmailAddress"
+            style="@style/styleEditText"/>
+
+
+        <TextView
+            style="@style/styleDetailsTextView"
+            android:text="@string/quantity"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -106,6 +104,7 @@
                 android:layout_toEndOf="@+id/productQuantity"
                 android:layout_toRightOf="@+id/productQuantity"
                 android:text="+"
+                android:background="@color/colorGreen"
                 tools:ignore="HardcodedText"/>
 
             <Button
@@ -114,6 +113,7 @@
                 android:layout_toEndOf="@+id/incrementQuantity"
                 android:layout_toRightOf="@+id/incrementQuantity"
                 android:text="-"
+                android:background="@color/colorGreen"
                 tools:ignore="HardcodedText"/>
 
         </RelativeLayout>
@@ -121,13 +121,13 @@
 
         <Button
             android:id = "@+id/save"
-            android:layout_width="60dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="SAVE"
             android:layout_marginTop="32dp"
             android:textStyle="bold"
             android:textAppearance="?android:textAppearanceMedium"
-            android:background="@color/colorAccent"
+            android:background="@color/colorBlue"
             android:layout_gravity="center"
             tools:ignore="HardcodedText"/>
 

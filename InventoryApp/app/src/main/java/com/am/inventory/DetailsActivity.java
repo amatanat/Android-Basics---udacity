@@ -1,6 +1,7 @@
 package com.am.inventory;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.LoaderManager;
@@ -12,6 +13,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.am.inventory.data.ProductContract.ProductEntry;
+
+import org.w3c.dom.Text;
 
 public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -29,21 +33,26 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     private EditText mProductPriceEditText;
     private EditText mProductQuantityEditText;
     private EditText mProductSupplierEditText;
+    private EditText mProductSupplierEmail;
     private ImageView mProductImage;
 
     private final int LOADER_INIT = 1;
+
+    private boolean mProductHasChanged = false;
+
+    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            mProductHasChanged = true;
+            return false;
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-
-        mProductNameEditText        = (EditText)  findViewById(R.id.productName);
-        mProductPriceEditText       = (EditText)  findViewById(R.id.productPrice);
-        mProductQuantityEditText    = (EditText)  findViewById(R.id.productQuantity);
-        mProductSupplierEditText    = (EditText)  findViewById(R.id.productSupplier);
-        mProductImage               = (ImageView) findViewById(R.id.productImage);
-
 
         mContentUri = getIntent().getData();
 
@@ -64,6 +73,22 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
                 saveProduct();
             }
         });
+
+
+        mProductNameEditText        = (EditText)  findViewById(R.id.productName);
+        mProductPriceEditText       = (EditText)  findViewById(R.id.productPrice);
+        mProductQuantityEditText    = (EditText)  findViewById(R.id.productQuantity);
+        mProductSupplierEditText    = (EditText)  findViewById(R.id.productSupplier);
+        mProductSupplierEmail              = (EditText)  findViewById(R.id.supplierEmail);
+        mProductImage               = (ImageView) findViewById(R.id.productImage);
+
+        mProductNameEditText.setOnTouchListener(mTouchListener);
+        mProductPriceEditText.setOnTouchListener(mTouchListener);
+        mProductQuantityEditText.setOnTouchListener(mTouchListener);
+        mProductSupplierEditText.setOnTouchListener(mTouchListener);
+        mProductSupplierEmail.setOnTouchListener(mTouchListener);
+        mProductImage.setOnTouchListener(mTouchListener);
+
     }
 
     @Override
@@ -93,7 +118,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             case R.id.order:
                 // sends an intent to either a phone app or an email app to
                 // contact the supplier using the information stored in the database.
-                //Todo pop up a toast
+                orderProduct();
                 return true;
             case R.id.delete:
                 deleteProduct();
@@ -120,11 +145,13 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             productQuantity = Integer.parseInt(quantity);
         }
 
+        String email = mProductSupplierEmail.getText().toString().trim();
+
         // if product name or supplier's value is empty then finish {@link DetailsActivity}
         if (TextUtils.isEmpty(productName) || TextUtils.isEmpty(productSupplier) || productPrice == 0 ||
-                productQuantity == 0){
-            Toast.makeText(this, "Please feel empty places", Toast.LENGTH_SHORT).show();
-            //finish();
+                productQuantity == 0 || TextUtils.isEmpty(email)){
+            //Toast.makeText(this, "Please feel empty places", Toast.LENGTH_SHORT).show();
+            finish();
 
         } else {
 
@@ -133,6 +160,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             contentValues.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER, productSupplier);
             contentValues.put(ProductEntry.COLUMN_PRODUCT_PRICE, productPrice);
             contentValues.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, productQuantity);
+            contentValues.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL, email);
 
 
             if (mContentUri == null){
@@ -150,9 +178,9 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
                 int updatedProductsRowNumber = getContentResolver().update(mContentUri,contentValues, null,null);
                 showToastMessage(updatedProductsRowNumber, "update");
             }
-            finish();
+
         }
-        //finish();
+        finish();
     }
 
     private void deleteProduct(){
@@ -173,6 +201,20 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         }
     }
 
+    private void orderProduct(){
+        Intent intent = new Intent(android.content.Intent.ACTION_SENDTO);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_EMAIL, mProductSupplierEmail.getText().toString().trim());
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Order product");
+        intent.putExtra(Intent.EXTRA_TEXT, "I want to order from this product.");
+
+        try {
+            startActivity(Intent.createChooser(intent, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "There are no email clients installed in your device.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = {
@@ -180,7 +222,8 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
                 ProductEntry.COLUMN_PRODUCT_NAME,
                 ProductEntry.COLUMN_PRODUCT_QUANTITY,
                 ProductEntry.COLUMN_PRODUCT_PRICE,
-                ProductEntry.COLUMN_PRODUCT_SUPPLIER
+                ProductEntry.COLUMN_PRODUCT_SUPPLIER,
+                ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL
         };
         return new CursorLoader(this, mContentUri, projection, null, null,null);
     }
@@ -197,16 +240,19 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             int priceIndex = cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PRICE);
             int quantityIndex = cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_QUANTITY);
             int supplierIndex = cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_SUPPLIER);
+            int supplierEmailIndex = cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL);
 
             String nameText = cursor.getString(nameIndex);
             int priceValue = cursor.getInt(priceIndex);
             int quantityValue = cursor.getInt(quantityIndex);
             String supplierText = cursor.getString(supplierIndex);
+            String supplierEmail =  cursor.getString(supplierEmailIndex);
 
             mProductNameEditText.setText(nameText);
             mProductPriceEditText.setText(Integer.toString(priceValue));
             mProductQuantityEditText.setText(Integer.toString(quantityValue));
             mProductSupplierEditText.setText(supplierText);
+            mProductSupplierEmail.setText(supplierEmail);
         }
     }
 
@@ -217,5 +263,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         mProductPriceEditText.setText("");
         mProductSupplierEditText.setText("");
         mProductQuantityEditText.setText("");
+        mProductSupplierEmail.setText("");
     }
 }

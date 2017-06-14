@@ -56,17 +56,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                 // send Content Uri with the id of the clicked item
                 intent.setData(ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, id));
-
                 startActivity(intent);
+                //Todo: set price background color here
             }
         });
 
         // get emptyview id and set it as emptyview in listview
         View emptyView = findViewById(R.id.empty_view);
         listView.setEmptyView(emptyView);
-
-        //Todo: implement listview item click method
-        //Todo: set price background color here
 
         getSupportLoaderManager().initLoader(LOADER_INIT, null, this);
 
@@ -97,9 +94,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         ContentValues values = new ContentValues();
 
-        values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME,"water");
+        values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME,"book");
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE, 7);
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, 6);
+        values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL,"test@gmail.com");
+        values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER, "Thalia");
 
         Uri resultUri= getContentResolver().insert(ProductContract.ProductEntry.CONTENT_URI, values);
 
@@ -117,8 +116,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 ProductContract.ProductEntry._ID,
                 ProductContract.ProductEntry.COLUMN_PRODUCT_NAME,
                 ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE,
-                ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY,
-                ProductContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER
+                ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY
         };
 
         // This loader will execute ContentProvider's query method in a background thread
