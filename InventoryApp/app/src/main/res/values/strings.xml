@@ -27,5 +27,5 @@
     <string name="uploadImage">upload image</string>
     <string name="inventory">Inventory</string>
     <string name="buy">Buy</string>
-    <string name="value">Est.value:\$</string>
+    <string name="value">Est.value $ </string>
 </resources>

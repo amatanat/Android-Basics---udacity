@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +22,8 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
  */
 
 public class ProductCursorAdapter extends CursorAdapter {
+
+    private int quantity;
 
     public ProductCursorAdapter(Context context, Cursor cursor){
         super(context, cursor,0);
@@ -39,29 +42,32 @@ public class ProductCursorAdapter extends CursorAdapter {
         TextView productPrice = (TextView) view.findViewById(R.id.product_price);
         TextView productQuantity = (TextView) view.findViewById(R.id.product_quantity);
         ImageView productImage =  (ImageView) view.findViewById(R.id.product_image);
+        Button buyButton = (Button) view.findViewById(R.id.buy_product);
 
 
         // get values of corresponding columns from cursor
         String name = cursor.getString(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_NAME));
         String price = cursor.getString(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PRICE));
-        int quantity = cursor.getInt(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_QUANTITY));
+        quantity = cursor.getInt(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_QUANTITY));
         String imageUri = cursor.getString(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PICTURE));
 
-/*        // get background circle of price
-        GradientDrawable priceBackgroundCircle = (GradientDrawable) productPrice.getBackground();
-
-        // get random color and set price's background color
-        int priceBackgroundColor = ColorGenerator.MATERIAL.getRandomColor();
-        priceBackgroundCircle.setColor(priceBackgroundColor);*/
+        buyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("ProductCurosrAdapter", "button is clicked..........");
+                quantity--;
+            }
+        });
 
         // set text of textviews
         productName.setText(name);
         productPrice.setText(price);
+        Log.i("ProductCurosrAdapter", "quantity.........."  + quantity);
         productQuantity.setText(Integer.toString(quantity));
         if (!TextUtils.isEmpty(imageUri)){
             Uri image =  Uri.parse(imageUri);
             productImage.setImageURI(image);
         }
-        Log.i("ProductCurosrAdapter", "data is setted..........");
+
     }
 }
