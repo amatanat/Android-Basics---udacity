@@ -19,11 +19,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.am.inventory.data.ProductContract;
-import com.am.inventory.data.ProductDbHelper;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
-
-    private ProductDbHelper mProductDbHelper;
 
     private final int LOADER_INIT = 1;
 
@@ -43,8 +40,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        mProductDbHelper = new ProductDbHelper(this);
-
         // get instance of {@link ProductCursorAdapter} and set it as adapter to listview
         mProductCursorAdapter = new ProductCursorAdapter(this, null);
         ListView listView = (ListView) findViewById(R.id.listview);
@@ -52,12 +47,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("MainActivity", "listview is clicked..........");
                 Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
 
                 // send Content Uri with the id of the clicked item
                 intent.setData(ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, id));
                 startActivity(intent);
-                //Todo: set price background color here
             }
         });
 
@@ -95,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ContentValues values = new ContentValues();
 
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME,"book");
-        values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE, 7);
+        values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE, "7");
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, 6);
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL,"test@gmail.com");
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER, "Thalia");
@@ -117,7 +112,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 ProductContract.ProductEntry._ID,
                 ProductContract.ProductEntry.COLUMN_PRODUCT_NAME,
                 ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE,
-                ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY
+                ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY,
+                ProductContract.ProductEntry.COLUMN_PRODUCT_PICTURE
         };
 
         // This loader will execute ContentProvider's query method in a background thread

@@ -3,10 +3,14 @@ package com.am.inventory;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.am.inventory.data.ProductContract.ProductEntry;
@@ -34,25 +38,30 @@ public class ProductCursorAdapter extends CursorAdapter {
         TextView productName = (TextView) view.findViewById(R.id.product_name);
         TextView productPrice = (TextView) view.findViewById(R.id.product_price);
         TextView productQuantity = (TextView) view.findViewById(R.id.product_quantity);
+        ImageView productImage =  (ImageView) view.findViewById(R.id.product_image);
 
 
         // get values of corresponding columns from cursor
         String name = cursor.getString(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_NAME));
-        int price = cursor.getInt(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PRICE));
+        String price = cursor.getString(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PRICE));
         int quantity = cursor.getInt(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_QUANTITY));
+        String imageUri = cursor.getString(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PICTURE));
 
-        //Todo: remove background color setting part from here
-        // get background circle of price
+/*        // get background circle of price
         GradientDrawable priceBackgroundCircle = (GradientDrawable) productPrice.getBackground();
 
         // get random color and set price's background color
         int priceBackgroundColor = ColorGenerator.MATERIAL.getRandomColor();
-        priceBackgroundCircle.setColor(priceBackgroundColor);
+        priceBackgroundCircle.setColor(priceBackgroundColor);*/
 
         // set text of textviews
         productName.setText(name);
-        productPrice.setText(Integer.toString(price));
+        productPrice.setText(price);
         productQuantity.setText(Integer.toString(quantity));
-
+        if (!TextUtils.isEmpty(imageUri)){
+            Uri image =  Uri.parse(imageUri);
+            productImage.setImageURI(image);
+        }
+        Log.i("ProductCurosrAdapter", "data is setted..........");
     }
 }

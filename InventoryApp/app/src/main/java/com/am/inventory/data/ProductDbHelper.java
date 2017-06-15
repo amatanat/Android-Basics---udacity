@@ -20,7 +20,7 @@ public class ProductDbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + ProductEntry.TABLE_NAME + " (" +
                     ProductEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     ProductEntry.COLUMN_PRODUCT_NAME + " TEXT NOT NULL," +
-                    ProductEntry.COLUMN_PRODUCT_PRICE + " INTEGER NOT NULL," +
+                    ProductEntry.COLUMN_PRODUCT_PRICE + " TEXT NOT NULL," +
                     ProductEntry.COLUMN_PRODUCT_QUANTITY + " INTEGER NOT NULL," +
                     ProductEntry.COLUMN_PRODUCT_SUPPLIER + " TEXT," +
                     ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL + " TEXT NOT NULL," +

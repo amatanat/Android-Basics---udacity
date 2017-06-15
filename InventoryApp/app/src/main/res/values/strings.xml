@@ -25,4 +25,7 @@
     <string name="cancel">Cancel</string>
     <string name="negative_quantity_alert">Quantity cannot be negative number</string>
     <string name="uploadImage">upload image</string>
+    <string name="inventory">Inventory</string>
+    <string name="buy">Buy</string>
+    <string name="value">Est.value:\$</string>
 </resources>

@@ -145,8 +145,8 @@ public class ProductProvider extends ContentProvider {
         // check if contentvalues contains product price
         if (values.containsKey(ProductEntry.COLUMN_PRODUCT_PRICE)){
             // check if price is null or not
-            Integer productPrice = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_PRICE);
-            if (productPrice != null && productPrice < 0){
+            String productPrice = values.getAsString(ProductEntry.COLUMN_PRODUCT_PRICE);
+            if(TextUtils.isEmpty(productPrice) || Integer.parseInt(productPrice) < 0){
                 throw new IllegalArgumentException("Product requires a price");
             }
         }
@@ -194,8 +194,8 @@ public class ProductProvider extends ContentProvider {
         }
 
         //check product price if null or not
-        Integer productPrice = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_PRICE);
-        if (productPrice == null){
+        String productPrice = values.getAsString(ProductEntry.COLUMN_PRODUCT_PRICE);
+        if(TextUtils.isEmpty(productPrice)){
             throw new IllegalArgumentException("Product requires a price");
         }
 

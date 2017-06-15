@@ -2,17 +2,12 @@ package com.am.inventory;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NavUtils;
@@ -288,7 +283,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     }
 
     private void saveProduct(){
-        int productPrice = 0;
+        String productPrice = "";
         int productQuantity = 0;
 
         String productName = mProductNameEditText.getText().toString().trim();
@@ -296,7 +291,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
         String price = mProductPriceEditText.getText().toString().trim();
         if (!TextUtils.isEmpty(price)){
-            productPrice = Integer.parseInt(price);
+            productPrice = price;
         }
 
         String quantity = mProductQuantityEditText.getText().toString().trim();
@@ -312,7 +307,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
 
         // if product name or supplier's value is empty then finish {@link DetailsActivity}
-        if (TextUtils.isEmpty(productName) || TextUtils.isEmpty(productSupplier) || productPrice == 0 ||
+        if (TextUtils.isEmpty(productName) || TextUtils.isEmpty(productSupplier) || TextUtils.isEmpty(productPrice) ||
                 productQuantity == 0 || TextUtils.isEmpty(email)){
             //Toast.makeText(this, "Please feel empty places", Toast.LENGTH_SHORT).show();
             finish();
@@ -343,7 +338,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
                 int updatedProductsRowNumber = getContentResolver().update(mContentUri,contentValues, null,null);
                 showToastMessage(updatedProductsRowNumber, "update");
             }
-
         }
         finish();
     }
@@ -455,7 +449,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             int imageIndex = cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PICTURE);
 
             String nameText = cursor.getString(nameIndex);
-            int priceValue = cursor.getInt(priceIndex);
+            String priceValue = cursor.getString(priceIndex);
             int quantityValue = cursor.getInt(quantityIndex);
             String supplierText = cursor.getString(supplierIndex);
             String supplierEmail =  cursor.getString(supplierEmailIndex);
@@ -466,7 +460,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             }
 
             mProductNameEditText.setText(nameText);
-            mProductPriceEditText.setText(Integer.toString(priceValue));
+            mProductPriceEditText.setText(priceValue);
             mProductQuantityEditText.setText(Integer.toString(quantityValue));
             mProductSupplierEditText.setText(supplierText);
             mProductSupplierEmail.setText(supplierEmail);
@@ -483,5 +477,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         mProductSupplierEditText.setText("");
         mProductQuantityEditText.setText("");
         mProductSupplierEmail.setText("");
+
     }
 }
