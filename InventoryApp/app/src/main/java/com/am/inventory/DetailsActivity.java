@@ -35,13 +35,10 @@ import android.widget.Toast;
 
 import com.am.inventory.data.ProductContract.ProductEntry;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private Uri mContentUri;
-    Uri imageUri;
+    private Uri mImageUri;
 
     private Button      mIncrementQuantityButton;
     private Button      mDecrementQuantityButton;
@@ -137,7 +134,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
     private void checkPermission(){
         // check if read external storage permission is granted or not
-        // if not granted request that permission
+        // if not request that permission
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -163,15 +160,11 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
                     Log.i("DetailsActivity", "Permission is granted.........");
-
                     // permission was granted
                     startActivityForResult(new Intent(Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_IMAGE_FROM_GALLERY);
-
                 } else {
-
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                     Log.i("DetailsActivity", "Permission is denied.........");
@@ -187,8 +180,8 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
         //Detects request codes
         if(requestCode== GET_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
-            Uri selectedImage = data.getData();
-            mProductImage.setImageURI(selectedImage);
+            mImageUri = data.getData();
+            mProductImage.setImageURI(mImageUri);
             mProductImage.invalidate();
             mUploadProductImageButton.setVisibility(View.GONE);
         }
@@ -207,7 +200,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         }
         return true;
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -313,6 +305,11 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         }
 
         String email = mProductSupplierEmail.getText().toString().trim();
+        String image = "";
+        if (mImageUri != null){
+            image = mImageUri.toString();
+        }
+
 
         // if product name or supplier's value is empty then finish {@link DetailsActivity}
         if (TextUtils.isEmpty(productName) || TextUtils.isEmpty(productSupplier) || productPrice == 0 ||
@@ -328,6 +325,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             contentValues.put(ProductEntry.COLUMN_PRODUCT_PRICE, productPrice);
             contentValues.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, productQuantity);
             contentValues.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL, email);
+            contentValues.put(ProductEntry.COLUMN_PRODUCT_PICTURE, image);
 
 
             if (mContentUri == null){
@@ -435,7 +433,8 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
                 ProductEntry.COLUMN_PRODUCT_QUANTITY,
                 ProductEntry.COLUMN_PRODUCT_PRICE,
                 ProductEntry.COLUMN_PRODUCT_SUPPLIER,
-                ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL
+                ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL,
+                ProductEntry.COLUMN_PRODUCT_PICTURE
         };
         return new CursorLoader(this, mContentUri, projection, null, null,null);
     }
@@ -453,18 +452,26 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             int quantityIndex = cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_QUANTITY);
             int supplierIndex = cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_SUPPLIER);
             int supplierEmailIndex = cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL);
+            int imageIndex = cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PICTURE);
 
             String nameText = cursor.getString(nameIndex);
             int priceValue = cursor.getInt(priceIndex);
             int quantityValue = cursor.getInt(quantityIndex);
             String supplierText = cursor.getString(supplierIndex);
             String supplierEmail =  cursor.getString(supplierEmailIndex);
+            String imageUri = cursor.getString(imageIndex);
+
+            if(TextUtils.isEmpty(imageUri)){
+                mUploadProductImageButton.setVisibility(View.VISIBLE);
+            }
 
             mProductNameEditText.setText(nameText);
             mProductPriceEditText.setText(Integer.toString(priceValue));
             mProductQuantityEditText.setText(Integer.toString(quantityValue));
             mProductSupplierEditText.setText(supplierText);
             mProductSupplierEmail.setText(supplierEmail);
+            mImageUri =  Uri.parse(imageUri);
+            mProductImage.setImageURI(mImageUri);
         }
     }
 

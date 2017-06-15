@@ -7,6 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.am.inventory.data.ProductContract.ProductEntry;
@@ -136,7 +137,7 @@ public class ProductProvider extends ContentProvider {
         if (values.containsKey(ProductEntry.COLUMN_PRODUCT_NAME)){
             // check if product name column is null or not
             String productName = values.getAsString(ProductEntry.COLUMN_PRODUCT_NAME);
-            if (productName == null){
+            if (TextUtils.isEmpty(productName)){
                 throw new IllegalArgumentException("Product requires a name");
             }
         }
@@ -156,6 +157,13 @@ public class ProductProvider extends ContentProvider {
             Integer productQuantity = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITY);
             if (productQuantity != null && productQuantity < 0){
                 throw new IllegalArgumentException("Product quantity cannot be negative number");
+            }
+        }
+
+        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL)){
+            String supplierEmail = values.getAsString(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL);
+            if (TextUtils.isEmpty(supplierEmail)){
+                throw new IllegalArgumentException("Supplier email cannot be empty");
             }
         }
 
@@ -179,9 +187,9 @@ public class ProductProvider extends ContentProvider {
     }
 
     private void sanityCheck(ContentValues values){
-        // check product name if null or not
+        // check product name if empty or not
         String productName = values.getAsString(ProductEntry.COLUMN_PRODUCT_NAME);
-        if (productName == null){
+        if (TextUtils.isEmpty(productName)){
             throw new IllegalArgumentException("Product requires a name");
         }
 
@@ -194,6 +202,11 @@ public class ProductProvider extends ContentProvider {
         Integer productQuantity = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITY);
         if (productQuantity == null){
             throw new IllegalArgumentException("Product quantity should be added");
+        }
+
+        String supplierEmail = values.getAsString(ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL);
+        if (TextUtils.isEmpty(supplierEmail)){
+            throw new IllegalArgumentException("Supplier email cannot be empty");
         }
     }
 

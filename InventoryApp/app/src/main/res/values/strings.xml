@@ -25,6 +25,4 @@
     <string name="cancel">Cancel</string>
     <string name="negative_quantity_alert">Quantity cannot be negative number</string>
     <string name="uploadImage">upload image</string>
-    <string name="intentType">image/*</string>
-    <string name="selectPicture">Select Picture</string>
 </resources>

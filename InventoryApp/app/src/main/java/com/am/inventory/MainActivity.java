@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, 6);
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL,"test@gmail.com");
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER, "Thalia");
+        values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_PICTURE,"");
 
         Uri resultUri= getContentResolver().insert(ProductContract.ProductEntry.CONTENT_URI, values);
 
