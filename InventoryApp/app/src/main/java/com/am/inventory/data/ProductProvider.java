@@ -155,7 +155,7 @@ public class ProductProvider extends ContentProvider {
             //// check if quantity is null or not
             Integer productQuantity = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITY);
             if (productQuantity != null && productQuantity < 0){
-                throw new IllegalArgumentException("Product quantity should be added");
+                throw new IllegalArgumentException("Product quantity cannot be negative number");
             }
         }
 

@@ -26,12 +26,12 @@ import android.widget.Toast;
 
 import com.am.inventory.data.ProductContract.ProductEntry;
 
-import org.w3c.dom.Text;
-
 public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private Uri mContentUri;
 
+    private Button mIncrementQuantityButton;
+    private Button mDecrementQuantityButton;
     private Button mSaveProductButton;
     private EditText mProductNameEditText;
     private EditText mProductPriceEditText;
@@ -69,6 +69,22 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             getSupportActionBar().setTitle(R.string.editProduct);
             getSupportLoaderManager().initLoader(LOADER_INIT, null, this);
         }
+
+        mIncrementQuantityButton = (Button) findViewById(R.id.incrementQuantity);
+        mIncrementQuantityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                incrementProductQuantity();
+            }
+        });
+
+        mDecrementQuantityButton = (Button) findViewById(R.id.decrementQuantity);
+        mDecrementQuantityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                decrementProductQuantity();
+            }
+        });
 
         mSaveProductButton = (Button) findViewById(R.id.save);
         mSaveProductButton.setOnClickListener(new View.OnClickListener() {
@@ -164,6 +180,36 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
         // show dialog that there are unsaved changes
         showUnsavedChangesDialog(discardButton);
+    }
+
+    private void incrementProductQuantity(){
+        int quantity;
+        String quantityString = mProductQuantityEditText.getText().toString().trim();
+        if (TextUtils.isEmpty(quantityString)){
+            quantity = 0;
+        } else {
+            quantity = Integer.parseInt(quantityString);
+            quantity++;
+        }
+        mProductQuantityEditText.setText(Integer.toString(quantity));
+    }
+
+    private void decrementProductQuantity(){
+        int quantity;
+        String quantityString = mProductQuantityEditText.getText().toString().trim();
+        if (TextUtils.isEmpty(quantityString)){
+            quantity = 0;
+        } else {
+            quantity = Integer.parseInt(quantityString);
+            if (quantity == 0){
+                Toast.makeText(this, R.string.negative_quantity_alert, Toast.LENGTH_SHORT).show();
+            } else if (quantity < 0) {
+                Toast.makeText(this, R.string.negative_quantity_alert, Toast.LENGTH_SHORT).show();
+            } else {
+                quantity--;
+            }
+        }
+        mProductQuantityEditText.setText(Integer.toString(quantity));
     }
 
     private void saveProduct(){
