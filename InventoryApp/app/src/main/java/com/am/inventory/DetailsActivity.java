@@ -1,13 +1,22 @@
 package com.am.inventory;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
@@ -26,21 +35,28 @@ import android.widget.Toast;
 
 import com.am.inventory.data.ProductContract.ProductEntry;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private Uri mContentUri;
+    Uri imageUri;
 
-    private Button mIncrementQuantityButton;
-    private Button mDecrementQuantityButton;
-    private Button mSaveProductButton;
-    private EditText mProductNameEditText;
-    private EditText mProductPriceEditText;
-    private EditText mProductQuantityEditText;
-    private EditText mProductSupplierEditText;
-    private EditText mProductSupplierEmail;
-    private ImageView mProductImage;
+    private Button      mIncrementQuantityButton;
+    private Button      mDecrementQuantityButton;
+    private Button      mSaveProductButton;
+    private Button      mUploadProductImageButton;
+    private EditText    mProductNameEditText;
+    private EditText    mProductPriceEditText;
+    private EditText    mProductQuantityEditText;
+    private EditText    mProductSupplierEditText;
+    private EditText    mProductSupplierEmail;
+    private ImageView   mProductImage;
 
     private final int LOADER_INIT = 1;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 200;
+    public static final int GET_IMAGE_FROM_GALLERY = 3;
 
     private boolean mProductHasChanged = false;
 
@@ -58,17 +74,28 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        mContentUri = getIntent().getData();
+        mProductNameEditText        = (EditText)  findViewById(R.id.productName);
+        mProductPriceEditText       = (EditText)  findViewById(R.id.productPrice);
+        mProductQuantityEditText    = (EditText)  findViewById(R.id.productQuantity);
+        mProductSupplierEditText    = (EditText)  findViewById(R.id.productSupplier);
+        mProductSupplierEmail       = (EditText)  findViewById(R.id.supplierEmail);
+        mProductImage               = (ImageView) findViewById(R.id.productImage);
 
-        if (mContentUri == null){
-            // fab button is clicked
-            getSupportActionBar().setTitle(R.string.addNewProduct);
-            invalidateOptionsMenu();
-        } else {
-            // ListView item is clicked
-            getSupportActionBar().setTitle(R.string.editProduct);
-            getSupportLoaderManager().initLoader(LOADER_INIT, null, this);
-        }
+        mProductNameEditText.setOnTouchListener(mTouchListener);
+        mProductPriceEditText.setOnTouchListener(mTouchListener);
+        mProductQuantityEditText.setOnTouchListener(mTouchListener);
+        mProductSupplierEditText.setOnTouchListener(mTouchListener);
+        mProductSupplierEmail.setOnTouchListener(mTouchListener);
+        //mProductImage.setOnTouchListener(mTouchListener);
+
+        mUploadProductImageButton = (Button) findViewById(R.id.uploadImage);
+        mUploadProductImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkPermission();
+                mProductHasChanged = true;
+            }
+        });
 
         mIncrementQuantityButton = (Button) findViewById(R.id.incrementQuantity);
         mIncrementQuantityButton.setOnClickListener(new View.OnClickListener() {
@@ -94,21 +121,77 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             }
         });
 
+        mContentUri = getIntent().getData();
+        if (mContentUri == null){
+            // fab button is clicked
+            getSupportActionBar().setTitle(R.string.addNewProduct);
+            invalidateOptionsMenu();
+        } else {
+            // ListView item is clicked
+            getSupportActionBar().setTitle(R.string.editProduct);
+            mUploadProductImageButton.setVisibility(View.GONE);
+            getSupportLoaderManager().initLoader(LOADER_INIT, null, this);
+        }
 
-        mProductNameEditText        = (EditText)  findViewById(R.id.productName);
-        mProductPriceEditText       = (EditText)  findViewById(R.id.productPrice);
-        mProductQuantityEditText    = (EditText)  findViewById(R.id.productQuantity);
-        mProductSupplierEditText    = (EditText)  findViewById(R.id.productSupplier);
-        mProductSupplierEmail       = (EditText)  findViewById(R.id.supplierEmail);
-        mProductImage               = (ImageView) findViewById(R.id.productImage);
+    }
 
-        mProductNameEditText.setOnTouchListener(mTouchListener);
-        mProductPriceEditText.setOnTouchListener(mTouchListener);
-        mProductQuantityEditText.setOnTouchListener(mTouchListener);
-        mProductSupplierEditText.setOnTouchListener(mTouchListener);
-        mProductSupplierEmail.setOnTouchListener(mTouchListener);
-        mProductImage.setOnTouchListener(mTouchListener);
+    private void checkPermission(){
+        // check if read external storage permission is granted or not
+        // if not granted request that permission
 
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED){
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+            Log.i("DetailsActivity", "Permission is requested.........");
+
+        } else{
+            startActivityForResult(new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_IMAGE_FROM_GALLERY);
+            Log.i("DetailsActivity", "Permission was granted.........");
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Log.i("DetailsActivity", "Permission is granted.........");
+
+                    // permission was granted
+                    startActivityForResult(new Intent(Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_IMAGE_FROM_GALLERY);
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Log.i("DetailsActivity", "Permission is denied.........");
+                }
+                return;
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Detects request codes
+        if(requestCode== GET_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
+            Uri selectedImage = data.getData();
+            mProductImage.setImageURI(selectedImage);
+            mProductImage.invalidate();
+            mUploadProductImageButton.setVisibility(View.GONE);
+        }
     }
 
     @Override

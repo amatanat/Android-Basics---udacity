@@ -18,12 +18,20 @@
             android:layout_height="wrap_content"
             android:paddingBottom="16dp">
 
+            <Button
+                android:id="@+id/uploadImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:text="@string/uploadImage"
+                android:textStyle="bold"/>
+
             <ImageView
                 android:id="@+id/productImage"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/emptyview"
                 tools:ignore="ContentDescription"/>
 
             <TextView
