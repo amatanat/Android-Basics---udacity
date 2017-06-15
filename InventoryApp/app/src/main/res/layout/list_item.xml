@@ -15,7 +15,7 @@
         android:layout_gravity="center_vertical"
         android:gravity="center"
         android:scaleType="fitCenter"
-        android:src="@drawable/noimage"
+        android:src="@drawable/no_image"
         tools:ignore="ContentDescription"/>
 
     <LinearLayout
@@ -81,7 +81,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.5"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
@@ -90,7 +90,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:text="@string/inventory"
-            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_gravity="center"
+            android:textAppearance="?android:textAppearanceSmall"
             android:textColor="@color/colorBlue"
             tools:ignore="UnusedAttribute"/>
 

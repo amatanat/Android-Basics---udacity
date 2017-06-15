@@ -18,7 +18,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -78,7 +77,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         mProductQuantityEditText.setOnTouchListener(mTouchListener);
         mProductSupplierEditText.setOnTouchListener(mTouchListener);
         mProductSupplierEmail.setOnTouchListener(mTouchListener);
-        //mProductImage.setOnTouchListener(mTouchListener);
 
         mUploadProductImageButton = (Button) findViewById(R.id.uploadImage);
         mUploadProductImageButton.setOnClickListener(new View.OnClickListener() {
@@ -138,12 +136,10 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-            Log.i("DetailsActivity", "Permission is requested.........");
 
         } else{
             startActivityForResult(new Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_IMAGE_FROM_GALLERY);
-            Log.i("DetailsActivity", "Permission was granted.........");
         }
 
     }
@@ -155,14 +151,9 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.i("DetailsActivity", "Permission is granted.........");
                     // permission was granted
                     startActivityForResult(new Intent(Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_IMAGE_FROM_GALLERY);
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Log.i("DetailsActivity", "Permission is denied.........");
                 }
                 return;
             }
@@ -309,7 +300,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         // if product name or supplier's value is empty then finish {@link DetailsActivity}
         if (TextUtils.isEmpty(productName) || TextUtils.isEmpty(productSupplier) || TextUtils.isEmpty(productPrice) ||
                 productQuantity == 0 || TextUtils.isEmpty(email)){
-            //Toast.makeText(this, "Please feel empty places", Toast.LENGTH_SHORT).show();
             finish();
 
         } else {
