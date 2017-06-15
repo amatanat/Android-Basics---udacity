@@ -1,12 +1,16 @@
 package com.am.inventory;
 
+import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -79,7 +83,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         mProductPriceEditText       = (EditText)  findViewById(R.id.productPrice);
         mProductQuantityEditText    = (EditText)  findViewById(R.id.productQuantity);
         mProductSupplierEditText    = (EditText)  findViewById(R.id.productSupplier);
-        mProductSupplierEmail              = (EditText)  findViewById(R.id.supplierEmail);
+        mProductSupplierEmail       = (EditText)  findViewById(R.id.supplierEmail);
         mProductImage               = (ImageView) findViewById(R.id.productImage);
 
         mProductNameEditText.setOnTouchListener(mTouchListener);
@@ -116,16 +120,50 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     public boolean onOptionsItemSelected(MenuItem menuItem){
         switch (menuItem.getItemId()){
             case R.id.order:
-                // sends an intent to either a phone app or an email app to
-                // contact the supplier using the information stored in the database.
                 orderProduct();
                 return true;
             case R.id.delete:
-                deleteProduct();
+                showDeleteConfirmationDialog();
+                return true;
+            case android.R.id.home:
+                if (!mProductHasChanged) {
+                    NavUtils.navigateUpFromSameTask(DetailsActivity.this);
+                    return true;
+                }
+
+                DialogInterface.OnClickListener discardButton =
+                        new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // User clicked "Discard" button, navigate to parent activity.
+                                NavUtils.navigateUpFromSameTask(DetailsActivity.this);
+                            }
+                        };
+                showUnsavedChangesDialog(discardButton);
                 return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!mProductHasChanged){
+            super.onBackPressed();
+            return;
+        }
+
+        DialogInterface.OnClickListener discardButton =
+                new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // User clicked "Discard" button, finish this activity
+                        finish();
+                    }
+                };
+
+        // show dialog that there are unsaved changes
+        showUnsavedChangesDialog(discardButton);
     }
 
     private void saveProduct(){
@@ -202,17 +240,62 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     }
 
     private void orderProduct(){
+        // sends an intent to either a phone app or an email app to
+        // contact the supplier using the information stored in the database.
         Intent intent = new Intent(android.content.Intent.ACTION_SENDTO);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_EMAIL, mProductSupplierEmail.getText().toString().trim());
         intent.putExtra(Intent.EXTRA_SUBJECT, "Order product");
-        intent.putExtra(Intent.EXTRA_TEXT, "I want to order from this product.");
+        intent.putExtra(Intent.EXTRA_TEXT, "I want to order from" + mProductNameEditText.getText().toString().trim());
 
         try {
             startActivity(Intent.createChooser(intent, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(this, "There are no email clients installed in your device.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void showDeleteConfirmationDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_confirmation_message);
+        builder.setPositiveButton(R.string.delete,new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button, so delete the product
+                deleteProduct();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel,new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so close the alert dialog
+                if (dialog != null){
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void showUnsavedChangesDialog(DialogInterface.OnClickListener discardButtonClickListener) {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.unsaved_changes_dialog);
+        builder.setPositiveButton(R.string.discard, discardButtonClickListener);
+        builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Keep editing" button, so dismiss the dialog
+                // and continue editing the pet.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     @Override
