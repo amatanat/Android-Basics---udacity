@@ -146,7 +146,7 @@ public class ProductProvider extends ContentProvider {
         if (values.containsKey(ProductEntry.COLUMN_PRODUCT_PRICE)){
             // check if price is null or not
             String productPrice = values.getAsString(ProductEntry.COLUMN_PRODUCT_PRICE);
-            if(TextUtils.isEmpty(productPrice) || Integer.parseInt(productPrice) < 0){
+            if(TextUtils.isEmpty(productPrice) || Double.parseDouble(productPrice) < 0){
                 throw new IllegalArgumentException("Product requires a price");
             }
         }
@@ -195,7 +195,7 @@ public class ProductProvider extends ContentProvider {
 
         //check product price if null or not
         String productPrice = values.getAsString(ProductEntry.COLUMN_PRODUCT_PRICE);
-        if(TextUtils.isEmpty(productPrice)){
+        if(TextUtils.isEmpty(productPrice) || Double.parseDouble(productPrice) < 0){
             throw new IllegalArgumentException("Product requires a price");
         }
 

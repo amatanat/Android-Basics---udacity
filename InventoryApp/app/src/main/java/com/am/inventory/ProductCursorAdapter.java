@@ -43,7 +43,7 @@ public class ProductCursorAdapter extends CursorAdapter {
         // find tetxviews with the corresponding ids
         TextView productName = (TextView) view.findViewById(R.id.product_name);
         TextView productPrice = (TextView) view.findViewById(R.id.product_price);
-        TextView productQuantity = (TextView) view.findViewById(R.id.product_quantity);
+        final TextView productQuantity = (TextView) view.findViewById(R.id.product_quantity);
         ImageView productImage =  (ImageView) view.findViewById(R.id.product_image);
 
         // get values of corresponding columns from cursor
@@ -53,14 +53,21 @@ public class ProductCursorAdapter extends CursorAdapter {
         String imageUri = cursor.getString(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PICTURE));
 
         Button buyButton = (Button) view.findViewById(R.id.buy_product);
-                buyButton.setOnClickListener(new View.OnClickListener() {
+                buyButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                quantity--;
-                ContentValues values = new ContentValues();
-                values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, quantity);
-                context.getContentResolver().update
-                        (ContentUris.withAppendedId(ProductEntry.CONTENT_URI,cursor.getPosition()), values, null,null);
+                if (quantity > 0 ){
+                    quantity--;
+                    productQuantity.setText(Integer.toString(quantity));
+                    ContentValues values = new ContentValues();
+                    values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, quantity);
+                    if (cursor.moveToPosition(cursor.getPosition())){
+                        context.getContentResolver().update
+                                (ContentUris.withAppendedId(ProductEntry.CONTENT_URI,cursor.getPosition()), values, null,null);
+                        Log.e("CursorAdapter", "quantity:....." + quantity);
+                        Log.e("CursorAdapter","position......" + cursor.getPosition());
+                    }
+                }
             }
         });
 

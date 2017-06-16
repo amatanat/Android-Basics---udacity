@@ -2,6 +2,7 @@ package com.am.inventory;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -351,18 +352,19 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     }
 
     private void orderProduct(){
-        // sends an intent to either a phone app or an email app to
-        // contact the supplier using the information stored in the database.
         Intent intent = new Intent(android.content.Intent.ACTION_SENDTO);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_EMAIL, mProductSupplierEmail.getText().toString().trim());
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Order product");
-        intent.putExtra(Intent.EXTRA_TEXT, "I want to order from" + mProductNameEditText.getText().toString().trim());
-
-        try {
-            startActivity(Intent.createChooser(intent, "Send mail..."));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(this, "There are no email clients installed in your device.", Toast.LENGTH_SHORT).show();
+        ComponentName emailApp = intent.resolveActivity(getPackageManager());
+        ComponentName unsupportedAction = ComponentName.unflattenFromString("com.android.fallback/.Fallback");
+        boolean hasEmailApp = emailApp != null && !emailApp.equals(unsupportedAction);
+        if (hasEmailApp){
+            intent.setType("message/rfc822");
+            intent.setData(Uri.parse("mailto:" + mProductSupplierEmail.getText().toString().trim()));
+            intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Order product");
+            intent.putExtra(android.content.Intent.EXTRA_TEXT, "I want to order from " +
+                    mProductNameEditText.getText().toString().trim());
+            startActivity(intent);
+        }else {
+            Toast.makeText(this,"No email app.", Toast.LENGTH_SHORT).show();
         }
     }
 
