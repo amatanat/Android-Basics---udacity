@@ -294,11 +294,9 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
         // if product name or supplier's value is empty then finish {@link DetailsActivity}
         if (TextUtils.isEmpty(productName) || TextUtils.isEmpty(productSupplier) || TextUtils.isEmpty(productPrice) ||
-                TextUtils.isEmpty(email)) {
+                TextUtils.isEmpty(email) || TextUtils.isEmpty(image)) {
             Toast.makeText(this, "Please feel empty fields", Toast.LENGTH_SHORT).show();
 
-        } else if (productQuantity == 0) {
-            Toast.makeText(this, "Product quantity cannot be 0", Toast.LENGTH_SHORT).show();
         } else {
 
             ContentValues contentValues = new ContentValues();
@@ -348,7 +346,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     }
 
     private void orderProduct() {
-        Intent intent = new Intent(Intent.ACTION_SEND);
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:" + mProductSupplierEmail.getText().toString().trim()));
         intent.putExtra(Intent.EXTRA_SUBJECT, "Order product");
         intent.putExtra(Intent.EXTRA_TEXT, "I want to order from " +

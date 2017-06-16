@@ -167,6 +167,7 @@ public class ProductProvider extends ContentProvider {
             }
         }
 
+
         // check if contentvalues size is 0 or not
         if (values.size() == 0) {
             return 0;
