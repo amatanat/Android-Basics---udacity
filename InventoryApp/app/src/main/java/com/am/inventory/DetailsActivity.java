@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NavUtils;
@@ -17,7 +18,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,16 +35,16 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     private Uri mContentUri;
     private Uri mImageUri;
 
-    private Button      mIncrementQuantityButton;
-    private Button      mDecrementQuantityButton;
-    private Button      mSaveProductButton;
-    private Button      mUploadProductImageButton;
-    private EditText    mProductNameEditText;
-    private EditText    mProductPriceEditText;
-    private EditText    mProductQuantityEditText;
-    private EditText    mProductSupplierEditText;
-    private EditText    mProductSupplierEmail;
-    private ImageView   mProductImage;
+    private Button mIncrementQuantityButton;
+    private Button mDecrementQuantityButton;
+    private Button mSaveProductButton;
+    private Button mUploadProductImageButton;
+    private EditText mProductNameEditText;
+    private EditText mProductPriceEditText;
+    private EditText mProductQuantityEditText;
+    private EditText mProductSupplierEditText;
+    private EditText mProductSupplierEmail;
+    private ImageView mProductImage;
 
     private final int LOADER_INIT = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 200;
@@ -66,12 +66,12 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        mProductNameEditText        = (EditText)  findViewById(R.id.productName);
-        mProductPriceEditText       = (EditText)  findViewById(R.id.productPrice);
-        mProductQuantityEditText    = (EditText)  findViewById(R.id.productQuantity);
-        mProductSupplierEditText    = (EditText)  findViewById(R.id.productSupplier);
-        mProductSupplierEmail       = (EditText)  findViewById(R.id.supplierEmail);
-        mProductImage               = (ImageView) findViewById(R.id.productImage);
+        mProductNameEditText = (EditText) findViewById(R.id.productName);
+        mProductPriceEditText = (EditText) findViewById(R.id.productPrice);
+        mProductQuantityEditText = (EditText) findViewById(R.id.productQuantity);
+        mProductSupplierEditText = (EditText) findViewById(R.id.productSupplier);
+        mProductSupplierEmail = (EditText) findViewById(R.id.supplierEmail);
+        mProductImage = (ImageView) findViewById(R.id.productImage);
 
         mProductNameEditText.setOnTouchListener(mTouchListener);
         mProductPriceEditText.setOnTouchListener(mTouchListener);
@@ -113,7 +113,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         });
 
         mContentUri = getIntent().getData();
-        if (mContentUri == null){
+        if (mContentUri == null) {
             // fab button is clicked
             getSupportActionBar().setTitle(R.string.addNewProduct);
             invalidateOptionsMenu();
@@ -126,19 +126,19 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
     }
 
-    private void checkPermission(){
+    private void checkPermission() {
         // check if read external storage permission is granted or not
         // if not request that permission
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED){
+                != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
 
-        } else{
+        } else {
             startActivityForResult(new Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_IMAGE_FROM_GALLERY);
         }
@@ -166,7 +166,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         super.onActivityResult(requestCode, resultCode, data);
 
         //Detects request codes
-        if(requestCode== GET_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
+        if (requestCode == GET_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
             mImageUri = data.getData();
             mProductImage.setImageURI(mImageUri);
             mProductImage.invalidate();
@@ -189,14 +189,14 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_details_menu, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
             case R.id.order:
                 orderProduct();
                 return true;
@@ -210,7 +210,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
                 }
 
                 DialogInterface.OnClickListener discardButton =
-                        new DialogInterface.OnClickListener(){
+                        new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 // User clicked "Discard" button, navigate to parent activity.
@@ -226,13 +226,13 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public void onBackPressed() {
-        if (!mProductHasChanged){
+        if (!mProductHasChanged) {
             super.onBackPressed();
             return;
         }
 
         DialogInterface.OnClickListener discardButton =
-                new DialogInterface.OnClickListener(){
+                new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // User clicked "Discard" button, finish this activity
@@ -244,10 +244,10 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         showUnsavedChangesDialog(discardButton);
     }
 
-    private void incrementProductQuantity(){
+    private void incrementProductQuantity() {
         int quantity;
         String quantityString = mProductQuantityEditText.getText().toString().trim();
-        if (TextUtils.isEmpty(quantityString)){
+        if (TextUtils.isEmpty(quantityString)) {
             quantity = 0;
         } else {
             quantity = Integer.parseInt(quantityString);
@@ -256,14 +256,14 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         mProductQuantityEditText.setText(Integer.toString(quantity));
     }
 
-    private void decrementProductQuantity(){
+    private void decrementProductQuantity() {
         int quantity;
         String quantityString = mProductQuantityEditText.getText().toString().trim();
-        if (TextUtils.isEmpty(quantityString)){
+        if (TextUtils.isEmpty(quantityString)) {
             quantity = 0;
         } else {
             quantity = Integer.parseInt(quantityString);
-            if (quantity == 0){
+            if (quantity == 0) {
                 Toast.makeText(this, R.string.negative_quantity_alert, Toast.LENGTH_SHORT).show();
             } else if (quantity < 0) {
                 Toast.makeText(this, R.string.negative_quantity_alert, Toast.LENGTH_SHORT).show();
@@ -274,7 +274,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         mProductQuantityEditText.setText(Integer.toString(quantity));
     }
 
-    private void saveProduct(){
+    private void saveProduct() {
         String productPrice = "";
         int productQuantity = 0;
 
@@ -282,27 +282,29 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         String productSupplier = mProductSupplierEditText.getText().toString().trim();
 
         String price = mProductPriceEditText.getText().toString().trim();
-        if (!TextUtils.isEmpty(price)){
+        if (!TextUtils.isEmpty(price)) {
             productPrice = price;
         }
 
         String quantity = mProductQuantityEditText.getText().toString().trim();
-        if (!TextUtils.isEmpty(quantity)){
+        if (!TextUtils.isEmpty(quantity)) {
             productQuantity = Integer.parseInt(quantity);
         }
 
         String email = mProductSupplierEmail.getText().toString().trim();
         String image = "";
-        if (mImageUri != null){
+        if (mImageUri != null) {
             image = mImageUri.toString();
         }
 
 
         // if product name or supplier's value is empty then finish {@link DetailsActivity}
         if (TextUtils.isEmpty(productName) || TextUtils.isEmpty(productSupplier) || TextUtils.isEmpty(productPrice) ||
-                productQuantity == 0 || TextUtils.isEmpty(email)){
-            finish();
+                TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Please feel empty fields", Toast.LENGTH_SHORT).show();
 
+        } else if (productQuantity == 0 ) {
+            Toast.makeText(this, "Product quantity cannot be 0", Toast.LENGTH_SHORT).show();
         } else {
 
             ContentValues contentValues = new ContentValues();
@@ -314,11 +316,11 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             contentValues.put(ProductEntry.COLUMN_PRODUCT_PICTURE, image);
 
 
-            if (mContentUri == null){
+            if (mContentUri == null) {
                 // if fab button is clicked then insert new product
-                Uri insertedProductUri = getContentResolver().insert(ProductEntry.CONTENT_URI,contentValues);
+                Uri insertedProductUri = getContentResolver().insert(ProductEntry.CONTENT_URI, contentValues);
 
-                if (insertedProductUri == null){
+                if (insertedProductUri == null) {
                     Toast.makeText(this, R.string.error_in_inserting, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, R.string.product_added, Toast.LENGTH_SHORT).show();
@@ -326,61 +328,58 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
             } else {
                 // if ListView item is clicked then update product data
-                int updatedProductsRowNumber = getContentResolver().update(mContentUri,contentValues, null,null);
+                int updatedProductsRowNumber = getContentResolver().update(mContentUri, contentValues, null, null);
                 showToastMessage(updatedProductsRowNumber, "update");
             }
+            finish();
+        }
+    }
+
+    private void deleteProduct() {
+        if (mContentUri != null) {
+            int deletedRowNumber = getContentResolver().delete(mContentUri, null, null);
+            showToastMessage(deletedRowNumber, "delete");
         }
         finish();
     }
 
-    private void deleteProduct(){
-        if (mContentUri != null){
-            int deletedRowNumber = getContentResolver().delete(mContentUri,null,null);
-            showToastMessage(deletedRowNumber,"delete");
-        }
-        finish();
-    }
-
-    private void showToastMessage(int receivedRowNumber, String methodName){
-        if (receivedRowNumber == 0){
+    private void showToastMessage(int receivedRowNumber, String methodName) {
+        if (receivedRowNumber == 0) {
             Toast.makeText(this, getString(R.string.product_failed) + " " + methodName + " product",
                     Toast.LENGTH_SHORT).show();
-        } else{
+        } else {
             Toast.makeText(this, getString(R.string.product_success) + " " + methodName + " success",
                     Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void orderProduct(){
-        Intent intent = new Intent(android.content.Intent.ACTION_SENDTO);
-        ComponentName emailApp = intent.resolveActivity(getPackageManager());
-        ComponentName unsupportedAction = ComponentName.unflattenFromString("com.android.fallback/.Fallback");
-        boolean hasEmailApp = emailApp != null && !emailApp.equals(unsupportedAction);
-        if (hasEmailApp){
-            intent.setType("message/rfc822");
-            intent.setData(Uri.parse("mailto:" + mProductSupplierEmail.getText().toString().trim()));
-            intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Order product");
-            intent.putExtra(android.content.Intent.EXTRA_TEXT, "I want to order from " +
-                    mProductNameEditText.getText().toString().trim());
+    private void orderProduct() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setData(Uri.parse("mailto:" + mProductSupplierEmail.getText().toString().trim()));
+        intent.putExtra(Intent.EXTRA_SUBJECT,  "Order product");
+        intent.putExtra(Intent.EXTRA_TEXT, "I want to order from " +
+                mProductNameEditText.getText().toString().trim());
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }else {
-            Toast.makeText(this,"No email app.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No email app.", Toast.LENGTH_SHORT).show();
         }
+
     }
 
-    private void showDeleteConfirmationDialog(){
+    private void showDeleteConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.delete_confirmation_message);
-        builder.setPositiveButton(R.string.delete,new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Delete" button, so delete the product
                 deleteProduct();
             }
         });
-        builder.setNegativeButton(R.string.cancel,new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Cancel" button, so close the alert dialog
-                if (dialog != null){
+                if (dialog != null) {
                     dialog.dismiss();
                 }
             }
@@ -422,7 +421,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
                 ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL,
                 ProductEntry.COLUMN_PRODUCT_PICTURE
         };
-        return new CursorLoader(this, mContentUri, projection, null, null,null);
+        return new CursorLoader(this, mContentUri, projection, null, null, null);
     }
 
     @Override
@@ -432,7 +431,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         // get text of that index from db
         // set text of edittext accordingly
 
-        if (cursor.moveToNext()){
+        if (cursor.moveToNext()) {
             int nameIndex = cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_NAME);
             int priceIndex = cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PRICE);
             int quantityIndex = cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_QUANTITY);
@@ -444,10 +443,10 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             String priceValue = cursor.getString(priceIndex);
             int quantityValue = cursor.getInt(quantityIndex);
             String supplierText = cursor.getString(supplierIndex);
-            String supplierEmail =  cursor.getString(supplierEmailIndex);
+            String supplierEmail = cursor.getString(supplierEmailIndex);
             String imageUri = cursor.getString(imageIndex);
 
-            if(TextUtils.isEmpty(imageUri)){
+            if (TextUtils.isEmpty(imageUri)) {
                 mUploadProductImageButton.setVisibility(View.VISIBLE);
             }
 
@@ -456,7 +455,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             mProductQuantityEditText.setText(Integer.toString(quantityValue));
             mProductSupplierEditText.setText(supplierText);
             mProductSupplierEmail.setText(supplierEmail);
-            mImageUri =  Uri.parse(imageUri);
+            mImageUri = Uri.parse(imageUri);
             mProductImage.setImageURI(mImageUri);
         }
     }

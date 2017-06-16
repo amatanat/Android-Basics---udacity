@@ -25,9 +25,6 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 public class ProductCursorAdapter extends CursorAdapter {
 
-    private int quantity;
-    private int finalQuantity;
-
     public ProductCursorAdapter(Context context, Cursor cursor){
         super(context, cursor,0);
     }
@@ -49,28 +46,27 @@ public class ProductCursorAdapter extends CursorAdapter {
         // get values of corresponding columns from cursor
         String name = cursor.getString(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_NAME));
         String price = cursor.getString(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PRICE));
-        quantity = cursor.getInt(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_QUANTITY));
+        int quantity = cursor.getInt(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_QUANTITY));
         String imageUri = cursor.getString(cursor.getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_PICTURE));
 
-        Button buyButton = (Button) view.findViewById(R.id.buy_product);
-                buyButton.setOnClickListener(new Button.OnClickListener() {
+        final Button buyButton = (Button) view.findViewById(R.id.buy_product);
+        buyButton.setTag(cursor.getInt(cursor.getColumnIndexOrThrow(ProductEntry._ID)));
+        buyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (quantity > 0 ){
-                    quantity--;
-                    productQuantity.setText(Integer.toString(quantity));
+                int qnty = Integer.parseInt(productQuantity.getText().toString().trim());
+                if ( qnty > 0 ){
+                    qnty--;
+                    productQuantity.setText(Integer.toString(qnty));
+                    int id = (Integer) v.getTag();
                     ContentValues values = new ContentValues();
-                    values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, quantity);
-                    if (cursor.moveToPosition(cursor.getPosition())){
-                        context.getContentResolver().update
-                                (ContentUris.withAppendedId(ProductEntry.CONTENT_URI,cursor.getPosition()), values, null,null);
-                        Log.e("CursorAdapter", "quantity:....." + quantity);
-                        Log.e("CursorAdapter","position......" + cursor.getPosition());
-                    }
+                    values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, qnty);
+                    context.getContentResolver().update
+                                (ContentUris.withAppendedId(ProductEntry.CONTENT_URI, id),
+                                        values, null,null);
                 }
             }
         });
-
         // set text of textviews
         productName.setText(name);
         productPrice.setText(price);
