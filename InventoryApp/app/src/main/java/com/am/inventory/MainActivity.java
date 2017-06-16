@@ -20,7 +20,7 @@ import android.widget.ListView;
 
 import com.am.inventory.data.ProductContract;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private final int LOADER_INIT = 1;
 
@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("MainActivity", "listview is clicked..........");
                 Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
 
                 // send Content Uri with the id of the clicked item
@@ -66,14 +65,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
             case R.id.dummy_data:
                 insertDataIntoDatabase();
                 return true;
@@ -81,28 +80,28 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 deleteDataFromDatabase();
                 return true;
             default:
-                 return super.onOptionsItemSelected(menuItem);
+                return super.onOptionsItemSelected(menuItem);
         }
     }
 
-    private void insertDataIntoDatabase(){
+    private void insertDataIntoDatabase() {
 
         ContentValues values = new ContentValues();
 
-        values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME,"book");
+        values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME, "book");
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE, "7");
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY, 6);
-        values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL,"test@gmail.com");
+        values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL, "test@gmail.com");
         values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER, "Thalia");
-        values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_PICTURE,"");
+        values.put(ProductContract.ProductEntry.COLUMN_PRODUCT_PICTURE, "");
 
-        Uri resultUri= getContentResolver().insert(ProductContract.ProductEntry.CONTENT_URI, values);
+        Uri resultUri = getContentResolver().insert(ProductContract.ProductEntry.CONTENT_URI, values);
 
         Log.i("MainActivity", "Result uri in insert method......" + resultUri);
     }
 
-    private void deleteDataFromDatabase(){
-        getContentResolver().delete(ProductContract.ProductEntry.CONTENT_URI, null,null);
+    private void deleteDataFromDatabase() {
+        getContentResolver().delete(ProductContract.ProductEntry.CONTENT_URI, null, null);
     }
 
     @Override
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         };
 
         // This loader will execute ContentProvider's query method in a background thread
-        return new CursorLoader(this, ProductContract.ProductEntry.CONTENT_URI, projection, null,null,null);
+        return new CursorLoader(this, ProductContract.ProductEntry.CONTENT_URI, projection, null, null, null);
     }
 
     @Override

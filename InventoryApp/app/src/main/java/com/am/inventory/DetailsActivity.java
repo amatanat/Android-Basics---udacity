@@ -2,7 +2,6 @@ package com.am.inventory;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,9 +31,11 @@ import com.am.inventory.data.ProductContract.ProductEntry;
 
 public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    public static final int GET_IMAGE_FROM_GALLERY = 3;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 200;
+    private final int LOADER_INIT = 1;
     private Uri mContentUri;
     private Uri mImageUri;
-
     private Button mIncrementQuantityButton;
     private Button mDecrementQuantityButton;
     private Button mSaveProductButton;
@@ -45,11 +46,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     private EditText mProductSupplierEditText;
     private EditText mProductSupplierEmail;
     private ImageView mProductImage;
-
-    private final int LOADER_INIT = 1;
-    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 200;
-    public static final int GET_IMAGE_FROM_GALLERY = 3;
-
     private boolean mProductHasChanged = false;
 
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
@@ -263,9 +259,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             quantity = 0;
         } else {
             quantity = Integer.parseInt(quantityString);
-            if (quantity == 0) {
-                Toast.makeText(this, R.string.negative_quantity_alert, Toast.LENGTH_SHORT).show();
-            } else if (quantity < 0) {
+            if (quantity <= 0) {
                 Toast.makeText(this, R.string.negative_quantity_alert, Toast.LENGTH_SHORT).show();
             } else {
                 quantity--;
@@ -303,7 +297,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
                 TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Please feel empty fields", Toast.LENGTH_SHORT).show();
 
-        } else if (productQuantity == 0 ) {
+        } else if (productQuantity == 0) {
             Toast.makeText(this, "Product quantity cannot be 0", Toast.LENGTH_SHORT).show();
         } else {
 
@@ -356,12 +350,12 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     private void orderProduct() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setData(Uri.parse("mailto:" + mProductSupplierEmail.getText().toString().trim()));
-        intent.putExtra(Intent.EXTRA_SUBJECT,  "Order product");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Order product");
         intent.putExtra(Intent.EXTRA_TEXT, "I want to order from " +
                 mProductNameEditText.getText().toString().trim());
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
-        }else {
+        } else {
             Toast.makeText(this, "No email app.", Toast.LENGTH_SHORT).show();
         }
 

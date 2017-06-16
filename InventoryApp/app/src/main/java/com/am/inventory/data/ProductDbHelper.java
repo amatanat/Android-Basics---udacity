@@ -27,7 +27,7 @@ public class ProductDbHelper extends SQLiteOpenHelper {
                     ProductEntry.COLUMN_PRODUCT_PICTURE + " TEXT)";
 
 
-    public ProductDbHelper(Context context){
+    public ProductDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
     }

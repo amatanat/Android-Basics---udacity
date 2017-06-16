@@ -22,9 +22,10 @@ public class ProductContract {
     // table name for the {@link ProductProvider} Content URI
     public static final String PATH_PRODUCTS = "products";
 
-    private ProductContract(){}
+    private ProductContract() {
+    }
 
-    public static final class ProductEntry implements BaseColumns{
+    public static final class ProductEntry implements BaseColumns {
 
         // Content URI with the table name. Appends string table name to the base URI
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PRODUCTS);
