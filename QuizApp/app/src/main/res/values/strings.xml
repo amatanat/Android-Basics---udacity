@@ -3,4 +3,7 @@
   <string name="play">Play</string>
   <string name="false_radiobutton">False</string>
   <string name="true_radiobutton">True</string>
+  <string name="back_button">Back</string>
+  <string name="submit_button">Submit</string>
+  <string name="reset_button">Reset</string>
 </resources>
