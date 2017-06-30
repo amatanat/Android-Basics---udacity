@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -18,6 +19,14 @@ public class QuizActivity extends AppCompatActivity {
   private RadioButton questionThreeFalseRB;
   private RadioGroup questionOneRadioGroup;
   private RadioGroup questionThreeRadioGroup;
+  private CheckBox questionTwoChBOne;
+  private CheckBox questionTwoChBTwo;
+  private CheckBox questionTwoChBThree;
+  private CheckBox questionTwoChBFour;
+  private CheckBox questionFourChBOne;
+  private CheckBox questionFourChBTwo;
+  private CheckBox questionFourChBThree;
+  private CheckBox questionFourChBFour;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +42,16 @@ public class QuizActivity extends AppCompatActivity {
 
     questionThreeRadioGroup = (RadioGroup) findViewById(R.id.radiogroup_3);
     questionOneRadioGroup = (RadioGroup) findViewById(R.id.radiogroup_1);
+
+    questionTwoChBOne = (CheckBox) findViewById(R.id.question_2_chb_1);
+    questionTwoChBTwo = (CheckBox) findViewById(R.id.question_2_chb_2);
+    questionTwoChBThree = (CheckBox) findViewById(R.id.question_2_chb_3);
+    questionTwoChBFour = (CheckBox) findViewById(R.id.question_2_chb_4);
+
+    questionFourChBOne = (CheckBox) findViewById(R.id.question_4_chb_1);
+    questionFourChBTwo = (CheckBox) findViewById(R.id.question_4_chb_2);
+    questionFourChBThree =  (CheckBox) findViewById(R.id.question_4_chb_3);
+    questionFourChBFour = (CheckBox) findViewById(R.id.question_4_chb_4);
 
     Button submitButton = (Button) findViewById(R.id.submit_button);
     submitButton.setOnClickListener(new OnClickListener() {
@@ -63,23 +82,6 @@ public class QuizActivity extends AppCompatActivity {
 
   }
 
-/*  public void onRadioButtonClicked(View view) {
-    // Is the button now checked?
-    boolean checked = ((RadioButton) view).isChecked();
-
-    // Check which radio button was clicked
-    switch(view.getId()) {
-      case R.id.true_radiobutton:
-        if (checked)
-          // true is checked
-          break;
-      case R.id.false_radiobutton:
-        if (checked)
-          // false is checked
-          break;
-    }
-  }*/
-
   private void submitAnswers() {
 
     if (questionOneTrueRB.isChecked()){
@@ -100,12 +102,47 @@ public class QuizActivity extends AppCompatActivity {
       mScore++;
     }
 
+    if (questionTwoChBOne.isChecked() && questionTwoChBFour.isChecked() &&
+        !questionTwoChBThree.isChecked() && !questionTwoChBTwo.isChecked()){
+      mScore++;
+    } else {
+      if (mScore != 0)
+        mScore--;
+    }
+
+    if (!questionFourChBOne.isChecked() && !questionFourChBTwo.isChecked() &&
+        !questionFourChBThree.isChecked() && questionFourChBFour.isChecked()){
+      mScore++;
+    } else {
+      if (mScore != 0)
+        mScore--;
+    }
+
     Toast.makeText(this, getString(R.string.final_score) + " " + mScore, Toast.LENGTH_SHORT).show();
+    mScore = 0;
 
   }
 
   private void resetAnswers() {
     questionThreeRadioGroup.clearCheck();
     questionOneRadioGroup.clearCheck();
+
+    if(questionTwoChBOne.isChecked())
+      questionTwoChBOne.setChecked(false);
+    if(questionTwoChBTwo.isChecked())
+      questionTwoChBTwo.setChecked(false);
+    if(questionTwoChBThree.isChecked())
+      questionTwoChBThree.setChecked(false);
+    if(questionTwoChBFour.isChecked())
+      questionTwoChBFour.setChecked(false);
+
+    if(questionFourChBOne.isChecked())
+      questionFourChBOne.setChecked(false);
+    if(questionFourChBTwo.isChecked())
+      questionFourChBTwo.setChecked(false);
+    if(questionFourChBThree.isChecked())
+      questionFourChBThree.setChecked(false);
+    if(questionFourChBFour.isChecked())
+      questionFourChBFour.setChecked(false);
   }
 }
