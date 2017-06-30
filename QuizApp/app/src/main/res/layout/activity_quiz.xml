@@ -26,6 +26,7 @@
     </FrameLayout>
 
     <RadioGroup
+      android:id="@+id/radiogroup_1"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="8dp"
@@ -94,6 +95,7 @@
     </FrameLayout>
 
     <RadioGroup
+      android:id="@+id/radiogroup_3"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="8dp"
