@@ -14,8 +14,6 @@ public class QuizActivity extends AppCompatActivity {
 
   private int mScore;
   private RadioButton questionOneTrueRB;
-  private RadioButton questionOneFalseRB;
-  private RadioButton questionThreeTrueRB;
   private RadioButton questionThreeFalseRB;
   private RadioGroup questionOneRadioGroup;
   private RadioGroup questionThreeRadioGroup;
@@ -36,8 +34,6 @@ public class QuizActivity extends AppCompatActivity {
     mScore = 0;
 
     questionOneTrueRB = (RadioButton) findViewById(R.id.question_1_true);
-    questionOneFalseRB = (RadioButton) findViewById(R.id.question_1_false);
-    questionThreeTrueRB = (RadioButton) findViewById(R.id.question_3_true);
     questionThreeFalseRB = (RadioButton) findViewById(R.id.question_3_false);
 
     questionThreeRadioGroup = (RadioGroup) findViewById(R.id.radiogroup_3);
@@ -88,16 +84,6 @@ public class QuizActivity extends AppCompatActivity {
       mScore++;
     }
 
-    if (questionOneFalseRB.isChecked()){
-      if (mScore != 0)
-        mScore--;
-    }
-
-    if (questionThreeTrueRB.isChecked()){
-      if (mScore != 0)
-        mScore--;
-    }
-
     if (questionThreeFalseRB.isChecked()){
       mScore++;
     }
@@ -105,22 +91,14 @@ public class QuizActivity extends AppCompatActivity {
     if (questionTwoChBOne.isChecked() && questionTwoChBFour.isChecked() &&
         !questionTwoChBThree.isChecked() && !questionTwoChBTwo.isChecked()){
       mScore++;
-    } else {
-      if (mScore != 0)
-        mScore--;
     }
 
     if (!questionFourChBOne.isChecked() && !questionFourChBTwo.isChecked() &&
         !questionFourChBThree.isChecked() && questionFourChBFour.isChecked()){
       mScore++;
-    } else {
-      if (mScore != 0)
-        mScore--;
     }
-
     Toast.makeText(this, getString(R.string.final_score) + " " + mScore, Toast.LENGTH_SHORT).show();
     mScore = 0;
-
   }
 
   private void resetAnswers() {
