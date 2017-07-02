@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ public class QuizActivity extends AppCompatActivity {
 
   private int mScore;
   private RadioButton questionOneTrueRB;
+  private RadioButton questionOneFalseRB;
   private RadioButton questionThreeFalseRB;
   private RadioGroup questionOneRadioGroup;
   private RadioGroup questionThreeRadioGroup;
@@ -25,6 +27,7 @@ public class QuizActivity extends AppCompatActivity {
   private CheckBox questionFourChBTwo;
   private CheckBox questionFourChBThree;
   private CheckBox questionFourChBFour;
+  private EditText questionFiveEditText;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,7 @@ public class QuizActivity extends AppCompatActivity {
     mScore = 0;
 
     questionOneTrueRB = (RadioButton) findViewById(R.id.question_1_true);
+    questionOneFalseRB = (RadioButton) findViewById(R.id.question_1_false);
     questionThreeFalseRB = (RadioButton) findViewById(R.id.question_3_false);
 
     questionThreeRadioGroup = (RadioGroup) findViewById(R.id.radiogroup_3);
@@ -46,8 +50,10 @@ public class QuizActivity extends AppCompatActivity {
 
     questionFourChBOne = (CheckBox) findViewById(R.id.question_4_chb_1);
     questionFourChBTwo = (CheckBox) findViewById(R.id.question_4_chb_2);
-    questionFourChBThree =  (CheckBox) findViewById(R.id.question_4_chb_3);
+    questionFourChBThree = (CheckBox) findViewById(R.id.question_4_chb_3);
     questionFourChBFour = (CheckBox) findViewById(R.id.question_4_chb_4);
+
+    questionFiveEditText = (EditText) findViewById(R.id.question_5_edittext);
 
     Button submitButton = (Button) findViewById(R.id.submit_button);
     submitButton.setOnClickListener(new OnClickListener() {
@@ -80,23 +86,33 @@ public class QuizActivity extends AppCompatActivity {
 
   private void submitAnswers() {
 
-    if (questionOneTrueRB.isChecked()){
+    if (questionOneTrueRB.isChecked()) {
       mScore++;
+    }else{
+      if (questionOneFalseRB.isChecked()){
+        mScore--;
+      }
     }
 
-    if (questionThreeFalseRB.isChecked()){
+    if (questionThreeFalseRB.isChecked()) {
       mScore++;
     }
 
     if (questionTwoChBOne.isChecked() && questionTwoChBFour.isChecked() &&
-        !questionTwoChBThree.isChecked() && !questionTwoChBTwo.isChecked()){
+        questionTwoChBThree.isChecked() && !questionTwoChBTwo.isChecked()) {
       mScore++;
     }
 
     if (!questionFourChBOne.isChecked() && !questionFourChBTwo.isChecked() &&
-        !questionFourChBThree.isChecked() && questionFourChBFour.isChecked()){
+        !questionFourChBThree.isChecked() && questionFourChBFour.isChecked()) {
       mScore++;
     }
+
+    String questionFiveText = questionFiveEditText.getText().toString().toLowerCase();
+    if (questionFiveText.equals(getString(R.string.baku))) {
+      mScore++;
+    }
+
     Toast.makeText(this, getString(R.string.final_score) + " " + mScore, Toast.LENGTH_SHORT).show();
     mScore = 0;
   }
@@ -105,22 +121,32 @@ public class QuizActivity extends AppCompatActivity {
     questionThreeRadioGroup.clearCheck();
     questionOneRadioGroup.clearCheck();
 
-    if(questionTwoChBOne.isChecked())
+    if (questionTwoChBOne.isChecked()) {
       questionTwoChBOne.setChecked(false);
-    if(questionTwoChBTwo.isChecked())
+    }
+    if (questionTwoChBTwo.isChecked()) {
       questionTwoChBTwo.setChecked(false);
-    if(questionTwoChBThree.isChecked())
+    }
+    if (questionTwoChBThree.isChecked()) {
       questionTwoChBThree.setChecked(false);
-    if(questionTwoChBFour.isChecked())
+    }
+    if (questionTwoChBFour.isChecked()) {
       questionTwoChBFour.setChecked(false);
+    }
 
-    if(questionFourChBOne.isChecked())
+    if (questionFourChBOne.isChecked()) {
       questionFourChBOne.setChecked(false);
-    if(questionFourChBTwo.isChecked())
+    }
+    if (questionFourChBTwo.isChecked()) {
       questionFourChBTwo.setChecked(false);
-    if(questionFourChBThree.isChecked())
+    }
+    if (questionFourChBThree.isChecked()) {
       questionFourChBThree.setChecked(false);
-    if(questionFourChBFour.isChecked())
+    }
+    if (questionFourChBFour.isChecked()) {
       questionFourChBFour.setChecked(false);
+    }
+
+    questionFiveEditText.getText().clear();
   }
 }

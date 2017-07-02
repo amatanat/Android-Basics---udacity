@@ -7,4 +7,18 @@
   <string name="submit_button">Submit</string>
   <string name="reset_button">Reset</string>
   <string name="final_score">Your final score is:</string>
+  <string name="question_one">The Amazon River is the longest river in the Americas</string>
+  <string name="question_three">Lake Baikal is the world\'s oldest lake</string>
+  <string name="question_two">The Caspian Sea</string>
+  <string name="question_two_chb_1">is the largest lake in the world</string>
+  <string name="question_two_chb_3">is located between Europe and Asia</string>
+  <string name="question_two_chb_2">has the average depth of 500m</string>
+  <string name="question_two_chb_4">has max length of 1030 km</string>
+  <string name="question_four">Rhine:</string>
+  <string name="question_four_chb_1">The largest city on the river Rhine is Bonn</string>
+  <string name="question_four_chb_2">It is the longest river in Central and Western Europe</string>
+  <string name="question_four_chb_4">has the length of 1230 km</string>
+  <string name="question_four_chb_3">It is the third-longest river in Central and Western Europe</string>
+  <string name="question_five">Where is the capital of Azerbaijan?</string>
+  <string name="baku">baku</string>
 </resources>
