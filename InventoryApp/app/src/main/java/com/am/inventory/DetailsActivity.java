@@ -295,7 +295,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         // if product name or supplier's value is empty then finish {@link DetailsActivity}
         if (TextUtils.isEmpty(productName) || TextUtils.isEmpty(productSupplier) || TextUtils.isEmpty(productPrice) ||
                 TextUtils.isEmpty(email) || TextUtils.isEmpty(image)) {
-            Toast.makeText(this, "Please feel empty fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.feel_empty_fields, Toast.LENGTH_SHORT).show();
 
         } else {
 
