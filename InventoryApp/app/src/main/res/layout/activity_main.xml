@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.am.inventory.MainActivity">
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  tools:context="com.am.inventory.MainActivity">
 
     <ListView
         android:id="@+id/listview"
@@ -27,13 +28,13 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
 
-        <ImageView
-            android:id="@+id/emptyview_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/emptyview"
-            android:layout_centerHorizontal="true"
-            tools:ignore="ContentDescription"/>
+        <com.airbnb.lottie.LottieAnimationView
+          android:id="@+id/emptyview_image"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerHorizontal="true"
+          android:layout_centerVertical="true"
+          app:lottie_autoPlay="true"/>
 
         <TextView
             android:id="@+id/emptyview_title"
@@ -42,7 +43,7 @@
             android:layout_below="@+id/emptyview_image"
             android:layout_centerHorizontal="true"
             android:fontFamily="sans-serif-medium"
-            android:paddingTop="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/noProduct"
             android:textAppearance="?android:textAppearanceMedium"
             tools:ignore="UnusedAttribute"/>
