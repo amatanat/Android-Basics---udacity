@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             // because this activity implements the LoaderCallbacks interface).
             loaderManager.initLoader(UNIQUE_ID, null, this);
 
+
         } else {
 
             // change visibility of progress bar
