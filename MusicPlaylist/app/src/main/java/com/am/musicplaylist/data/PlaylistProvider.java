@@ -21,11 +21,14 @@ public class PlaylistProvider extends ContentProvider {
   //URI matcher code for the content uri for the specific row
   private static final int PLAYLISTS_ID = 2;
 
+  private static final int SONGS = 3;
+
   private static final UriMatcher mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
   static {
     mUriMatcher.addURI(PlaylistContract.CONTENT_AUTHORITY, PlaylistContract.PATH_PLAYLISTS, PLAYLISTS);
     mUriMatcher.addURI(PlaylistContract.CONTENT_AUTHORITY, PlaylistContract.PATH_PLAYLISTS + "/#", PLAYLISTS_ID);
+    mUriMatcher.addURI(PlaylistContract.CONTENT_AUTHORITY, PlaylistContract.PATH_SONGS, SONGS);
   }
 
 
@@ -50,13 +53,16 @@ public class PlaylistProvider extends ContentProvider {
     switch (match) {
       case PLAYLISTS:
         // query the whole table
-        cursor = db.query(PlaylistEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+        cursor = db.query(PlaylistEntry.TABLE_NAME_PLAYLISTS, projection, selection, selectionArgs, null, null, sortOrder);
         break;
       case PLAYLISTS_ID:
         // query specific id indicated in the uri
         selection = PlaylistEntry._ID + "=?";
         selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-        cursor = db.query(PlaylistEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+        cursor = db.query(PlaylistEntry.TABLE_NAME_PLAYLISTS, projection, selection, selectionArgs, null, null, sortOrder);
+        break;
+      case SONGS:
+        cursor = db.query(PlaylistEntry.TABLE_NAME_SONGS, projection, selection, selectionArgs, null, null, sortOrder);
         break;
       default:
         throw new IllegalArgumentException("Cannot query unknown URI " + uri);
@@ -77,6 +83,8 @@ public class PlaylistProvider extends ContentProvider {
         return PlaylistEntry.CONTENT_LIST_TYPE;
       case PLAYLISTS_ID:
         return PlaylistEntry.CONTENT_ITEM_TYPE;
+      case SONGS:
+        return PlaylistEntry.CONTENT_SONG_LIST_TYPE;
       default:
         throw new IllegalArgumentException("Illegal URI" + uri);
     }
@@ -88,15 +96,32 @@ public class PlaylistProvider extends ContentProvider {
     switch (match) {
       case PLAYLISTS:
         return insertPlaylist(uri, values);
+      case SONGS:
+        return insertSong(uri, values);
       default:
         throw new IllegalArgumentException("Cannot query unknown URI " + uri);
     }
   }
 
+  private Uri insertSong(Uri uri, ContentValues values) {
+
+    SQLiteDatabase db = mPlaylistDbHelper.getWritableDatabase();
+    long id = db.insert(PlaylistEntry.TABLE_NAME_SONGS, null, values);
+
+    if (id == -1) {
+      Log.e(LOG_TAG, "Error in inserting a new row");
+    } else {
+      Log.i(LOG_TAG, "Row is inserted");
+    }
+
+    getContext().getContentResolver().notifyChange(uri, null);
+    return ContentUris.withAppendedId(uri, id);
+  }
+
   private Uri insertPlaylist(Uri uri, ContentValues values) {
 
     SQLiteDatabase db = mPlaylistDbHelper.getWritableDatabase();
-    long id = db.insert(PlaylistEntry.TABLE_NAME, null, values);
+    long id = db.insert(PlaylistEntry.TABLE_NAME_PLAYLISTS, null, values);
 
     if (id == -1) {
       Log.e(LOG_TAG, "Error in inserting a new row");
@@ -119,7 +144,7 @@ public class PlaylistProvider extends ContentProvider {
     switch (match) {
       case PLAYLISTS:
         // delete all rows from the table
-        deletedRows = db.delete(PlaylistEntry.TABLE_NAME, selection, selectionArgs);
+        deletedRows = db.delete(PlaylistEntry.TABLE_NAME_PLAYLISTS, selection, selectionArgs);
         if (deletedRows != 0) {
           getContext().getContentResolver().notifyChange(uri, null);
         }
@@ -128,7 +153,14 @@ public class PlaylistProvider extends ContentProvider {
         // delete specific rows from tha table according to specified conditions
         selection = PlaylistEntry._ID + "=?";
         selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-        deletedRows = db.delete(PlaylistEntry.TABLE_NAME, selection, selectionArgs);
+        deletedRows = db.delete(PlaylistEntry.TABLE_NAME_PLAYLISTS, selection, selectionArgs);
+        if (deletedRows != 0) {
+          getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return deletedRows;
+      case SONGS:
+        // delete all rows from the table
+        deletedRows = db.delete(PlaylistEntry.TABLE_NAME_SONGS, selection, selectionArgs);
         if (deletedRows != 0) {
           getContext().getContentResolver().notifyChange(uri, null);
         }

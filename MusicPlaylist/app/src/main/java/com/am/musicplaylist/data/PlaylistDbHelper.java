@@ -12,14 +12,18 @@ public class PlaylistDbHelper extends SQLiteOpenHelper {
   public static final int DATABASE_VERSION = 1;
 
   private static final String SQL_CREATE_PLAYLISTS_TABLE =
-      "CREATE TABLE " + PlaylistEntry.TABLE_NAME + " (" +
+      "CREATE TABLE " + PlaylistEntry.TABLE_NAME_PLAYLISTS + " (" +
           PlaylistEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-          PlaylistEntry.COLUMN_PLAYLIST_NAME + " TEXT NOT NULL)";
-//          ProductEntry.COLUMN_PRODUCT_PRICE + " TEXT NOT NULL," +
-//          ProductEntry.COLUMN_PRODUCT_QUANTITY + " INTEGER NOT NULL," +
-//          ProductEntry.COLUMN_PRODUCT_SUPPLIER + " TEXT," +
-//          ProductEntry.COLUMN_PRODUCT_SUPPLIER_EMAIL + " TEXT NOT NULL," +
-//          ProductEntry.COLUMN_PRODUCT_PICTURE + " TEXT)";
+          PlaylistEntry.COLUMN_PLAYLIST_NAME + " TEXT NOT NULL, " +
+          " FOREIGN KEY (" + PlaylistEntry.COLUMN_PLAYLIST_NAME + ") REFERENCES " +
+          PlaylistEntry.TABLE_NAME_SONGS + "(" + PlaylistEntry._ID + "));";
+
+  private static final String SQL_CREATE_SONGS_TABLE =
+      "CREATE TABLE " + PlaylistEntry.TABLE_NAME_SONGS + " (" +
+          PlaylistEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+          PlaylistEntry.COLUMN_SONG_TITLE +  " TEXT NOT NULL, " +
+          PlaylistEntry.COLUMN_SONG_ARTIST + " TEXT NOT NULL)";
+
 
   public PlaylistDbHelper(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -29,10 +33,11 @@ public class PlaylistDbHelper extends SQLiteOpenHelper {
   @Override
   public void onCreate(SQLiteDatabase db) {
     db.execSQL(SQL_CREATE_PLAYLISTS_TABLE);
+    db.execSQL(SQL_CREATE_SONGS_TABLE);
   }
 
   @Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+    // ignore update
   }
 }

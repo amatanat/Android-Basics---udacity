@@ -17,23 +17,39 @@ public class PlaylistContract {
 
   public static final String PATH_PLAYLISTS = "playlists";
 
+  public static final String PATH_SONGS = "songs";
+
   private PlaylistContract(){}
 
   public static final class PlaylistEntry implements BaseColumns {
 
     public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PLAYLISTS);
 
-    public static final String TABLE_NAME = "playlists";
+    public static final Uri CONTENT_URI_SONG = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_SONGS);
+
+    public static final String TABLE_NAME_PLAYLISTS = "playlists";
+
+    public static final String TABLE_NAME_SONGS = "songs";
 
     public static final String _ID = BaseColumns._ID;
 
     public static final String COLUMN_PLAYLIST_NAME = "name";
+
+    public static final String COLUMN_SONG_TITLE = "title";
+
+    public static final String COLUMN_SONG_ARTIST = "artist";
 
     public static final String CONTENT_LIST_TYPE =
         ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PLAYLISTS;
 
     public static final String CONTENT_ITEM_TYPE =
         ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PLAYLISTS;
+
+    public static final String CONTENT_SONG_LIST_TYPE =
+        ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_SONGS;
+
+    public static final String CONTENT_SONG_ITEM_TYPE =
+        ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_SONGS;
 
   }
 

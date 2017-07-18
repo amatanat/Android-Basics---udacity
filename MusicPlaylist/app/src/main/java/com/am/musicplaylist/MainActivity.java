@@ -6,16 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -25,21 +21,17 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
-import com.am.musicplaylist.data.PlaylistContract;
 import com.am.musicplaylist.data.PlaylistContract.PlaylistEntry;
-import java.util.ArrayList;
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity implements
+    LoaderManager.LoaderCallbacks<Cursor> {
 
   private final String LOG_TAG = MainActivity.class.getName();
 
   private final int LOADER_INIT = 100;
 
-  private TextView mEmptyStateText;
   private LottieAnimationView mLottieAnimationView;
   private String mPlaylistName;
   private ListView mListView;
@@ -50,20 +42,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    mEmptyStateText = (TextView) findViewById(R.id.emptyview_title);
     mLottieAnimationView = (LottieAnimationView) findViewById(R.id.emptyview_image);
     mLottieAnimationView.setAnimation("EmptyState.json");
     mLottieAnimationView.loop(true);
     mLottieAnimationView.playAnimation();
-
-    FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-    floatingActionButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Intent intent = new Intent(MainActivity.this, SongsActivity.class);
-        startActivity(intent);
-      }
-    });
 
     mPlaylistCursorAdapter = new PlaylistCursorAdapter(this, null);
     mListView = (ListView) findViewById(R.id.listview);
@@ -72,10 +54,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(MainActivity.this, SongsActivity.class);
+        String playlistName = mListView.getItemAtPosition(position).toString();
+        intent.putExtra("playlistName", playlistName);
 
         // send Content Uri with the id of the clicked item
-        intent.setData(
-            ContentUris.withAppendedId(PlaylistEntry.CONTENT_URI, id));
+        intent.setData(ContentUris.withAppendedId(PlaylistEntry.CONTENT_URI, id));
         startActivity(intent);
       }
     });
@@ -135,7 +118,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     alertDialog.setTitle(R.string.playlist);
 
     final EditText input = new EditText(MainActivity.this);
-    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.MATCH_PARENT,
         LinearLayout.LayoutParams.MATCH_PARENT);
     input.setLayoutParams(lp);
     input.setHint(R.string.playlist_name);
@@ -151,18 +135,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         String inputData = input.getText().toString().trim();
 
         //if input is empty show toast
-        if (TextUtils.isEmpty(inputData)){
+        if (TextUtils.isEmpty(inputData)) {
 
           // show toast message
-          Toast.makeText(MainActivity.this, "Please enter title. Playlist title cannot be empty", Toast.LENGTH_SHORT).show();
+          Toast.makeText(MainActivity.this, "Please enter title. Playlist title cannot be empty",
+              Toast.LENGTH_SHORT).show();
         } else {
 
           mPlaylistName = inputData;
           Log.i(LOG_TAG, "Playlist name...." + mPlaylistName);
 
-          // change visibility of emptystate textview and lottie animation view
-//          mLottieAnimationView.setVisibility(View.INVISIBLE);
-//          mEmptyStateText.setVisibility(View.INVISIBLE);
           insertDataIntoDatabase(mPlaylistName);
         }
       }
@@ -173,14 +155,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
       public void onClick(DialogInterface dialog, int id) {
 
         //  User clicked the "Cancel" button, so dismiss the dialog
-        if (dialog != null)
+        if (dialog != null) {
           dialog.dismiss();
+        }
       }
     });
-
-    // Create and show the AlertDialog
-    // AlertDialog alertDialog = builder.create();
-
     alertDialog.show();
   }
 

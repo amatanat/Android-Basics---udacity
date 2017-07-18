@@ -6,4 +6,6 @@
   <string name="delete_playlists">Delete Playlists</string>
   <string name="playlist">Playlist</string>
   <string name="playlist_name">Enter playlist name</string>
+  <string name="add_new_song">Add new song</string>
+  <string name="delete_song">Delete song</string>
 </resources>
