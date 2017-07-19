@@ -43,9 +43,9 @@ public class PlaylistContract {
 
     public static final String CONTENT_LIST_TYPE =
         ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PLAYLISTS;
-
-    public static final String CONTENT_ITEM_TYPE =
-        ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PLAYLISTS;
+//
+//    public static final String CONTENT_ITEM_TYPE =
+//        ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PLAYLISTS;
 
     public static final String CONTENT_SONG_LIST_TYPE =
         ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_SONGS;

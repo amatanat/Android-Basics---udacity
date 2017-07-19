@@ -4,6 +4,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,18 +37,23 @@ public class SongCursorAdapter extends CursorAdapter {
     // get values of corresponding columns from cursor
     String title = cursor.getString(cursor.getColumnIndexOrThrow(PlaylistEntry.COLUMN_SONG_TITLE));
     String artist = cursor.getString(cursor.getColumnIndexOrThrow(PlaylistEntry.COLUMN_SONG_ARTIST));
-    final String id = cursor.getString(cursor.getColumnIndexOrThrow(PlaylistEntry.COLUMN_SONG_PLAYLIST_ID));
+    final int id = cursor.getInt(cursor.getColumnIndexOrThrow(PlaylistEntry._ID));
 
     // set text of textviews
     songTitle.setText(title);
     songArtist.setText(artist);
 
     Button deleteSong = (Button) view.findViewById(R.id.delete_song);
+    final int position = cursor.getPosition();
     deleteSong.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        context.getContentResolver().delete(ContentUris.withAppendedId(PlaylistEntry.CONTENT_URI_SONG, Long.parseLong(id)),
+        cursor.moveToPosition(position);
+        Log.i("Cursor", "id of song to be deleted...." + id);
+        context.getContentResolver().delete(ContentUris.withAppendedId(PlaylistEntry.CONTENT_URI_SONG, id),
             null, null );
+        cursor.requery();
+        notifyDataSetChanged();
       }
     });
   }

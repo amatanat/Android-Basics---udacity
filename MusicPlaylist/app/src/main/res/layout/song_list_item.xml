@@ -1,30 +1,38 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:orientation="vertical"
-  android:padding="5dp"
-  >
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  style="@style/styleCustomInfoFrameLayout"
+  android:elevation="8dp"
+  tools:ignore="UnusedAttribute">
 
-  <TextView
-    android:id="@+id/song_title"
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textColor="@android:color/black"
-    android:textSize="20sp"
-    android:textStyle="bold" />
+    android:padding="16dp"
+    android:orientation="vertical">
 
-  <TextView
-    android:id="@+id/song_artist"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textColor="@android:color/black"
-    android:textSize="18sp" />
+    <TextView
+      android:id="@+id/song_title"
+      style="@style/styleTextView"
+      android:textStyle="bold"
+      android:textColor="@color/colorPrimary"
+      android:textSize="20sp"/>
 
-  <Button
-    android:id="@+id/delete_song"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/btn_delete_song"
-    android:focusable="false"/>
+    <TextView
+      android:id="@+id/song_artist"
+      style="@style/styleTextView"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="8dp"
+      android:textColor="@android:color/black"
+      android:textSize="18sp"/>
 
-</LinearLayout>
+    <Button
+      android:id="@+id/delete_song"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@color/colorPescoGreen"
+      android:focusable="false"
+      android:text="@string/btn_delete_song"
+      android:textColor="@android:color/white"/>
+  </LinearLayout>
+
+</FrameLayout>

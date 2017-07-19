@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.am.musicplaylist.data.PlaylistContract.PlaylistEntry;
+import es.dmoral.toasty.Toasty;
 
 public class MainActivity extends AppCompatActivity implements
     LoaderManager.LoaderCallbacks<Cursor> {
@@ -139,9 +140,9 @@ public class MainActivity extends AppCompatActivity implements
         //if input is empty show toast
         if (TextUtils.isEmpty(inputData)) {
 
-          // show toast message
-          Toast.makeText(MainActivity.this, "Please enter title. Playlist title cannot be empty",
-              Toast.LENGTH_SHORT).show();
+          // show error toast message
+          Toasty.error(MainActivity.this, "Please enter title. Playlist title cannot be empty",
+                Toast.LENGTH_SHORT, true).show();
         } else {
 
           mPlaylistName = inputData;

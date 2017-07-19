@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -38,6 +39,8 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_songs);
+
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     mLottieAnimationView = (LottieAnimationView) findViewById(R.id.song_emptyview_image);
     mLottieAnimationView.setAnimation("EmptyState.json");
@@ -81,6 +84,9 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
   public boolean onOptionsItemSelected(MenuItem item) {
     int id = item.getItemId();
     switch (id) {
+      case android.R.id.home:
+        NavUtils.navigateUpFromSameTask(this);
+        return true;
       case R.id.new_song:
         // source https://developer.android.com/training/permissions/requesting.html
         if (ContextCompat.checkSelfPermission(SongsActivity.this,
@@ -151,17 +157,14 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
     if (requestCode == 1) {
       if (data.getData() != null) {
         uri = data.getData();
-        Log.i("SongsActivity", "URI..." + uri);
         Cursor musicCursor = getContentResolver().query(uri, null, null, null, null);
 
         if (musicCursor != null && musicCursor.moveToFirst()) {
           //get columns
           int titleColumn = musicCursor.getColumnIndex
               (android.provider.MediaStore.Audio.Media.TITLE);
-          Log.i("SongsActivity", "titleColumn..." + titleColumn);
           int artistColumn = musicCursor.getColumnIndex
               (android.provider.MediaStore.Audio.Media.ARTIST);
-          Log.i("SongsActivity", "artistColumn..." + artistColumn);
           //add songs to list
           do {
             String thisTitle = musicCursor.getString(titleColumn);
@@ -181,7 +184,7 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
     values.put(PlaylistEntry.COLUMN_SONG_TITLE, title);
     values.put(PlaylistEntry.COLUMN_SONG_ARTIST, artist);
     values.put(PlaylistEntry.COLUMN_SONG_PLAYLIST_ID, mId);
-    Log.i("SongsActivity", "song title..." + title);
+   // Log.i("SongsActivity", "song title..." + title);
     Log.i("SongsActivity", "song artist..." + artist);
     Log.i("SongsActivity", "song mid..." + mId);
 

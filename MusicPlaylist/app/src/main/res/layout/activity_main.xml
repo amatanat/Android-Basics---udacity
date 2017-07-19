@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
   tools:context="com.am.musicplaylist.MainActivity">
 
   <ListView
@@ -30,12 +30,26 @@
       android:id="@+id/emptyview_title"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
       android:layout_below="@+id/emptyview_image"
       android:layout_centerHorizontal="true"
       android:fontFamily="sans-serif-medium"
-      android:layout_marginTop="16dp"
       android:text="@string/playlist_is_empty"
-      android:textAppearance="?android:textAppearanceMedium"
+      android:textAppearance="?android:textAppearanceLarge"
+      android:textColor="@color/colorGrey"
+      tools:ignore="UnusedAttribute"/>
+
+    <TextView
+      android:id="@+id/emptyview_subtitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/emptyview_title"
+      android:layout_centerHorizontal="true"
+      android:paddingTop="8dp"
+      android:fontFamily="sans-serif"
+      android:text="Start by adding a new Playlist"
+      android:textAppearance="?android:textAppearanceSmall"
+      android:textColor="#A2AAB0"
       tools:ignore="UnusedAttribute"/>
 
   </RelativeLayout>
