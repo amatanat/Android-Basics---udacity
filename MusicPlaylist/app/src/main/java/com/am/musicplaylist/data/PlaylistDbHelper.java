@@ -21,9 +21,9 @@ public class PlaylistDbHelper extends SQLiteOpenHelper {
   private static final String SQL_CREATE_SONGS_TABLE =
       "CREATE TABLE " + PlaylistEntry.TABLE_NAME_SONGS + " (" +
           PlaylistEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-          PlaylistEntry.COLUMN_SONG_TITLE +  " TEXT NOT NULL, " +
+          PlaylistEntry.COLUMN_SONG_TITLE +  " TEXT NOT NULL DEFAULT 'No title', " +
           PlaylistEntry.COLUMN_SONG_PLAYLIST_ID + " TEXT NOT NULL, " +
-          PlaylistEntry.COLUMN_SONG_ARTIST + " TEXT NOT NULL)";
+          PlaylistEntry.COLUMN_SONG_ARTIST + " TEXT NOT NULL DEFAULT 'Unknown artist')";
 
 
   public PlaylistDbHelper(Context context) {
