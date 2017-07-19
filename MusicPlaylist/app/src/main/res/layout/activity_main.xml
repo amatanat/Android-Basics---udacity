@@ -20,19 +20,15 @@
 
     <com.airbnb.lottie.LottieAnimationView
       android:id="@+id/emptyview_image"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_centerHorizontal="true"
+      style="@style/styleMain"
       android:layout_centerVertical="true"
       app:lottie_autoPlay="true"/>
 
     <TextView
       android:id="@+id/emptyview_title"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      style="@style/styleMain"
       android:layout_marginTop="16dp"
       android:layout_below="@+id/emptyview_image"
-      android:layout_centerHorizontal="true"
       android:fontFamily="sans-serif-medium"
       android:text="@string/no_playlist"
       android:textAppearance="?android:textAppearanceLarge"
@@ -41,10 +37,8 @@
 
     <TextView
       android:id="@+id/emptyview_subtitle"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      style="@style/styleMain"
       android:layout_below="@+id/emptyview_title"
-      android:layout_centerHorizontal="true"
       android:paddingTop="8dp"
       android:fontFamily="sans-serif"
       android:text="@string/add_new_playlist"

@@ -27,6 +27,7 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
 
   private final int LOADER_INIT = 300;
   private final int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 200;
+  private final int REQUEST_CODE = 1;
   private final String PLAYLIST_NAME = "playlistName";
 
   private LottieAnimationView mLottieAnimationView;
@@ -146,14 +147,14 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
     Intent intent = new Intent(Intent.ACTION_PICK,
         android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
     if (intent.resolveActivity(getPackageManager()) != null){
-      startActivityForResult(intent, 1);
+      startActivityForResult(intent, REQUEST_CODE);
     }
   }
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     Uri uri;
-    if (requestCode == 1) {
+    if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
       if (data.getData() != null) {
         uri = data.getData();
         Cursor musicCursor = getContentResolver().query(uri, null, null, null, null);

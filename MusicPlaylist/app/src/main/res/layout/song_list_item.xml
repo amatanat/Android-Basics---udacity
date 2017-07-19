@@ -33,6 +33,7 @@
       android:focusable="false"
       android:text="@string/btn_delete_song"
       android:textColor="@android:color/white"/>
+
   </LinearLayout>
 
 </FrameLayout>

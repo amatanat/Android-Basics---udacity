@@ -21,25 +21,20 @@
 
     <com.airbnb.lottie.LottieAnimationView
       android:id="@+id/song_emptyview_image"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_centerHorizontal="true"
+      style="@style/styleMain"
       android:layout_centerVertical="true"
       app:lottie_autoPlay="true"/>
 
     <TextView
       android:id="@+id/song_emptyview_title"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      style="@style/styleMain"
       android:layout_marginTop="16dp"
       android:layout_below="@+id/song_emptyview_image"
-      android:layout_centerHorizontal="true"
       android:fontFamily="sans-serif-medium"
       android:text="@string/playlist_is_empty"
       android:textAppearance="?android:textAppearanceMedium"
       tools:ignore="UnusedAttribute"/>
 
   </RelativeLayout>
-
 
 </RelativeLayout>
