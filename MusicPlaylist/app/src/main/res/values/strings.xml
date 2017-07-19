@@ -2,6 +2,7 @@
   <string name="app_name">Music Playlist</string>
   <string name="add_new_playlist">Start by adding a new Playlist</string>
   <string name="playlist_is_empty">Playlist is empty</string>
+  <string name="no_playlist">No playlist</string>
   <string name="create_new_playlist">Create New Playlist</string>
   <string name="delete_playlists">Delete Playlists</string>
   <string name="playlist">Playlist</string>

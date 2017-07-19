@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity implements
     LoaderManager.LoaderCallbacks<Cursor> {
 
   private final String LOG_TAG = MainActivity.class.getName();
-
   private final int LOADER_INIT = 100;
+  private final String PLAYLIST_NAME = "playlistName";
 
   private LottieAnimationView mLottieAnimationView;
   private String mPlaylistName;
@@ -44,21 +44,32 @@ public class MainActivity extends AppCompatActivity implements
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
+    // get {@link LottieAnimationView} and set its animation
     mLottieAnimationView = (LottieAnimationView) findViewById(R.id.emptyview_image);
     mLottieAnimationView.setAnimation("EmptyState.json");
     mLottieAnimationView.loop(true);
     mLottieAnimationView.playAnimation();
 
     mPlaylistCursorAdapter = new PlaylistCursorAdapter(this, null);
+
     mListView = (ListView) findViewById(R.id.listview);
+
+    // set adapter of ListView
     mListView.setAdapter(mPlaylistCursorAdapter);
+
+    // ListView item click
     mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        //  open {@link SongsActivity} on ListView item (playlist name) click
         Intent intent = new Intent(MainActivity.this, SongsActivity.class);
+
+        // get playlist name from TextView
         String playlistName =  ((TextView) view.findViewById(R.id.tv_playlist_name)).getText().toString();
-        intent.putExtra("playlistName", playlistName);
-        Log.i(LOG_TAG, "playlistname is..." + playlistName);
+
+        // send playlist name with intent
+        intent.putExtra(PLAYLIST_NAME, playlistName);
 
         // send Content Uri with the id of the clicked item
         intent.setData(ContentUris.withAppendedId(PlaylistEntry.CONTENT_URI, id));
@@ -66,10 +77,11 @@ public class MainActivity extends AppCompatActivity implements
       }
     });
 
-    // get emptyview id and set it as emptyview in listview
+    // get RecyclerView id and set it as emptyview in ListView
     View emptyView = findViewById(R.id.empty_view);
     mListView.setEmptyView(emptyView);
 
+    // initialize loader
     getSupportLoaderManager().initLoader(LOADER_INIT, null, this);
   }
 
@@ -80,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements
         PlaylistEntry._ID,
         PlaylistEntry.COLUMN_PLAYLIST_NAME
     };
-    // This loader will execute ContentProvider's query method in a background thread
+    // This loader will execute ContentProvider's (PlaylistProvider) query method in a background thread
     return new CursorLoader(this, PlaylistEntry.CONTENT_URI, projection, null, null, null);
   }
 
@@ -105,16 +117,25 @@ public class MainActivity extends AppCompatActivity implements
   public boolean onOptionsItemSelected(MenuItem menuItem) {
     switch (menuItem.getItemId()) {
       case R.id.new_playlist:
+
+        // create new playlist
         showCreatePlaylistDialog();
+
         return true;
       case R.id.delete_playlists:
+
+        // delete all playlists
         deleteDataFromDatabase();
+
         return true;
       default:
         return super.onOptionsItemSelected(menuItem);
     }
   }
 
+  /**
+   * This method is used to create new playlist
+   */
   private void showCreatePlaylistDialog() {
 
     AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
@@ -145,9 +166,9 @@ public class MainActivity extends AppCompatActivity implements
                 Toast.LENGTH_SHORT, true).show();
         } else {
 
-          mPlaylistName = inputData;
-          Log.i(LOG_TAG, "Playlist name...." + mPlaylistName);
+          // if input isn't empty set playlist name and insert into db
 
+          mPlaylistName = inputData;
           insertDataIntoDatabase(mPlaylistName);
         }
       }
@@ -166,7 +187,10 @@ public class MainActivity extends AppCompatActivity implements
     alertDialog.show();
   }
 
-
+  /**
+   * This method is used to insert string as playlist name into db in 'playlist' table
+   * @param data - is the to be inserted  playlist name
+   */
   private void insertDataIntoDatabase(String data) {
 
     ContentValues values = new ContentValues();
@@ -175,10 +199,12 @@ public class MainActivity extends AppCompatActivity implements
 
     Uri resultUri = getContentResolver().insert(PlaylistEntry.CONTENT_URI, values);
 
-    Log.i("MainActivity", "Result uri in insert method......" + resultUri);
+    Log.i(LOG_TAG, "Result uri in insert method......" + resultUri);
   }
 
-
+  /**
+   * This method is used to delete all playlists from db
+   */
   private void deleteDataFromDatabase() {
     getContentResolver().delete(PlaylistEntry.CONTENT_URI, null, null);
   }

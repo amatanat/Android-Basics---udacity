@@ -34,7 +34,7 @@
       android:layout_below="@+id/emptyview_image"
       android:layout_centerHorizontal="true"
       android:fontFamily="sans-serif-medium"
-      android:text="@string/playlist_is_empty"
+      android:text="@string/no_playlist"
       android:textAppearance="?android:textAppearanceLarge"
       android:textColor="@color/colorGrey"
       tools:ignore="UnusedAttribute"/>
@@ -47,7 +47,7 @@
       android:layout_centerHorizontal="true"
       android:paddingTop="8dp"
       android:fontFamily="sans-serif"
-      android:text="Start by adding a new Playlist"
+      android:text="@string/add_new_playlist"
       android:textAppearance="?android:textAppearanceSmall"
       android:textColor="#A2AAB0"
       tools:ignore="UnusedAttribute"/>
