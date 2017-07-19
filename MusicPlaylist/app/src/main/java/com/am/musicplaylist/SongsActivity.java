@@ -1,6 +1,7 @@
 package com.am.musicplaylist;
 
 import android.Manifest;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -29,6 +30,8 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
   private LottieAnimationView mLottieAnimationView;
   private String mPlaylistName;
   private ListView mListView;
+  private Uri mContentUri;
+  private long mId;
   private SongCursorAdapter mSongCursorAdapter;
 
   @Override
@@ -47,9 +50,16 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
 
     Intent intent = getIntent();
     if (intent != null) {
+
+      mContentUri = intent.getData();
+      mId = ContentUris.parseId(mContentUri);
+      Log.i("SongsACTIVITY", "mId...." + mId);
+
       if (intent.hasExtra("playlistName")) {
+
         mPlaylistName = intent.getStringExtra("playlistName");
         getSupportActionBar().setTitle(mPlaylistName);
+        Log.i("SongsACTIVITY", "URI...." + intent.getData());
       }
     }
 
@@ -170,8 +180,10 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
 
     values.put(PlaylistEntry.COLUMN_SONG_TITLE, title);
     values.put(PlaylistEntry.COLUMN_SONG_ARTIST, artist);
+    values.put(PlaylistEntry.COLUMN_SONG_PLAYLIST_ID, mId);
     Log.i("SongsActivity", "song title..." + title);
     Log.i("SongsActivity", "song artist..." + artist);
+    Log.i("SongsActivity", "song mid..." + mId);
 
     Uri resultUri = getContentResolver().insert(PlaylistEntry.CONTENT_URI_SONG, values);
 
@@ -183,10 +195,12 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
     String[] projection = {
         PlaylistEntry._ID,
         PlaylistEntry.COLUMN_SONG_TITLE,
-        PlaylistEntry.COLUMN_SONG_ARTIST
+        PlaylistEntry.COLUMN_SONG_ARTIST,
+        PlaylistEntry.COLUMN_SONG_PLAYLIST_ID
     };
+
     // This loader will execute ContentProvider's query method in a background thread
-    return new CursorLoader(this, PlaylistEntry.CONTENT_URI_SONG, projection, null, null, null);
+    return new CursorLoader(this, ContentUris.withAppendedId(PlaylistEntry.CONTENT_URI_SONG, mId), projection, null, null, null);
   }
 
   @Override

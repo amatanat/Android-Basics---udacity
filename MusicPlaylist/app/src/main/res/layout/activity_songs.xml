@@ -10,7 +10,8 @@
   <ListView
     android:id="@+id/song_listview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent"
+    android:focusable="true"/>
 
   <RelativeLayout
     android:id="@+id/song_empty_view"

@@ -16,12 +16,13 @@ public class PlaylistDbHelper extends SQLiteOpenHelper {
           PlaylistEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
           PlaylistEntry.COLUMN_PLAYLIST_NAME + " TEXT NOT NULL, " +
           " FOREIGN KEY (" + PlaylistEntry.COLUMN_PLAYLIST_NAME + ") REFERENCES " +
-          PlaylistEntry.TABLE_NAME_SONGS + "(" + PlaylistEntry._ID + "));";
+          PlaylistEntry.TABLE_NAME_SONGS + "(" + PlaylistEntry.COLUMN_SONG_TITLE + "));";
 
   private static final String SQL_CREATE_SONGS_TABLE =
       "CREATE TABLE " + PlaylistEntry.TABLE_NAME_SONGS + " (" +
           PlaylistEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
           PlaylistEntry.COLUMN_SONG_TITLE +  " TEXT NOT NULL, " +
+          PlaylistEntry.COLUMN_SONG_PLAYLIST_ID + " TEXT NOT NULL, " +
           PlaylistEntry.COLUMN_SONG_ARTIST + " TEXT NOT NULL)";
 
 

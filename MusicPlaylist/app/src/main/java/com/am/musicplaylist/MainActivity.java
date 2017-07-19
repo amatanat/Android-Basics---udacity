@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.am.musicplaylist.data.PlaylistContract.PlaylistEntry;
@@ -54,8 +55,9 @@ public class MainActivity extends AppCompatActivity implements
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(MainActivity.this, SongsActivity.class);
-        String playlistName = mListView.getItemAtPosition(position).toString();
+        String playlistName =  ((TextView) view.findViewById(R.id.tv_playlist_name)).getText().toString();
         intent.putExtra("playlistName", playlistName);
+        Log.i(LOG_TAG, "playlistname is..." + playlistName);
 
         // send Content Uri with the id of the clicked item
         intent.setData(ContentUris.withAppendedId(PlaylistEntry.CONTENT_URI, id));

@@ -2,7 +2,8 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:orientation="vertical"
-  android:padding="5dp" >
+  android:padding="5dp"
+  >
 
   <TextView
     android:id="@+id/song_title"
@@ -18,5 +19,12 @@
     android:layout_height="wrap_content"
     android:textColor="@android:color/black"
     android:textSize="18sp" />
+
+  <Button
+    android:id="@+id/delete_song"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/btn_delete_song"
+    android:focusable="false"/>
 
 </LinearLayout>

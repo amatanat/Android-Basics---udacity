@@ -7,6 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.BoolRes;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import com.am.musicplaylist.data.PlaylistContract.PlaylistEntry;
@@ -23,12 +24,15 @@ public class PlaylistProvider extends ContentProvider {
 
   private static final int SONGS = 3;
 
+  private static final int PATH_SONGS_PLAYLIST_NAME = 4;
+
   private static final UriMatcher mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
   static {
     mUriMatcher.addURI(PlaylistContract.CONTENT_AUTHORITY, PlaylistContract.PATH_PLAYLISTS, PLAYLISTS);
     mUriMatcher.addURI(PlaylistContract.CONTENT_AUTHORITY, PlaylistContract.PATH_PLAYLISTS + "/#", PLAYLISTS_ID);
     mUriMatcher.addURI(PlaylistContract.CONTENT_AUTHORITY, PlaylistContract.PATH_SONGS, SONGS);
+    mUriMatcher.addURI(PlaylistContract.CONTENT_AUTHORITY, PlaylistContract.PATH_SONGS + "/#", PATH_SONGS_PLAYLIST_NAME);
   }
 
 
@@ -62,6 +66,11 @@ public class PlaylistProvider extends ContentProvider {
         cursor = db.query(PlaylistEntry.TABLE_NAME_PLAYLISTS, projection, selection, selectionArgs, null, null, sortOrder);
         break;
       case SONGS:
+        cursor = db.query(PlaylistEntry.TABLE_NAME_SONGS, projection, selection, selectionArgs, null, null, sortOrder);
+        break;
+      case PATH_SONGS_PLAYLIST_NAME:
+        selection = PlaylistEntry.COLUMN_SONG_PLAYLIST_ID + "=?";
+        selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
         cursor = db.query(PlaylistEntry.TABLE_NAME_SONGS, projection, selection, selectionArgs, null, null, sortOrder);
         break;
       default:
@@ -159,7 +168,15 @@ public class PlaylistProvider extends ContentProvider {
         }
         return deletedRows;
       case SONGS:
-        // delete all rows from the table
+        deletedRows = db.delete(PlaylistEntry.TABLE_NAME_SONGS, selection, selectionArgs);
+        if (deletedRows != 0) {
+          getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return deletedRows;
+      case PATH_SONGS_PLAYLIST_NAME:
+        // delete specific rows from tha table according to specified conditions
+        selection = PlaylistEntry.COLUMN_SONG_PLAYLIST_ID + "=?";
+        selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
         deletedRows = db.delete(PlaylistEntry.TABLE_NAME_SONGS, selection, selectionArgs);
         if (deletedRows != 0) {
           getContext().getContentResolver().notifyChange(uri, null);
