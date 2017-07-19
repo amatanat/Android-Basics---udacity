@@ -66,7 +66,8 @@ public class MainActivity extends AppCompatActivity implements
         Intent intent = new Intent(MainActivity.this, SongsActivity.class);
 
         // get playlist name from TextView
-        String playlistName =  ((TextView) view.findViewById(R.id.tv_playlist_name)).getText().toString();
+        String playlistName = ((TextView) view.findViewById(R.id.tv_playlist_name)).getText()
+            .toString();
 
         // send playlist name with intent
         intent.putExtra(PLAYLIST_NAME, playlistName);
@@ -163,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements
 
           // show error toast message
           Toasty.error(MainActivity.this, "Please enter title. Playlist title cannot be empty",
-                Toast.LENGTH_SHORT, true).show();
+              Toast.LENGTH_SHORT, true).show();
         } else {
 
           // if input isn't empty set playlist name and insert into db
@@ -189,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements
 
   /**
    * This method is used to insert string as playlist name into db in 'playlist' table
+   *
    * @param data - is the to be inserted  playlist name
    */
   private void insertDataIntoDatabase(String data) {

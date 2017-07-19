@@ -9,17 +9,15 @@ public class PlaylistContract {
 
   public static final String CONTENT_AUTHORITY = "com.am.musicplaylist";
 
-  /*
-   Content Uri without data type
-   * Parse string into URI
-    */
+  // Content Uri without data type. Parse string into URI
   public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
   public static final String PATH_PLAYLISTS = "playlists";
 
   public static final String PATH_SONGS = "songs";
 
-  private PlaylistContract(){}
+  private PlaylistContract() {
+  }
 
   public static final class PlaylistEntry implements BaseColumns {
 
@@ -43,9 +41,6 @@ public class PlaylistContract {
 
     public static final String CONTENT_LIST_TYPE =
         ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PLAYLISTS;
-//
-//    public static final String CONTENT_ITEM_TYPE =
-//        ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PLAYLISTS;
 
     public static final String CONTENT_SONG_LIST_TYPE =
         ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_SONGS;

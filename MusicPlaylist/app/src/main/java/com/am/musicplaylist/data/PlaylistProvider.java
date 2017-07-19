@@ -7,7 +7,6 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.support.annotation.BoolRes;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import com.am.musicplaylist.data.PlaylistContract.PlaylistEntry;
@@ -19,22 +18,19 @@ public class PlaylistProvider extends ContentProvider {
   // URI matcher code for the content uri for the table "playlists"
   private static final int PLAYLISTS = 1;
 
-  //URI matcher code for the content uri for the specific row
-  //private static final int PLAYLISTS_ID = 2;
-
+  // URI matcher code for the content uri for the table "songs"
   private static final int SONGS = 3;
 
+  // URI matcher code for the content uri for the specific row for the table "songs"
   private static final int PATH_SONGS_PLAYLIST_NAME = 4;
 
   private static final UriMatcher mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
   static {
     mUriMatcher.addURI(PlaylistContract.CONTENT_AUTHORITY, PlaylistContract.PATH_PLAYLISTS, PLAYLISTS);
-   // mUriMatcher.addURI(PlaylistContract.CONTENT_AUTHORITY, PlaylistContract.PATH_PLAYLISTS + "/#", PLAYLISTS_ID);
     mUriMatcher.addURI(PlaylistContract.CONTENT_AUTHORITY, PlaylistContract.PATH_SONGS, SONGS);
     mUriMatcher.addURI(PlaylistContract.CONTENT_AUTHORITY, PlaylistContract.PATH_SONGS + "/#", PATH_SONGS_PLAYLIST_NAME);
   }
-
 
   private PlaylistDbHelper mPlaylistDbHelper;
 
@@ -56,19 +52,15 @@ public class PlaylistProvider extends ContentProvider {
     int match = mUriMatcher.match(uri);
     switch (match) {
       case PLAYLISTS:
-        // query the whole table
+        // query the whole "playlists" table
         cursor = db.query(PlaylistEntry.TABLE_NAME_PLAYLISTS, projection, selection, selectionArgs, null, null, sortOrder);
         break;
-//      case PLAYLISTS_ID:
-//        // query specific id indicated in the uri
-//        selection = PlaylistEntry._ID + "=?";
-//        selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-//        cursor = db.query(PlaylistEntry.TABLE_NAME_PLAYLISTS, projection, selection, selectionArgs, null, null, sortOrder);
-//        break;
       case SONGS:
+        // query the whole "songs" table
         cursor = db.query(PlaylistEntry.TABLE_NAME_SONGS, projection, selection, selectionArgs, null, null, sortOrder);
         break;
       case PATH_SONGS_PLAYLIST_NAME:
+        // query the specific row in "songs" table
         selection = PlaylistEntry.COLUMN_SONG_PLAYLIST_ID + "=?";
         selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
         cursor = db.query(PlaylistEntry.TABLE_NAME_SONGS, projection, selection, selectionArgs, null, null, sortOrder);
@@ -83,15 +75,15 @@ public class PlaylistProvider extends ContentProvider {
     return cursor;
   }
 
-  // return MIME type of the Content URI
+  /**
+   * return MIME type of the Content URI
+   */
   @Override
   public String getType(Uri uri) {
     int match = mUriMatcher.match(uri);
     switch (match) {
       case PLAYLISTS:
         return PlaylistEntry.CONTENT_LIST_TYPE;
-//      case PLAYLISTS_ID:
-//        return PlaylistEntry.CONTENT_ITEM_TYPE;
       case SONGS:
         return PlaylistEntry.CONTENT_SONG_LIST_TYPE;
       case PATH_SONGS_PLAYLIST_NAME:
@@ -114,6 +106,9 @@ public class PlaylistProvider extends ContentProvider {
     }
   }
 
+  /**
+   * Insert song into db
+   */
   private Uri insertSong(Uri uri, ContentValues values) {
 
     SQLiteDatabase db = mPlaylistDbHelper.getWritableDatabase();
@@ -129,6 +124,9 @@ public class PlaylistProvider extends ContentProvider {
     return ContentUris.withAppendedId(uri, id);
   }
 
+  /**
+   * Insert playlist into db
+   */
   private Uri insertPlaylist(Uri uri, ContentValues values) {
 
     SQLiteDatabase db = mPlaylistDbHelper.getWritableDatabase();
@@ -148,38 +146,34 @@ public class PlaylistProvider extends ContentProvider {
   public int delete( Uri uri,  String selection,
        String[] selectionArgs) {
     int deletedRows;
+
     // get writeable databse
     SQLiteDatabase db = mPlaylistDbHelper.getWritableDatabase();
 
     int match = mUriMatcher.match(uri);
     switch (match) {
       case PLAYLISTS:
-        // delete all rows from the table
+
+        // delete all rows from the "playlists" table
         deletedRows = db.delete(PlaylistEntry.TABLE_NAME_PLAYLISTS, selection, selectionArgs);
+
+        // if rows are deleted
         if (deletedRows != 0) {
           getContext().getContentResolver().notifyChange(uri, null);
         }
         return deletedRows;
-//      case PLAYLISTS_ID:
-//        // delete specific rows from the table according to specified conditions
-//        selection = PlaylistEntry._ID + "=?";
-//        selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-//        deletedRows = db.delete(PlaylistEntry.TABLE_NAME_PLAYLISTS, selection, selectionArgs);
+//      case SONGS:
+//        // delete all songs from the "songs" table
+//        deletedRows = db.delete(PlaylistEntry.TABLE_NAME_SONGS, selection, selectionArgs);
 //        if (deletedRows != 0) {
 //          getContext().getContentResolver().notifyChange(uri, null);
 //        }
 //        return deletedRows;
-      case SONGS:
-        deletedRows = db.delete(PlaylistEntry.TABLE_NAME_SONGS, selection, selectionArgs);
-        if (deletedRows != 0) {
-          getContext().getContentResolver().notifyChange(uri, null);
-        }
-        return deletedRows;
       case PATH_SONGS_PLAYLIST_NAME:
+
+        // delete specific song from the "songs" table
         selection = PlaylistEntry._ID + "=?";
         selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-
-        Log.i("Provider", " received id.." + selectionArgs);
 
         deletedRows = db.delete(PlaylistEntry.TABLE_NAME_SONGS, selection, selectionArgs);
 

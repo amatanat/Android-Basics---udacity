@@ -28,7 +28,6 @@ public class PlaylistDbHelper extends SQLiteOpenHelper {
 
   public PlaylistDbHelper(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
   }
 
   @Override
