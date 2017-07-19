@@ -23,13 +23,13 @@ public class PlaylistCursorAdapter  extends CursorAdapter {
   @Override
   public void bindView(View view, final Context context, final Cursor cursor) {
 
-    // find tetxview with the corresponding id
+    // find the TextView with a corresponding id
     TextView playlistName = (TextView) view.findViewById(R.id.tv_playlist_name);
 
-    // get values of corresponding column from cursor
+    // get the values of the corresponding column from a cursor
     String name = cursor.getString(cursor.getColumnIndexOrThrow(PlaylistEntry.COLUMN_PLAYLIST_NAME));
 
-    // set text of textview
+    // set the text of a TextView
     playlistName.setText(name);
   }
 }

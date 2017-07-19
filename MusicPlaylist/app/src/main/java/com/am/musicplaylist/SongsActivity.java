@@ -26,7 +26,8 @@ import com.am.musicplaylist.data.PlaylistContract.PlaylistEntry;
 public class SongsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>  {
 
   private final int LOADER_INIT = 300;
-  private final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 200;
+  private final int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 200;
+  private final String PLAYLIST_NAME = "playlistName";
 
   private LottieAnimationView mLottieAnimationView;
   private String mPlaylistName;
@@ -42,6 +43,7 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
 
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+    // get LottieAnimationView and set its animation
     mLottieAnimationView = (LottieAnimationView) findViewById(R.id.song_emptyview_image);
     mLottieAnimationView.setAnimation("EmptyState.json");
     mLottieAnimationView.loop(true);
@@ -51,25 +53,27 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
     mListView = (ListView) findViewById(R.id.song_listview);
     mListView.setAdapter(mSongCursorAdapter);
 
+    // get intent which has started this Activity
     Intent intent = getIntent();
     if (intent != null) {
-
       mContentUri = intent.getData();
+      // get id of the clicked item from MainActivity
       mId = ContentUris.parseId(mContentUri);
-      Log.i("SongsACTIVITY", "mId...." + mId);
 
-      if (intent.hasExtra("playlistName")) {
+      if (intent.hasExtra(PLAYLIST_NAME)) {
 
-        mPlaylistName = intent.getStringExtra("playlistName");
+        mPlaylistName = intent.getStringExtra(PLAYLIST_NAME);
+
+        // set title of the ActionBar as the playlist name
         getSupportActionBar().setTitle(mPlaylistName);
-        Log.i("SongsACTIVITY", "URI...." + intent.getData());
       }
     }
 
-    // get emptyview id and set it as emptyview in listview
+    // get RecyclerView id and set it as emptyview in ListView
     View emptyView = findViewById(R.id.song_empty_view);
     mListView.setEmptyView(emptyView);
 
+    // initialize loader
     getSupportLoaderManager().initLoader(LOADER_INIT, null, this);
   }
 
@@ -93,25 +97,17 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
             Manifest.permission.READ_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED) {
 
-          // Should we show an explanation?
           if (ActivityCompat.shouldShowRequestPermissionRationale(SongsActivity.this,
               Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
-            // Show an explanation to the user *asynchronously* -- don't block
-            // this thread waiting for the user's response! After the user
-            // sees the explanation, try again to request the permission.
-
           } else {
 
-            // No explanation needed, we can request the permission.
+            // Request the permission.
 
             ActivityCompat.requestPermissions(SongsActivity.this,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
 
-            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-            // app-defined int constant. The callback method gets the
-            // result of the request.
           }
         } else {
           addSong();
@@ -130,12 +126,12 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
   public void onRequestPermissionsResult(int requestCode,
       String permissions[], int[] grantResults) {
     switch (requestCode) {
-      case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
+      case PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
         // If request is cancelled, the result arrays are empty.
         if (grantResults.length > 0
             && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-          // permission was granted
+          // permission was granted so allow user to add song
           addSong();
         }
         return;
@@ -143,6 +139,9 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
     }
   }
 
+  /**
+   * This method is used to allow the user to pick an audio file
+   */
   private void addSong() {
     Intent intent = new Intent(Intent.ACTION_PICK,
         android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
@@ -160,12 +159,13 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
         Cursor musicCursor = getContentResolver().query(uri, null, null, null, null);
 
         if (musicCursor != null && musicCursor.moveToFirst()) {
-          //get columns
+          //get columns of the song
           int titleColumn = musicCursor.getColumnIndex
               (android.provider.MediaStore.Audio.Media.TITLE);
           int artistColumn = musicCursor.getColumnIndex
               (android.provider.MediaStore.Audio.Media.ARTIST);
-          //add songs to list
+
+          //add song to ListView and db
           do {
             String thisTitle = musicCursor.getString(titleColumn);
             String thisArtist = musicCursor.getString(artistColumn);
@@ -177,6 +177,9 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
     }
   }
 
+  /**
+   * Insert song info into db
+   */
   private void insertDataIntoDatabase(String title, String artist) {
 
     ContentValues values = new ContentValues();
@@ -184,9 +187,6 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
     values.put(PlaylistEntry.COLUMN_SONG_TITLE, title);
     values.put(PlaylistEntry.COLUMN_SONG_ARTIST, artist);
     values.put(PlaylistEntry.COLUMN_SONG_PLAYLIST_ID, mId);
-   // Log.i("SongsActivity", "song title..." + title);
-    Log.i("SongsActivity", "song artist..." + artist);
-    Log.i("SongsActivity", "song mid..." + mId);
 
     Uri resultUri = getContentResolver().insert(PlaylistEntry.CONTENT_URI_SONG, values);
 
@@ -202,7 +202,8 @@ public class SongsActivity extends AppCompatActivity implements LoaderManager.Lo
         PlaylistEntry.COLUMN_SONG_PLAYLIST_ID
     };
 
-    // This loader will execute ContentProvider's query method in a background thread
+    // This loader will execute ContentProvider's query method in a background thread and show corresponding songs for
+    // the clicked playlist
     return new CursorLoader(this, ContentUris.withAppendedId(PlaylistEntry.CONTENT_URI_SONG, mId), projection, null, null, null);
   }
 
